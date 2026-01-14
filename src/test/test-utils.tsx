@@ -1,5 +1,12 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { render, renderHook, type RenderOptions, type RenderHookOptions } from '@testing-library/react';
+import {
+  render,
+  renderHook,
+  type RenderOptions,
+  type RenderHookOptions,
+  type RenderResult,
+  type RenderHookResult,
+} from '@testing-library/react';
 import type { ReactElement, ReactNode } from 'react';
 
 // Create a new QueryClient for each test
@@ -31,7 +38,10 @@ const createWrapper = () => {
   return { Providers, queryClient };
 };
 
-export const renderWithProviders = (ui: ReactElement, options?: Omit<RenderOptions, 'wrapper'>) => {
+export const renderWithProviders = (
+  ui: ReactElement,
+  options?: Omit<RenderOptions, 'wrapper'>
+): RenderResult & { queryClient: QueryClient } => {
   const { Providers, queryClient } = createWrapper();
   return {
     ...render(ui, { wrapper: Providers, ...options }),
@@ -42,7 +52,7 @@ export const renderWithProviders = (ui: ReactElement, options?: Omit<RenderOptio
 export const renderHookWithProviders = <TResult, TProps>(
   hook: (props: TProps) => TResult,
   options?: Omit<RenderHookOptions<TProps>, 'wrapper'>
-) => {
+): RenderHookResult<TResult, TProps> & { queryClient: QueryClient } => {
   const { Providers, queryClient } = createWrapper();
   return {
     ...renderHook(hook, { wrapper: Providers, ...options }),
