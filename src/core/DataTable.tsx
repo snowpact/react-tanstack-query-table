@@ -281,7 +281,7 @@ export function DataTable<Data extends object>({
       {displayAdvancedBar && (
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-4 gap-4">
           {/* Top on mobile / Left on desktop - Prefilter tabs */}
-          <div className="flex items-center gap-2 overflow-x-auto">
+          <div className="flex items-center gap-2 overflow-x-auto p-0.5 -m-0.5">
             {prefilters && prefilters.length > 0 && onPrefilterChange && (
               <PrefilterTabs
                 prefilters={prefilters}

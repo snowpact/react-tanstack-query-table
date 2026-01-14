@@ -67,9 +67,9 @@ export interface SnowTableStyles {
 
 const defaultStyles: SnowTableStyles = {
   state: {
-    active: 'ring-2 ring-inset ring-primary/30',
-    activeText: 'text-primary',
-    focus: 'focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2',
+    active: 'ring-2 ring-ring/30',
+    activeText: 'text-foreground',
+    focus: 'focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:ring-offset-2',
   },
 
   button: {
@@ -83,7 +83,7 @@ const defaultStyles: SnowTableStyles = {
   },
 
   input:
-    'rounded-md border border-input bg-background focus-visible:border-primary focus-visible:ring-primary/50 focus-visible:ring-[3px]',
+    'rounded-md border border-input bg-background focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]',
 
   skeleton: 'rounded-md bg-muted animate-pulse',
 
@@ -96,7 +96,7 @@ const defaultStyles: SnowTableStyles = {
   },
 
   select: {
-    trigger: 'rounded-md border border-input bg-background focus:ring-2 focus:ring-primary focus:ring-offset-2',
+    trigger: 'rounded-md border border-input bg-background focus:ring-2 focus:ring-ring focus:ring-offset-2',
     content: 'rounded-md border bg-popover text-popover-foreground shadow-md',
     item: 'hover:bg-accent hover:text-accent-foreground',
     itemSelected: 'bg-accent text-accent-foreground',

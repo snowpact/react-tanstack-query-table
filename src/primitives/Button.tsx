@@ -13,7 +13,7 @@ import { cn } from '../utils';
 // Fixed structural styles - not customizable
 // h-8 and gap-1.5 for compact toolbar buttons (matches shadcn sm size)
 const STRUCTURE =
-  'inline-flex items-center justify-center gap-1.5 whitespace-nowrap h-8 px-3 text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary/50 focus-visible:ring-offset-1 disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0';
+  'inline-flex items-center justify-center gap-1.5 whitespace-nowrap h-8 px-3 text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring/50 focus-visible:ring-offset-1 disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0';
 
 export type ButtonVariant = 'default' | 'danger' | 'warning' | 'info' | 'success';
 

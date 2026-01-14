@@ -24,7 +24,29 @@ pnpm add @snowpact/react-tanstack-query-table
 npm install @tanstack/react-query @tanstack/react-table react react-dom
 ```
 
-> **Tailwind CSS** is required. Make sure Tailwind is configured in your app.
+### Tailwind CSS Configuration
+
+Tailwind CSS is required. You must configure Tailwind to scan the package's classes:
+
+**In your `tailwind.config.css` (Tailwind v4):**
+
+```css
+/* Include SnowTable classes for Tailwind scanning */
+@source "node_modules/@snowpact/react-tanstack-query-table/dist";
+```
+
+**Or in `tailwind.config.js` (Tailwind v3):**
+
+```js
+module.exports = {
+  content: [
+    // ... your app files
+    './node_modules/@snowpact/react-tanstack-query-table/dist/**/*.js',
+  ],
+};
+```
+
+> **Note**: The path may vary depending on your project structure. If using a monorepo or workspace, adjust the path accordingly (e.g., `../../node_modules/...`).
 
 ## Quick Start
 
