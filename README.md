@@ -70,14 +70,14 @@ setupSnowTable({
 ### 2. Use a Client Table
 
 ```tsx
-import { SnowClientTable, SnowColumnConfig } from '@snowpact/react-tanstack-query-table';
+import { SnowClientDataTable, SnowColumnConfig } from '@snowpact/react-tanstack-query-table';
 import { Edit, Trash } from 'lucide-react';
 
 type User = { id: string; name: string; email: string };
 
 const columns: SnowColumnConfig<User>[] = [{ key: 'name' }, { key: 'email' }];
 
-<SnowClientTable
+<SnowClientDataTable
   queryKey={['users']}
   fetchAllItemsEndpoint={() => fetchUsers()}
   columnConfig={columns}
@@ -94,27 +94,27 @@ const columns: SnowColumnConfig<User>[] = [{ key: 'name' }, { key: 'email' }];
 
 | Mode       | Component         | Use case      | Data handling                                   |
 | ---------- | ----------------- | ------------- | ----------------------------------------------- |
-| **Client** | `SnowClientTable` | < 5,000 items | All data loaded, filtered/sorted locally        |
-| **Server** | `SnowServerTable` | > 5,000 items | Paginated API, server handles filtering/sorting |
+| **Client** | `SnowClientDataTable` | < 5,000 items | All data loaded, filtered/sorted locally        |
+| **Server** | `SnowServerDataTable` | > 5,000 items | Paginated API, server handles filtering/sorting |
 
-### SnowClientTable
+### SnowClientDataTable
 
 Best for small to medium datasets. Fetches all data once via React Query, then handles pagination, search, and sorting entirely in the browser.
 
 ```tsx
-<SnowClientTable
+<SnowClientDataTable
   queryKey={['users']}
   fetchAllItemsEndpoint={() => api.getUsers()} // Returns User[]
   columnConfig={columns}
 />
 ```
 
-### SnowServerTable
+### SnowServerDataTable
 
 Best for large datasets. The server handles pagination, search, filtering, and sorting. Returns paginated results with a total count.
 
 ```tsx
-import { SnowServerTable, ServerFetchParams } from '@snowpact/react-tanstack-query-table';
+import { SnowServerDataTable, ServerFetchParams } from '@snowpact/react-tanstack-query-table';
 
 const fetchUsers = async (params: ServerFetchParams) => {
   // params: { limit, offset, search?, sortBy?, sortOrder?, filters?, prefilter? }
@@ -125,7 +125,7 @@ const fetchUsers = async (params: ServerFetchParams) => {
   };
 };
 
-<SnowServerTable queryKey={['users']} fetchServerEndpoint={fetchUsers} columnConfig={columns} />;
+<SnowServerDataTable queryKey={['users']} fetchServerEndpoint={fetchUsers} columnConfig={columns} />;
 ```
 
 ## Actions
@@ -252,7 +252,7 @@ actions={[
 Enable fuzzy search across all columns:
 
 ```tsx
-<SnowClientTable enableGlobalSearch texts={{ searchPlaceholder: 'Search users...' }} />
+<SnowClientDataTable enableGlobalSearch texts={{ searchPlaceholder: 'Search users...' }} />
 ```
 
 For custom search values (computed columns):
@@ -273,7 +273,7 @@ const columns: SnowColumnConfig<User>[] = [
 Multi-select dropdown filters:
 
 ```tsx
-<SnowClientTable
+<SnowClientDataTable
   filters={[
     {
       key: 'status',
@@ -300,7 +300,7 @@ Multi-select dropdown filters:
 Quick segmentation via tabs:
 
 ```tsx
-<SnowClientTable
+<SnowClientDataTable
   prefilters={[
     { id: 'all', label: 'All' },
     { id: 'active', label: 'Active' },
@@ -322,7 +322,7 @@ For server mode, the `prefilter` value is sent to your endpoint.
 Users can show/hide columns via a settings button. Configuration is saved in cookies.
 
 ```tsx
-<SnowClientTable
+<SnowClientDataTable
   enableColumnConfiguration
   columnConfig={[
     { key: 'name' }, // Always visible
@@ -337,7 +337,7 @@ Users can show/hide columns via a settings button. Configuration is saved in coo
 Persist table state (pagination, search, filters, sorting) in URL query params:
 
 ```tsx
-<SnowClientTable
+<SnowClientDataTable
   persistState // State saved in URL
 />
 ```
@@ -368,13 +368,13 @@ URL params used:
 ### Sorting
 
 ```tsx
-<SnowClientTable enableSorting defaultSortBy="createdAt" defaultSortOrder="desc" />
+<SnowClientDataTable enableSorting defaultSortBy="createdAt" defaultSortOrder="desc" />
 ```
 
 ### Pagination
 
 ```tsx
-<SnowClientTable
+<SnowClientDataTable
   enablePagination
   defaultPageSize={25}
   displayTotalNumber // Show "X elements"
@@ -385,7 +385,7 @@ URL params used:
 ### Row Click
 
 ```tsx
-<SnowClientTable
+<SnowClientDataTable
   onRowClick={item => navigate(`/users/${item.id}`)}
   activeRowId={selectedUserId} // Highlight active row
 />
@@ -426,7 +426,7 @@ setupSnowTable({
 
 ## API Reference
 
-### SnowClientTable Props
+### SnowClientDataTable Props
 
 | Prop                        | Type                    | Default  | Description                     |
 | --------------------------- | ----------------------- | -------- | ------------------------------- |
@@ -447,9 +447,9 @@ setupSnowTable({
 | `defaultSortBy`             | `string`                | -        | Initial sort column             |
 | `defaultSortOrder`          | `'asc' \| 'desc'`       | `'asc'`  | Initial sort direction          |
 
-### SnowServerTable Props
+### SnowServerDataTable Props
 
-Same as `SnowClientTable`, except:
+Same as `SnowClientDataTable`, except:
 
 | Prop                  | Type                                                                 | Description              |
 | --------------------- | -------------------------------------------------------------------- | ------------------------ |

@@ -17,8 +17,8 @@
  */
 
 // Main components
-export { SnowClientTable } from './SnowClientTable';
-export { SnowServerTable } from './SnowServerTable';
+export { SnowClientDataTable } from './SnowClientDataTable';
+export { SnowServerDataTable } from './SnowServerDataTable';
 
 // Core DataTable (for advanced usage)
 export { DataTable, DEFAULT_PAGE_SIZES } from './core';
@@ -51,8 +51,8 @@ export type {
 export type {
   IconComponent,
   SnowColumnConfig,
-  SnowClientTableProps,
-  SnowServerTableProps,
+  SnowClientDataTableProps,
+  SnowServerDataTableProps,
   ServerPaginatedResponse,
   ServerFetchParams,
   TableAction,

@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { SnowServerTable } from './SnowServerTable';
+import { SnowServerDataTable } from './SnowServerDataTable';
 import { ServerPaginatedResponse, SnowColumnConfig } from './types';
 
 import { renderWithProviders, screen, userEvent } from './test/test-utils';
@@ -66,12 +66,12 @@ const columnConfig: SnowColumnConfig<TestItem>[] = [
   { key: 'status', label: 'Status' },
 ];
 
-describe('SnowServerTable', () => {
+describe('SnowServerDataTable', () => {
   it('should render DataTable with server data', async () => {
     const fetchServerEndpoint = vi.fn().mockResolvedValue(mockServerResponse);
 
     renderWithProviders(
-      <SnowServerTable<TestItem, void>
+      <SnowServerDataTable<TestItem, void>
         queryKey={['test-server-items']}
         columnConfig={columnConfig}
         fetchServerEndpoint={fetchServerEndpoint}
@@ -88,7 +88,7 @@ describe('SnowServerTable', () => {
     const fetchServerEndpoint = vi.fn().mockResolvedValue(mockServerResponse);
 
     renderWithProviders(
-      <SnowServerTable<TestItem, void>
+      <SnowServerDataTable<TestItem, void>
         queryKey={['test-server-headers']}
         columnConfig={columnConfig}
         fetchServerEndpoint={fetchServerEndpoint}
@@ -109,7 +109,7 @@ describe('SnowServerTable', () => {
     );
 
     renderWithProviders(
-      <SnowServerTable<TestItem, void>
+      <SnowServerDataTable<TestItem, void>
         queryKey={['test-server-loading']}
         columnConfig={columnConfig}
         fetchServerEndpoint={fetchServerEndpoint}
@@ -124,7 +124,7 @@ describe('SnowServerTable', () => {
     const fetchServerEndpoint = vi.fn().mockResolvedValue(mockServerResponse);
 
     renderWithProviders(
-      <SnowServerTable<TestItem, void>
+      <SnowServerDataTable<TestItem, void>
         queryKey={['test-server-fetch']}
         columnConfig={columnConfig}
         fetchServerEndpoint={fetchServerEndpoint}
@@ -150,7 +150,7 @@ describe('SnowServerTable', () => {
     ];
 
     renderWithProviders(
-      <SnowServerTable<TestItem, void>
+      <SnowServerDataTable<TestItem, void>
         queryKey={['test-server-prefilters']}
         columnConfig={columnConfig}
         fetchServerEndpoint={fetchServerEndpoint}
@@ -171,7 +171,7 @@ describe('SnowServerTable', () => {
     });
 
     renderWithProviders(
-      <SnowServerTable<TestItem, void>
+      <SnowServerDataTable<TestItem, void>
         queryKey={['test-server-empty']}
         columnConfig={columnConfig}
         fetchServerEndpoint={fetchServerEndpoint}
@@ -190,7 +190,7 @@ describe('SnowServerTable', () => {
     ];
 
     renderWithProviders(
-      <SnowServerTable<TestItem, void>
+      <SnowServerDataTable<TestItem, void>
         queryKey={['test-server-hidden']}
         columnConfig={configWithHidden}
         fetchServerEndpoint={fetchServerEndpoint}
@@ -214,7 +214,7 @@ describe('SnowServerTable', () => {
     ];
 
     renderWithProviders(
-      <SnowServerTable<TestItem, void>
+      <SnowServerDataTable<TestItem, void>
         queryKey={['test-server-prefilter-call']}
         columnConfig={columnConfig}
         fetchServerEndpoint={fetchServerEndpoint}
@@ -233,7 +233,7 @@ describe('SnowServerTable', () => {
   });
 });
 
-describe('SnowServerTable with persistState', () => {
+describe('SnowServerDataTable with persistState', () => {
   const storageKey = (key: string) => `dt_${key}`;
 
   beforeEach(() => {
@@ -268,7 +268,7 @@ describe('SnowServerTable with persistState', () => {
     const fetchServerEndpoint = vi.fn().mockResolvedValue(mockServerResponse);
 
     renderWithProviders(
-      <SnowServerTable<TestItem, void>
+      <SnowServerDataTable<TestItem, void>
         queryKey={['test-server-persist']}
         columnConfig={columnConfig}
         fetchServerEndpoint={fetchServerEndpoint}
@@ -292,7 +292,7 @@ describe('SnowServerTable with persistState', () => {
     ];
 
     renderWithProviders(
-      <SnowServerTable<TestItem, void>
+      <SnowServerDataTable<TestItem, void>
         queryKey={['test-server-persist']}
         columnConfig={columnConfig}
         fetchServerEndpoint={fetchServerEndpoint}
@@ -323,7 +323,7 @@ describe('SnowServerTable with persistState', () => {
     setupLocationMock(params.toString());
 
     renderWithProviders(
-      <SnowServerTable<TestItem, void>
+      <SnowServerDataTable<TestItem, void>
         queryKey={['test-server-persist']}
         columnConfig={columnConfig}
         fetchServerEndpoint={fetchServerEndpoint}
@@ -352,7 +352,7 @@ describe('SnowServerTable with persistState', () => {
     setupLocationMock(params.toString());
 
     renderWithProviders(
-      <SnowServerTable<TestItem, void>
+      <SnowServerDataTable<TestItem, void>
         queryKey={['test-server-persist']}
         columnConfig={columnConfig}
         fetchServerEndpoint={fetchServerEndpoint}
@@ -389,7 +389,7 @@ describe('SnowServerTable with persistState', () => {
     setupLocationMock(params.toString());
 
     renderWithProviders(
-      <SnowServerTable<TestItem, void>
+      <SnowServerDataTable<TestItem, void>
         queryKey={['test-server-persist']}
         columnConfig={columnConfig}
         fetchServerEndpoint={fetchServerEndpoint}
@@ -422,7 +422,7 @@ describe('SnowServerTable with persistState', () => {
     const fetchServerEndpoint = vi.fn().mockResolvedValue(mockServerResponse);
 
     renderWithProviders(
-      <SnowServerTable<TestItem, void>
+      <SnowServerDataTable<TestItem, void>
         queryKey={['test-server-persist']}
         columnConfig={[
           { key: 'id', label: 'ID' },

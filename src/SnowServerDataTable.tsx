@@ -1,5 +1,5 @@
 /**
- * SnowServerTable - Server-side data table with React Query integration
+ * SnowServerDataTable - Server-side data table with React Query integration
  */
 
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
@@ -7,9 +7,9 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { DataTable, DEFAULT_PAGE_SIZES } from './core';
 import { useSnowColumns } from './hooks/useSnowColumns';
 import { useTableStatePersist } from './hooks/useTableStatePersist';
-import { SnowServerTableProps } from './types';
+import { SnowServerDataTableProps } from './types';
 
-export const SnowServerTable = <T extends Record<string, unknown>, K>({
+export const SnowServerDataTable = <T extends Record<string, unknown>, K>({
   queryKey,
   columnConfig,
   actions,
@@ -21,7 +21,7 @@ export const SnowServerTable = <T extends Record<string, unknown>, K>({
   persistState = false,
   fetchServerEndpoint,
   ...restProps
-}: SnowServerTableProps<T, K>) => {
+}: SnowServerDataTableProps<T, K>) => {
   // ============================================
   // State Management (with optional persistence)
   // ============================================

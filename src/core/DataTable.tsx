@@ -272,7 +272,7 @@ export function DataTable<Data extends object>({
   }, [serverSideMode, externalTotalCount, table]);
 
   return (
-    <div className="relative flex flex-col flex-1" data-testid="datatable">
+    <div className={cn('relative flex flex-col flex-1', styles.table.root)} data-testid="datatable">
       {/* Loading overlay during fetching (server-side) */}
       {isFetching && !isLoading && (
         <div className={cn('absolute inset-0 z-10 pointer-events-none', styles.table.loadingOverlay)} />
@@ -281,7 +281,7 @@ export function DataTable<Data extends object>({
       {displayAdvancedBar && (
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-4 gap-4">
           {/* Top on mobile / Left on desktop - Prefilter tabs */}
-          <div className="flex items-center gap-2 overflow-x-auto p-0.5 -m-0.5">
+          <div className="flex items-center gap-2">
             {prefilters && prefilters.length > 0 && onPrefilterChange && (
               <PrefilterTabs
                 prefilters={prefilters}

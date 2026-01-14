@@ -42,7 +42,8 @@ export interface TabsStyles {
 }
 
 export interface DataTableStyles {
-  container: string; // rounded, border
+  root: string; // wrapper width (w-full, max-w-4xl, etc.)
+  container: string; // table container: rounded, border
   header: string; // bg color
   headerCell: string; // text color
   row: string; // base row styles
@@ -109,6 +110,7 @@ const defaultStyles: SnowTableStyles = {
   },
 
   table: {
+    root: 'w-full',
     container: 'rounded-lg border',
     header: 'bg-muted',
     headerCell: 'text-muted-foreground',

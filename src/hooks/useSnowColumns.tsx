@@ -42,7 +42,7 @@ export interface UseSnowColumnsReturn<T extends Record<string, unknown>, K> {
 // ============================================
 
 /**
- * Shared hook for building columns and handling actions in SnowClientTable and SnowServerTable.
+ * Shared hook for building columns and handling actions in SnowClientDataTable and SnowServerDataTable.
  *
  * Extracts the common logic for:
  * - Transforming SnowColumnConfig into TanStack Table ColumnDef

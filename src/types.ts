@@ -120,7 +120,7 @@ export interface DataTableUIOptions<T extends object> {
 // ============================================
 
 /**
- * Base props shared between SnowClientTable and SnowServerTable
+ * Base props shared between SnowClientDataTable and SnowServerDataTable
  */
 export interface BaseSnowTableProps<T extends Record<string, unknown>, K> extends DataTableUIOptions<T> {
   queryKey: string[];
@@ -138,20 +138,20 @@ export interface BaseSnowTableProps<T extends Record<string, unknown>, K> extend
 }
 
 // ============================================
-// SnowClientTable Props (Client Mode)
+// SnowClientDataTable Props (Client Mode)
 // ============================================
 
 /**
- * Props for SnowClientTable component (client-side filtering/sorting)
+ * Props for SnowClientDataTable component (client-side filtering/sorting)
  */
-export interface SnowClientTableProps<T extends Record<string, unknown>, K> extends BaseSnowTableProps<T, K> {
+export interface SnowClientDataTableProps<T extends Record<string, unknown>, K> extends BaseSnowTableProps<T, K> {
   fetchAllItemsEndpoint: () => Promise<T[]>;
   /** Optional function to filter items based on active prefilter */
   prefilterFn?: (item: T, prefilterId: string) => boolean;
 }
 
 // ============================================
-// SnowServerTable Props (Server Mode)
+// SnowServerDataTable Props (Server Mode)
 // ============================================
 
 /**
@@ -176,9 +176,9 @@ export interface ServerFetchParams {
 }
 
 /**
- * Props for SnowServerTable component (server-side pagination/filtering/sorting)
+ * Props for SnowServerDataTable component (server-side pagination/filtering/sorting)
  */
-export interface SnowServerTableProps<T extends Record<string, unknown>, K> extends BaseSnowTableProps<T, K> {
+export interface SnowServerDataTableProps<T extends Record<string, unknown>, K> extends BaseSnowTableProps<T, K> {
   fetchServerEndpoint: (params: ServerFetchParams) => Promise<ServerPaginatedResponse<T>>;
   filters?: FilterConfig<Record<string, unknown>>[];
 }
