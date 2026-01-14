@@ -16,6 +16,7 @@ beforeAll(() => {
     useTranslation: () => ({
       t: (key: string) => key,
     }),
+    // @ts-expect-error - href is not a valid prop for LinkProps
     LinkComponent: ({ href, children, ...props }) => {
       const Component = 'a' as const;
       return (
