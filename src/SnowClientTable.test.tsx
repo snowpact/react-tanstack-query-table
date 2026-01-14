@@ -1,0 +1,352 @@
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+
+import { SnowClientTable } from './SnowClientTable';
+import { SnowColumnConfig } from './types';
+
+import { renderWithProviders, screen, userEvent } from './test/test-utils';
+
+// Store the current URL state for mocking
+let currentUrl = 'http://localhost:3000/';
+
+// Mock window.history.replaceState to update our URL state
+const mockReplaceState = vi.fn((_state, _title, url) => {
+  if (url) {
+    currentUrl = url.toString();
+  }
+});
+
+// Set up location mock
+const setupLocationMock = (search: string = '') => {
+  currentUrl = `http://localhost:3000/${search ? `?${search}` : ''}`;
+  Object.defineProperty(window, 'location', {
+    value: {
+      get href() {
+        return currentUrl;
+      },
+      get search() {
+        const url = new URL(currentUrl);
+        return url.search;
+      },
+      get pathname() {
+        const url = new URL(currentUrl);
+        return url.pathname;
+      },
+    },
+    writable: true,
+    configurable: true,
+  });
+};
+
+// Helper to get URL param from the current URL state
+const getUrlParam = (key: string): string | null => {
+  const url = new URL(currentUrl);
+  return url.searchParams.get(key);
+};
+
+type TestItem = {
+  id: string;
+  name: string;
+  email: string;
+};
+
+const mockData: TestItem[] = [
+  { id: '1', name: 'John Doe', email: 'john@example.com' },
+  { id: '2', name: 'Jane Smith', email: 'jane@example.com' },
+  { id: '3', name: 'Bob Wilson', email: 'bob@example.com' },
+];
+
+const columnConfig: SnowColumnConfig<TestItem>[] = [
+  { key: 'id', label: 'ID' },
+  { key: 'name', label: 'Name' },
+  { key: 'email', label: 'Email' },
+];
+
+describe('SnowClientTable', () => {
+  it('should render DataTable with data', async () => {
+    const fetchAllItemsEndpoint = vi.fn().mockResolvedValue(mockData);
+
+    renderWithProviders(
+      <SnowClientTable<TestItem, void>
+        queryKey={['test-items']}
+        columnConfig={columnConfig}
+        fetchAllItemsEndpoint={fetchAllItemsEndpoint}
+      />
+    );
+
+    // Wait for data to load
+    expect(await screen.findByText('John Doe')).toBeInTheDocument();
+    expect(screen.getByText('Jane Smith')).toBeInTheDocument();
+    expect(screen.getByText('Bob Wilson')).toBeInTheDocument();
+  });
+
+  it('should render column headers', async () => {
+    const fetchAllItemsEndpoint = vi.fn().mockResolvedValue(mockData);
+
+    renderWithProviders(
+      <SnowClientTable<TestItem, void>
+        queryKey={['test-items']}
+        columnConfig={columnConfig}
+        fetchAllItemsEndpoint={fetchAllItemsEndpoint}
+      />
+    );
+
+    // Wait for data to load
+    await screen.findByText('John Doe');
+
+    // Check headers (using getAllByText as headers appear in desktop and mobile views)
+    const idHeaders = screen.getAllByText('ID');
+    const nameHeaders = screen.getAllByText('Name');
+    const emailHeaders = screen.getAllByText('Email');
+
+    expect(idHeaders.length).toBeGreaterThan(0);
+    expect(nameHeaders.length).toBeGreaterThan(0);
+    expect(emailHeaders.length).toBeGreaterThan(0);
+  });
+
+  it('should show loading state initially', () => {
+    const fetchAllItemsEndpoint = vi.fn().mockImplementation(
+      () => new Promise(() => {}) // Never resolves
+    );
+
+    renderWithProviders(
+      <SnowClientTable<TestItem, void>
+        queryKey={['test-items-loading']}
+        columnConfig={columnConfig}
+        fetchAllItemsEndpoint={fetchAllItemsEndpoint}
+      />
+    );
+
+    // Should show skeleton or loading state (table with empty rows)
+    const table = screen.getByRole('table');
+    expect(table).toBeInTheDocument();
+  });
+
+  it('should render with prefilters', async () => {
+    const fetchAllItemsEndpoint = vi.fn().mockResolvedValue(mockData);
+    const prefilters = [
+      { id: 'all', label: 'All' },
+      { id: 'active', label: 'Active' },
+    ];
+
+    renderWithProviders(
+      <SnowClientTable<TestItem, void>
+        queryKey={['test-items-prefilter']}
+        columnConfig={columnConfig}
+        fetchAllItemsEndpoint={fetchAllItemsEndpoint}
+        prefilters={prefilters}
+      />
+    );
+
+    await screen.findByText('John Doe');
+
+    // Prefilter tabs should be visible
+    expect(screen.getByText('All')).toBeInTheDocument();
+    expect(screen.getByText('Active')).toBeInTheDocument();
+  });
+
+  it('should call fetchAllItemsEndpoint on mount', async () => {
+    const fetchAllItemsEndpoint = vi.fn().mockResolvedValue(mockData);
+
+    renderWithProviders(
+      <SnowClientTable<TestItem, void>
+        queryKey={['test-items-fetch']}
+        columnConfig={columnConfig}
+        fetchAllItemsEndpoint={fetchAllItemsEndpoint}
+      />
+    );
+
+    await screen.findByText('John Doe');
+
+    expect(fetchAllItemsEndpoint).toHaveBeenCalledTimes(1);
+  });
+
+  it('should render empty state when no data', async () => {
+    const fetchAllItemsEndpoint = vi.fn().mockResolvedValue([]);
+
+    renderWithProviders(
+      <SnowClientTable<TestItem, void>
+        queryKey={['test-items-empty']}
+        columnConfig={columnConfig}
+        fetchAllItemsEndpoint={fetchAllItemsEndpoint}
+      />
+    );
+
+    // Should show empty state
+    expect(await screen.findByTestId('datatable-empty')).toBeInTheDocument();
+  });
+
+  it('should hide columns marked as hidden', async () => {
+    const fetchAllItemsEndpoint = vi.fn().mockResolvedValue(mockData);
+    const configWithHidden: SnowColumnConfig<TestItem>[] = [
+      { key: 'id', label: 'ID', hidden: true },
+      { key: 'name', label: 'Name' },
+      { key: 'email', label: 'Email' },
+    ];
+
+    renderWithProviders(
+      <SnowClientTable<TestItem, void>
+        queryKey={['test-items-hidden']}
+        columnConfig={configWithHidden}
+        fetchAllItemsEndpoint={fetchAllItemsEndpoint}
+      />
+    );
+
+    await screen.findByText('John Doe');
+
+    // ID column should not be visible
+    expect(screen.queryByText('ID')).not.toBeInTheDocument();
+    // But Name and Email should be (using getAllByText as they appear in desktop and mobile views)
+    expect(screen.getAllByText('Name').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('Email').length).toBeGreaterThan(0);
+  });
+});
+
+describe('SnowClientTable with persistState', () => {
+  const storageKey = (key: string) => `dt_${key}`;
+
+  beforeEach(() => {
+    // Reset URL state
+    currentUrl = 'http://localhost:3000/';
+
+    // Mock history.replaceState
+    Object.defineProperty(window.history, 'replaceState', {
+      value: mockReplaceState,
+      writable: true,
+      configurable: true,
+    });
+
+    // Mock history.state
+    Object.defineProperty(window.history, 'state', {
+      value: null,
+      writable: true,
+      configurable: true,
+    });
+
+    // Setup location mock
+    setupLocationMock();
+
+    vi.clearAllMocks();
+  });
+
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it('should show reset button when persistState is enabled', async () => {
+    const fetchAllItemsEndpoint = vi.fn().mockResolvedValue(mockData);
+
+    renderWithProviders(
+      <SnowClientTable<TestItem, void>
+        queryKey={['test-persist']}
+        columnConfig={columnConfig}
+        fetchAllItemsEndpoint={fetchAllItemsEndpoint}
+        persistState
+        enableGlobalSearch
+        enableResetFilters
+      />
+    );
+
+    await screen.findByText('John Doe');
+
+    // Reset button should be visible
+    expect(screen.getByTestId('datatable-reset-filters')).toBeInTheDocument();
+  });
+
+  it('should persist prefilter to URL', async () => {
+    const user = userEvent.setup();
+    const fetchAllItemsEndpoint = vi.fn().mockResolvedValue(mockData);
+    const prefilters = [
+      { id: 'all', label: 'All' },
+      { id: 'active', label: 'Active' },
+    ];
+
+    renderWithProviders(
+      <SnowClientTable<TestItem, void>
+        queryKey={['test-persist']}
+        columnConfig={columnConfig}
+        fetchAllItemsEndpoint={fetchAllItemsEndpoint}
+        prefilters={prefilters}
+        persistState
+      />
+    );
+
+    await screen.findByText('John Doe');
+
+    // Click on "Active" prefilter
+    await user.click(screen.getByText('Active'));
+
+    // Should be stored in URL
+    expect(getUrlParam(storageKey('prefilter'))).toBe('active');
+  });
+
+  it('should restore prefilter from URL', async () => {
+    const fetchAllItemsEndpoint = vi.fn().mockResolvedValue(mockData);
+    const prefilters = [
+      { id: 'all', label: 'All' },
+      { id: 'active', label: 'Active' },
+    ];
+
+    // Pre-set URL with prefilter
+    const params = new URLSearchParams();
+    params.set(storageKey('prefilter'), 'active');
+    setupLocationMock(params.toString());
+
+    renderWithProviders(
+      <SnowClientTable<TestItem, void>
+        queryKey={['test-persist']}
+        columnConfig={columnConfig}
+        fetchAllItemsEndpoint={fetchAllItemsEndpoint}
+        prefilters={prefilters}
+        persistState
+      />
+    );
+
+    await screen.findByText('John Doe');
+
+    // "Active" tab should be selected (has data-state="active")
+    const activeTab = screen.getByText('Active').closest('button');
+    expect(activeTab).toHaveAttribute('data-state', 'active');
+  });
+
+  it('should reset all state when reset button is clicked', async () => {
+    const user = userEvent.setup();
+    const fetchAllItemsEndpoint = vi.fn().mockResolvedValue(mockData);
+    const prefilters = [
+      { id: 'all', label: 'All' },
+      { id: 'active', label: 'Active' },
+    ];
+
+    // Pre-set URL with various values
+    const params = new URLSearchParams();
+    params.set(storageKey('prefilter'), 'active');
+    params.set(storageKey('search'), 'test search');
+    params.set(storageKey('page'), '2');
+    setupLocationMock(params.toString());
+
+    renderWithProviders(
+      <SnowClientTable<TestItem, void>
+        queryKey={['test-persist']}
+        columnConfig={columnConfig}
+        fetchAllItemsEndpoint={fetchAllItemsEndpoint}
+        prefilters={prefilters}
+        persistState
+        enableGlobalSearch
+        enableResetFilters
+      />
+    );
+
+    await screen.findByText('John Doe');
+
+    // Click reset button
+    await user.click(screen.getByTestId('datatable-reset-filters'));
+
+    // URL params should be cleared
+    expect(getUrlParam(storageKey('prefilter'))).toBeNull();
+    expect(getUrlParam(storageKey('search'))).toBeNull();
+    expect(getUrlParam(storageKey('page'))).toBeNull();
+
+    // "All" tab should be selected (first prefilter = default)
+    const allTab = screen.getByText('All').closest('button');
+    expect(allTab).toHaveAttribute('data-state', 'active');
+  });
+});

@@ -1,0 +1,77 @@
+{
+  "name": "@snowpact/react-tanstack-query-table",
+  "version": "1.0.0",
+  "description": "Ultra-light, registry-based data table for React, TanStack Table and TanStack Query",
+  "author": "Snowpact",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/snowpact/react-tanstack-query-table"
+  },
+  "keywords": [
+    "react",
+    "table",
+    "datatable",
+    "tanstack",
+    "react-table",
+    "pagination",
+    "sorting",
+    "filtering",
+    "typescript",
+    "lightweight"
+  ],
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "prepublishOnly": "pnpm build"
+  },
+  "peerDependencies": {
+    "@tanstack/react-query": ">=5.0.0",
+    "@tanstack/react-table": ">=8.0.0",
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
+  "dependencies": {
+    "@radix-ui/react-dropdown-menu": "^2.1.14",
+    "@radix-ui/react-select": "^2.2.4",
+    "@radix-ui/react-tabs": "^1.1.12",
+    "@tanstack/match-sorter-utils": "^8.19.4"
+  },
+  "devDependencies": {
+    "@tanstack/react-query": "^5.90.7",
+    "@tanstack/react-table": "^8.21.3",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.0.0",
+    "@testing-library/user-event": "^14.5.2",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^4.0.0",
+    "jsdom": "^26.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "typescript": "^5.7.0",
+    "vite": "^6.0.0",
+    "vite-plugin-dts": "^4.0.0",
+    "vitest": "^3.0.0"
+  }
+}
