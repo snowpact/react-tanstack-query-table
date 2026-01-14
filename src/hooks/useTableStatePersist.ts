@@ -7,14 +7,14 @@ import { useCallback, useMemo, useRef, useState } from 'react';
 
 import { decodeFiltersFromParam, encodeFiltersToParam } from '../utils';
 
-// Storage key constants for URL params (internal, not exported)
-const STORAGE_KEY_PREFILTER = 'dt_prefilter';
-const STORAGE_KEY_SEARCH = 'dt_search';
-const STORAGE_KEY_PAGE = 'dt_page';
-const STORAGE_KEY_PAGE_SIZE = 'dt_pageSize';
-const STORAGE_KEY_FILTERS = 'dt_filters';
-const STORAGE_KEY_SORT_BY = 'dt_sortBy';
-const STORAGE_KEY_SORT_DESC = 'dt_sortDesc';
+// Storage key constants for URL params
+export const STORAGE_KEY_PREFILTER = 'dt_prefilter';
+export const STORAGE_KEY_SEARCH = 'dt_search';
+export const STORAGE_KEY_PAGE = 'dt_page';
+export const STORAGE_KEY_PAGE_SIZE = 'dt_pageSize';
+export const STORAGE_KEY_FILTERS = 'dt_filters';
+export const STORAGE_KEY_SORT_BY = 'dt_sortBy';
+export const STORAGE_KEY_SORT_DESC = 'dt_sortDesc';
 
 // Read from URL query (no navigation, just reading location.search)
 const getStoredValue = (key: string): string | null => {

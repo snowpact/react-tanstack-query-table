@@ -71,6 +71,9 @@ export type {
 export { useSnowColumns, useTableStatePersist } from './hooks';
 export type { UseSnowColumnsOptions, UseSnowColumnsReturn } from './hooks';
 
+// Utils
+export { redirectToPageWithParam } from './utils';
+
 // Registry (for setup)
 export { setupSnowTable, isSnowTableSetup } from './registry';
 export type { SetupSnowTableOptions, ConfirmContent, ConfirmCloseHelper, ActionHoverInfo } from './registry';
