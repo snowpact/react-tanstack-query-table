@@ -6,8 +6,66 @@ import { MoreVertical } from '../icons';
 
 import { Button } from '../primitives/Button';
 import { DropdownMenu } from '../primitives/DropdownMenu';
-import { getLink, getOnActionHover, getOnActionUnhover } from '../registry';
+import { getLink } from '../registry';
 import { LinkAction, TableAction } from '../types';
+
+// Tooltip singleton - created once, reused
+let tooltip: HTMLDivElement | null = null;
+
+function getTooltip(): HTMLDivElement {
+  if (!tooltip) {
+    tooltip = document.createElement('div');
+    tooltip.id = 'snow-action-tooltip';
+    tooltip.className = 'fixed z-50 pointer-events-none';
+    tooltip.style.display = 'none';
+    tooltip.innerHTML = `
+      <div class="snow-tooltip-content"></div>
+      <div class="snow-tooltip-arrow"></div>
+    `;
+    document.body.appendChild(tooltip);
+
+    // Hide on click or scroll anywhere
+    const hide = () => {
+      tooltip!.style.display = 'none';
+    };
+    document.addEventListener('click', hide, true);
+    document.addEventListener('scroll', hide, true);
+  }
+  return tooltip;
+}
+
+function showTooltip(label: string, element: HTMLElement) {
+  const tip = getTooltip();
+  const textEl = tip.querySelector('.snow-tooltip-content');
+  if (textEl) textEl.textContent = label;
+
+  tip.style.display = 'block';
+
+  const rect = element.getBoundingClientRect();
+  let left = rect.left + rect.width / 2;
+  const top = rect.top - 8;
+
+  // Measure after content is set
+  const tipRect = tip.getBoundingClientRect();
+  const tipWidth = tipRect.width;
+
+  // Prevent overflow
+  const maxRight = window.innerWidth - 8;
+  if (left + tipWidth / 2 > maxRight) {
+    left = maxRight - tipWidth / 2;
+  }
+  if (left - tipWidth / 2 < 8) {
+    left = 8 + tipWidth / 2;
+  }
+
+  tip.style.left = `${left}px`;
+  tip.style.top = `${top}px`;
+  tip.style.transform = 'translate(-50%, -100%)';
+}
+
+function hideTooltip() {
+  if (tooltip) tooltip.style.display = 'none';
+}
 
 interface ActionCellProps<T, K> {
   item: T;
@@ -19,11 +77,11 @@ export function ActionCell<T, K>({ item, actions, onAction }: ActionCellProps<T,
   const Link = getLink();
 
   const handleMouseEnter = (label: string, element: HTMLElement) => {
-    getOnActionHover()?.({ label, element });
+    showTooltip(label, element);
   };
 
   const handleMouseLeave = () => {
-    getOnActionUnhover()?.();
+    hideTooltip();
   };
 
   const visibleActions = actions.filter(a => {

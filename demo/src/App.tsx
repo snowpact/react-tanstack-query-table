@@ -93,7 +93,7 @@ setupSnowTable({
     </a>
   ),
   useConfirm: () => ({
-    confirm: ({ title, content }) => {
+    confirm: async ({ title, content }) => {
       const message = typeof content === 'string' ? `${title}\n\n${content}` : title;
       return window.confirm(message);
     },

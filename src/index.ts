@@ -10,8 +10,6 @@
  *   useTranslation: () => useTranslation(),
  *   LinkComponent: Link,
  *   useConfirm: () => useConfirm(),
- *   onActionHover: ({ label, element }) => { ... },
- *   onActionUnhover: () => { ... },
  * });
  * ```
  */
@@ -76,7 +74,7 @@ export { redirectToPageWithParam } from './utils';
 
 // Registry (for setup)
 export { setupSnowTable, isSnowTableSetup } from './registry';
-export type { SetupSnowTableOptions, ConfirmContent, ConfirmCloseHelper, ActionHoverInfo } from './registry';
+export type { SetupSnowTableOptions, ConfirmContent, ConfirmCloseHelper } from './registry';
 
 // Internal (for customization)
 export { ActionCell } from './components';

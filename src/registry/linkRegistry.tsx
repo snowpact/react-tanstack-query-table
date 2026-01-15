@@ -13,12 +13,13 @@ export interface LinkProps {
   target?: string;
   rel?: string;
   'aria-disabled'?: boolean;
+  onClick?: (e: MouseEvent<HTMLAnchorElement>) => void;
   onMouseEnter?: (e: MouseEvent<HTMLAnchorElement>) => void;
   onMouseLeave?: () => void;
 }
 
-const DefaultLink = ({ to, children, className, target, rel, onMouseEnter, onMouseLeave }: LinkProps) => (
-  <a href={to} className={className} target={target} rel={rel} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+const DefaultLink = ({ to, children, className, target, rel, onClick, onMouseEnter, onMouseLeave }: LinkProps) => (
+  <a href={to} className={className} target={target} rel={rel} onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
     {children}
   </a>
 );

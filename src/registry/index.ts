@@ -7,7 +7,6 @@
 
 import type { ComponentType } from 'react';
 
-import { registerActionHover, resetActionHoverRegistry, type ActionHoverInfo } from './actionHoverRegistry';
 import { setUseConfirmHook, resetConfirmRegistry, type UseConfirmReturn } from './confirmRegistry';
 import { registerLinkComponent, resetLinkRegistry, type LinkProps } from './linkRegistry';
 import { registerStyles, resetStylesRegistry, type SnowTableStyles, type DeepPartial } from './stylesRegistry';
@@ -18,8 +17,6 @@ export interface SetupSnowTableOptions {
   LinkComponent: ComponentType<LinkProps>;
   useConfirm: () => UseConfirmReturn;
   styles?: DeepPartial<SnowTableStyles>;
-  onActionHover?: (info: ActionHoverInfo) => void;
-  onActionUnhover?: () => void;
 }
 
 let isSetup = false;
@@ -35,10 +32,6 @@ export const setupSnowTable = (options: SetupSnowTableOptions) => {
     registerStyles(options.styles);
   }
 
-  if (options.onActionHover || options.onActionUnhover) {
-    registerActionHover(options.onActionHover, options.onActionUnhover);
-  }
-
   isSetup = true;
 };
 
@@ -48,7 +41,6 @@ export const resetSnowTable = () => {
   resetLinkRegistry();
   resetConfirmRegistry();
   resetStylesRegistry();
-  resetActionHoverRegistry();
 };
 
 export const isSnowTableSetup = () => isSetup;
@@ -58,4 +50,3 @@ export { useTranslation } from './translationRegistry';
 export { getLink, type LinkProps } from './linkRegistry';
 export { useConfirm, type ConfirmOptions, type ConfirmContent, type ConfirmCloseHelper } from './confirmRegistry';
 export { getStyles, type SnowTableStyles as TableStyles } from './stylesRegistry';
-export { getOnActionHover, getOnActionUnhover, type ActionHoverInfo } from './actionHoverRegistry';
