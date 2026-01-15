@@ -1,8 +1,9 @@
 /**
- * Ultra-light class name merger
- * NO clsx, NO tailwind-merge - just filter + join
+ * Class name merger with tailwind-merge support
  * Supports strings, booleans, undefined, null, objects, and arrays (like clsx)
  */
+import { twMerge } from 'tailwind-merge';
+
 type ClassValue = string | boolean | undefined | null | Record<string, boolean | undefined> | ClassValue[];
 
 export function cn(...classes: ClassValue[]): string {
@@ -30,5 +31,5 @@ export function cn(...classes: ClassValue[]): string {
     processClass(cls);
   }
 
-  return result.join(' ');
+  return twMerge(result.join(' '));
 }

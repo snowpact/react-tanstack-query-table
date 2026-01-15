@@ -42,7 +42,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "prepublishOnly": "pnpm build"
+    "prepublishOnly": "pnpm build",
+    "demo": "vite --config demo/vite.config.ts"
   },
   "peerDependencies": {
     "@tanstack/react-query": ">=5.0.0",
@@ -54,7 +55,8 @@
     "@radix-ui/react-dropdown-menu": "^2.1.14",
     "@radix-ui/react-select": "^2.2.4",
     "@radix-ui/react-tabs": "^1.1.12",
-    "@tanstack/match-sorter-utils": "^8.19.4"
+    "@tanstack/match-sorter-utils": "^8.19.4",
+    "tailwind-merge": "^3.4.0"
   },
   "devDependencies": {
     "@tanstack/react-query": "^5.90.7",
