@@ -97,9 +97,11 @@ export function SingleFilterDropdown<T extends object>({
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger asChild>
-        <Button className={`gap-1.5 max-w-[250px] ${activeCount > 0 ? styles.state.active : ''}`}>
-          <Filter className={`h-4 w-4 shrink-0 ${activeCount > 0 ? styles.state.activeText : ''}`} />
-          <span className="truncate">{getDisplayText()}</span>
+        <Button className={`gap-1.5 w-full justify-between ${activeCount > 0 ? styles.state.active : ''}`}>
+          <div className="flex items-center gap-1.5 min-w-0">
+            <Filter className={`h-4 w-4 shrink-0 ${activeCount > 0 ? styles.state.activeText : ''}`} />
+            <span className="truncate">{getDisplayText()}</span>
+          </div>
           <ChevronDown className="h-3.5 w-3.5 opacity-50 shrink-0" />
         </Button>
       </DropdownMenu.Trigger>

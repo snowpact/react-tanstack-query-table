@@ -63,17 +63,20 @@ export function ConfigPanel({ config, onToggle, onModeChange }: ConfigPanelProps
             </div>
           </label>
 
-          <label className="flex items-start gap-3 cursor-pointer mb-3">
+          <label className={`flex items-start gap-3 mb-3 ${config.mode === 'server' ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}>
             <input
               type="checkbox"
-              checked={config.enablePagination}
-              onChange={() => onToggle('enablePagination')}
+              checked={config.mode === 'server' ? true : config.enablePagination}
+              onChange={() => config.mode !== 'server' && onToggle('enablePagination')}
+              disabled={config.mode === 'server'}
               className="w-4 h-4 mt-1 text-blue-500 rounded focus:ring-blue-500"
             />
             <div>
               <span className="font-medium">Pagination</span>
               <p className="text-xs text-gray-400">
-                Navigate through pages of data
+                {config.mode === 'server'
+                  ? 'Required in server mode'
+                  : 'Navigate through pages of data'}
               </p>
             </div>
           </label>
@@ -152,6 +155,24 @@ export function ConfigPanel({ config, onToggle, onModeChange }: ConfigPanelProps
               </p>
             </div>
           </label>
+        </div>
+
+        <div className="border-t border-gray-500 pt-4 mt-4">
+          <h3 className="text-sm font-semibold text-gray-300 mb-2">Preview Mode</h3>
+          <button
+            onClick={() => onToggle('mobilePreview')}
+            className={`w-full px-3 py-2 text-sm rounded transition-colors flex items-center justify-center gap-2 ${
+              config.mobilePreview
+                ? 'bg-purple-600 text-white'
+                : 'bg-gray-600 text-gray-300 hover:bg-gray-500'
+            }`}
+          >
+            <span>📱</span>
+            {config.mobilePreview ? 'Exit Mobile View' : 'Mobile Preview'}
+          </button>
+          <p className="text-xs text-gray-400 mt-1 text-center">
+            Simulate mobile screen width
+          </p>
         </div>
 
         <div className="border-t border-gray-500 pt-4 mt-4">

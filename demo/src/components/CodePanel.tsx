@@ -6,7 +6,6 @@ import {
   generateSetupCode,
   generateColumnConfigCode,
   generateTableCode,
-  generateActionsCode,
 } from './codeGenerator';
 
 interface CodeSectionProps {
@@ -95,11 +94,6 @@ export function CodePanel({ config }: CodePanelProps) {
         <CodeSection
           title="3. Use the DataTable"
           code={generateTableCode(config)}
-        />
-        <CodeSection
-          title="4. Action types"
-          code={generateActionsCode()}
-          defaultOpen={false}
         />
         <DoneSection />
       </div>

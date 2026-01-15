@@ -65,6 +65,43 @@
       .custom-scrollbar::-webkit-scrollbar-thumb:hover {
         background: #6b7280;
       }
+
+      /* Container queries for mobile preview */
+      .snow-table-container {
+        container-type: inline-size;
+      }
+
+      /* Top bar - mobile layout when container is narrow */
+      @container (max-width: 700px) {
+        .snow-table-top-bar {
+          grid-template-columns: 1fr !important;
+        }
+        .snow-table-filters {
+          display: grid !important;
+          grid-template-columns: 1fr !important;
+        }
+        .snow-table-actions {
+          justify-content: flex-end !important;
+        }
+      }
+
+      /* Bottom bar - mobile layout when container is narrow */
+      @container (max-width: 700px) {
+        .snow-table-bottom-bar {
+          grid-template-columns: 1fr !important;
+        }
+        .snow-table-count {
+          order: 3 !important;
+          text-align: center !important;
+        }
+        .snow-table-pagination {
+          order: 1 !important;
+        }
+        .snow-table-pagesize {
+          order: 2 !important;
+          justify-content: center !important;
+        }
+      }
     </style>
   </head>
   <body>

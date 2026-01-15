@@ -70,7 +70,7 @@ const EyeIcon = (props: React.SVGProps<SVGSVGElement>) => (
 // i18n translations for the demo
 const translations: Record<string, string> = {
   'dataTable.search': 'Search...',
-  'dataTable.element': 'element',
+  'dataTable.element': '{{total}} elements',
   'dataTable.elements': 'elements',
   'dataTable.paginationSize': 'per page',
   'dataTable.noResults': 'No results',
@@ -79,11 +79,23 @@ const translations: Record<string, string> = {
   'dataTable.resetFilters': 'Reset filters',
   'dataTable.searchFilters': 'Search...',
   'dataTable.resetColumns': 'Reset',
+  'dataTable.searchEmpty': 'No results found',
+};
+
+// Simple t function with interpolation support
+const t = (key: string, params?: Record<string, unknown>) => {
+  let text = translations[key] || key;
+  if (params) {
+    Object.entries(params).forEach(([k, v]) => {
+      text = text.replace(new RegExp(`{{${k}}}`, 'g'), String(v));
+    });
+  }
+  return text;
 };
 
 // Setup Snow Table (simple setup for demo)
 setupSnowTable({
-  useTranslation: () => ({ t: (key: string) => translations[key] || key }),
+  useTranslation: () => ({ t }),
   LinkComponent: ({ href, children, ...props }) => (
     <a href={href as string} {...props}>
       {children}
@@ -247,6 +259,7 @@ export function App() {
     enableFilters: true,
     enablePrefilters: true,
     persistState: false,
+    mobilePreview: false,
   });
 
   const toggleConfig = useCallback((key: keyof DemoConfig) => {
@@ -320,8 +333,10 @@ export function App() {
             Ultra-light, registry-based data table for React + TanStack Table + TanStack Query
           </p>
 
-          <div className="bg-white rounded-lg shadow-md p-6 mb-8 overflow-visible">
-            <div className="mb-4 flex items-center gap-2 text-sm">
+          <div className={`bg-white rounded-lg shadow-md p-6 mb-8 overflow-visible transition-all ${
+            config.mobilePreview ? 'max-w-[375px] mx-auto ring-2 ring-purple-500' : ''
+          }`}>
+            <div className="mb-4 flex items-center gap-2 text-sm flex-wrap">
               <span
                 className={`px-2 py-1 rounded text-xs font-medium ${
                   config.mode === 'client' ? 'bg-blue-100 text-blue-700' : 'bg-green-100 text-green-700'
@@ -332,6 +347,11 @@ export function App() {
               <span className="text-gray-500">
                 {config.mode === 'client' ? '50 items loaded, filtered locally' : 'Server-side pagination & filtering'}
               </span>
+              {config.mobilePreview && (
+                <span className="px-2 py-1 rounded text-xs font-medium bg-purple-100 text-purple-700">
+                  📱 Mobile Preview (375px)
+                </span>
+              )}
             </div>
 
             {config.mode === 'client' ? (
@@ -353,7 +373,7 @@ export function App() {
             <h2 className="text-lg font-semibold mb-4">Features Enabled</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
               {Object.entries(config)
-                .filter(([key]) => key !== 'mode')
+                .filter(([key]) => key !== 'mode' && key !== 'mobilePreview')
                 .map(([key, value]) => (
                   <div key={key} className="flex items-center gap-2">
                     <span className={`w-2 h-2 rounded-full ${value ? 'bg-green-500' : 'bg-gray-300'}`} />

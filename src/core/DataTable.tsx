@@ -272,16 +272,16 @@ export function DataTable<Data extends object>({
   }, [serverSideMode, externalTotalCount, table]);
 
   return (
-    <div className={cn('relative flex flex-col flex-1', styles.table.root)} data-testid="datatable">
+    <div className={cn('snow-table-container relative flex flex-col flex-1', styles.table.root)} data-testid="datatable">
       {/* Loading overlay during fetching (server-side) */}
       {isFetching && !isLoading && (
         <div className={cn('absolute inset-0 z-10 pointer-events-none', styles.table.loadingOverlay)} />
       )}
 
       {displayAdvancedBar && (
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-4 gap-4">
-          {/* Top on mobile / Left on desktop - Prefilter tabs */}
-          <div className="flex items-center gap-2">
+        <div className="snow-table-top-bar grid grid-cols-1 lg:grid-cols-[auto_1fr_auto] py-4 gap-4 items-center">
+          {/* Prefilter tabs */}
+          <div className="snow-table-prefilters flex items-center gap-2">
             {prefilters && prefilters.length > 0 && onPrefilterChange && (
               <PrefilterTabs
                 prefilters={prefilters}
@@ -291,8 +291,8 @@ export function DataTable<Data extends object>({
             )}
           </div>
 
-          {/* Center - Search bar (handles debounce internally) */}
-          <div className="flex-1 flex justify-center">
+          {/* Search bar */}
+          <div className="snow-table-search flex justify-center">
             {enableGlobalSearch && (
               <div className="w-full max-w-sm">
                 <SearchBar
@@ -304,8 +304,8 @@ export function DataTable<Data extends object>({
             )}
           </div>
 
-          {/* Bottom on mobile / Right on desktop - Filters and Column Configuration */}
-          <div className="flex items-center gap-2 flex-wrap">
+          {/* Filters and actions */}
+          <div className="snow-table-filters grid grid-cols-1 sm:flex sm:flex-row gap-2 items-center">
             {filters?.map(filter => (
               <SingleFilterDropdown
                 key={String(filter.key)}
@@ -314,16 +314,18 @@ export function DataTable<Data extends object>({
                 onFilterChange={handleFilterChange}
               />
             ))}
-            {enableColumnConfiguration && <ColumnConfiguration table={table} />}
-            {(enableGlobalSearch || (prefilters && prefilters.length > 0) || (filters && filters.length > 0)) && onResetFilters && (
-              <Button
-                onClick={onResetFilters}
-                title={t('dataTable.resetFilters')}
-                data-testid="datatable-reset-filters"
-              >
-                <FunnelX className="h-4 w-4" />
-              </Button>
-            )}
+            <div className="snow-table-actions flex items-center gap-2 justify-end lg:justify-start">
+              {enableColumnConfiguration && <ColumnConfiguration table={table} />}
+              {(enableGlobalSearch || (prefilters && prefilters.length > 0) || (filters && filters.length > 0)) && onResetFilters && (
+                <Button
+                  onClick={onResetFilters}
+                  title={t('dataTable.resetFilters')}
+                  data-testid="datatable-reset-filters"
+                >
+                  <FunnelX className="h-4 w-4" />
+                </Button>
+              )}
+            </div>
           </div>
         </div>
       )}
@@ -438,23 +440,25 @@ export function DataTable<Data extends object>({
       </div>
 
       {/* Bottom bar */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 py-4">
-        {/* Left - Item count */}
+      <div className="snow-table-bottom-bar grid grid-cols-1 lg:grid-cols-[auto_1fr_auto] gap-4 py-4 items-center">
+        {/* Item count */}
         {displayTotalNumber && (
-          <div className={cn('text-sm order-3 sm:order-1', styles.table.empty)} data-testid="datatable-count">
+          <div className={cn('snow-table-count text-sm order-3 lg:order-1 text-center lg:text-left', styles.table.empty)} data-testid="datatable-count">
             {t('dataTable.element', { count: itemCount, total: totalCount })}
           </div>
         )}
 
-        {/* Center - Pagination */}
-        <div className="flex-1 flex justify-center order-1 sm:order-2">
+        {/* Pagination */}
+        <div className="snow-table-pagination flex justify-center order-1 lg:order-2">
           {enablePagination && isPaginationPossible && <Pagination table={table} isLoading={isFetching} />}
         </div>
 
-        {/* Right - Page size selector */}
-        <div className="order-2 sm:order-3">
-          <PageSizeSelector table={table} enableElementLabel={enableElementLabel} paginationSizes={paginationSizes} />
-        </div>
+        {/* Page size selector */}
+        {enablePagination && (
+          <div className="snow-table-pagesize order-2 lg:order-3 flex justify-center lg:justify-end">
+            <PageSizeSelector table={table} enableElementLabel={enableElementLabel} paginationSizes={paginationSizes} />
+          </div>
+        )}
       </div>
     </div>
   );

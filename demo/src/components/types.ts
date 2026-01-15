@@ -7,6 +7,7 @@ export interface DemoConfig {
   enableFilters: boolean;
   enablePrefilters: boolean;
   persistState: boolean;
+  mobilePreview: boolean;
 }
 
 export interface User extends Record<string, unknown> {
