@@ -25,22 +25,13 @@ export const defaultTheme: ThemeColors = {
   foreground: '#0a0a0a',
   secondary: '#f5f5f5',
   secondaryForeground: '#737373',
-  border: '#e5e5e5',
-  ring: '#3b82f6',
+  border: '#d4d4d4',
+  ring: '#a3a3a3',
   radius: '0.375rem',
 };
 
 export const themes: Record<string, ThemeColors> = {
   default: defaultTheme,
-  neutral: {
-    background: '#ffffff',
-    foreground: '#0a0a0a',
-    secondary: '#f5f5f5',
-    secondaryForeground: '#737373',
-    border: '#d4d4d4',
-    ring: '#a3a3a3',
-    radius: '0.375rem',
-  },
   dark: {
     background: '#1a1a2e',
     foreground: '#eaeaea',

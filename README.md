@@ -42,8 +42,8 @@ You can customize the library appearance by overriding CSS variables:
   --snow-foreground: #0a0a0a;           /* Main text color */
   --snow-secondary: #f5f5f5;            /* Secondary background (headers, hover) */
   --snow-secondary-foreground: #737373; /* Secondary text color */
-  --snow-border: #e5e5e5;               /* Border color */
-  --snow-ring: #3b82f6;                 /* Focus ring color */
+  --snow-border: #d4d4d4;               /* Border color */
+  --snow-ring: #a3a3a3;                 /* Focus ring color */
   --snow-radius: 0.375rem;              /* Border radius */
 }
 ```
