@@ -68,13 +68,13 @@ export interface SnowTableStyles {
 
 const defaultStyles: SnowTableStyles = {
   state: {
-    active: 'ring-2 ring-ring/30',
+    active: 'ring-2 ring-ring',
     activeText: 'text-foreground',
-    focus: 'focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:ring-offset-2',
+    focus: 'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
   },
 
   button: {
-    visual: 'border border-input bg-background rounded-md shadow-xs',
+    visual: 'border border-input bg-background text-foreground rounded-md shadow-xs',
     hover: 'hover:bg-accent hover:text-accent-foreground',
     disabled: 'opacity-50',
     danger: 'border-transparent bg-red-500 text-white shadow-xs hover:bg-red-600',
@@ -84,7 +84,7 @@ const defaultStyles: SnowTableStyles = {
   },
 
   input:
-    'rounded-md border border-input bg-background focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]',
+    'rounded-md border border-input bg-background text-foreground focus-visible:border-ring focus-visible:ring-1 focus-visible:ring-ring',
 
   skeleton: 'rounded-md bg-muted animate-pulse',
 
@@ -97,7 +97,7 @@ const defaultStyles: SnowTableStyles = {
   },
 
   select: {
-    trigger: 'rounded-md border border-input bg-background focus:ring-2 focus:ring-ring focus:ring-offset-2',
+    trigger: 'rounded-md border border-input bg-background text-foreground focus:ring-2 focus:ring-ring focus:ring-offset-2',
     content: 'rounded-md border bg-popover text-popover-foreground shadow-md',
     item: 'hover:bg-accent hover:text-accent-foreground',
     itemSelected: 'bg-accent text-accent-foreground',
@@ -111,10 +111,10 @@ const defaultStyles: SnowTableStyles = {
 
   table: {
     root: 'w-full',
-    container: 'rounded-lg border',
+    container: 'rounded-lg border bg-background',
     header: 'bg-muted',
     headerCell: 'text-muted-foreground',
-    row: '',
+    row: 'bg-background',
     rowHover: 'hover:bg-accent/60',
     rowAlternate: 'bg-muted/20',
     rowActive: 'bg-accent/20',

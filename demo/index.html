@@ -4,25 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@snowpact/react-tanstack-query-table Demo</title>
+    <!-- Tailwind CDN for demo page layout only (not the library) -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              background: '#ffffff',
-              foreground: '#0a0a0a',
-              muted: { DEFAULT: '#f5f5f5', foreground: '#737373' },
-              border: '#e5e5e5',
-              input: '#e5e5e5',
-              ring: '#0a0a0a',
-              popover: { DEFAULT: '#ffffff', foreground: '#0a0a0a' },
-              accent: { DEFAULT: '#f5f5f5', foreground: '#0a0a0a' },
-            }
-          }
-        }
-      }
-    </script>
     <style>
       /* Fix dropdown overflow */
       [data-radix-popper-content-wrapper] {

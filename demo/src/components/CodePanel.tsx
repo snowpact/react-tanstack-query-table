@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import type { DemoConfig } from './types';
+import type { DemoConfig, ThemeColors } from './types';
 import { CodeHighlight } from './CodeHighlight';
 import {
   generateInstallCode,
   generateSetupCode,
   generateColumnConfigCode,
   generateTableCode,
+  generateThemeCode,
 } from './codeGenerator';
 
 interface CodeSectionProps {
@@ -65,9 +66,10 @@ function DoneSection() {
 
 interface CodePanelProps {
   config: DemoConfig;
+  theme: ThemeColors;
 }
 
-export function CodePanel({ config }: CodePanelProps) {
+export function CodePanel({ config, theme }: CodePanelProps) {
   return (
     <div className="bg-gray-900 text-gray-100 h-full overflow-y-auto flex flex-col custom-scrollbar">
       <div className="px-3 py-2 border-b border-gray-700/50 bg-gray-800 flex-shrink-0">
@@ -87,12 +89,17 @@ export function CodePanel({ config }: CodePanelProps) {
           defaultOpen={false}
         />
         <CodeSection
-          title="2. Define columns"
+          title="2. Customize theme (optional)"
+          code={generateThemeCode(theme)}
+          defaultOpen={false}
+        />
+        <CodeSection
+          title="3. Define columns"
           code={generateColumnConfigCode()}
           defaultOpen={false}
         />
         <CodeSection
-          title="3. Use the DataTable"
+          title="4. Use the DataTable"
           code={generateTableCode(config)}
         />
         <DoneSection />

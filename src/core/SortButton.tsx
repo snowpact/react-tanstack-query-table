@@ -5,7 +5,7 @@
 import { Column } from '@tanstack/react-table';
 import { ChevronDown, ChevronUp, ChevronsUpDown } from '../icons';
 
-const iconClassName = 'h-[15px] w-[15px] text-black';
+const iconClassName = 'h-[15px] w-[15px] text-foreground';
 
 export interface SortButtonProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

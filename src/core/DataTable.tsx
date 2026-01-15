@@ -272,7 +272,7 @@ export function DataTable<Data extends object>({
   }, [serverSideMode, externalTotalCount, table]);
 
   return (
-    <div className={cn('snow-table-container relative flex flex-col flex-1', styles.table.root)} data-testid="datatable">
+    <div className={cn('snow-table-container relative flex flex-col flex-1 text-foreground', styles.table.root)} data-testid="datatable">
       {/* Loading overlay during fetching (server-side) */}
       {isFetching && !isLoading && (
         <div className={cn('absolute inset-0 z-10 pointer-events-none', styles.table.loadingOverlay)} />

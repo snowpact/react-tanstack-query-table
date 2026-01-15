@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import {
   SnowClientDataTable,
   SnowServerDataTable,
@@ -7,7 +7,7 @@ import {
   type ServerFetchParams,
   type ServerPaginatedResponse,
 } from '@snowpact/react-tanstack-query-table';
-import { CodePanel, ConfigPanel, type DemoConfig, type User } from './components';
+import { CodePanel, ConfigPanel, type DemoConfig, type User, type ThemeColors, defaultTheme } from './components';
 
 // Simple icon components (no external dependency)
 const EditIcon = (props: React.SVGProps<SVGSVGElement>) => (
@@ -270,6 +270,26 @@ export function App() {
     mobilePreview: false,
   });
 
+  const [currentThemeName, setCurrentThemeName] = useState('default');
+  const [currentTheme, setCurrentTheme] = useState<ThemeColors>(defaultTheme);
+
+  // Apply theme CSS variables to document
+  useEffect(() => {
+    const root = document.documentElement;
+    root.style.setProperty('--snow-background', currentTheme.background);
+    root.style.setProperty('--snow-foreground', currentTheme.foreground);
+    root.style.setProperty('--snow-secondary', currentTheme.secondary);
+    root.style.setProperty('--snow-secondary-foreground', currentTheme.secondaryForeground);
+    root.style.setProperty('--snow-border', currentTheme.border);
+    root.style.setProperty('--snow-ring', currentTheme.ring);
+    root.style.setProperty('--snow-radius', currentTheme.radius);
+  }, [currentTheme]);
+
+  const handleThemeChange = useCallback((themeName: string, theme: ThemeColors) => {
+    setCurrentThemeName(themeName);
+    setCurrentTheme(theme);
+  }, []);
+
   const toggleConfig = useCallback((key: keyof DemoConfig) => {
     setConfig(prev => ({ ...prev, [key]: !prev[key] }));
   }, []);
@@ -330,7 +350,7 @@ export function App() {
     <div className="min-h-screen flex">
       {/* Code Panel - Left Side */}
       <div className="w-96 flex-shrink-0 h-screen sticky top-0">
-        <CodePanel config={config} />
+        <CodePanel config={config} theme={currentTheme} />
       </div>
 
       {/* Main Content */}
@@ -397,7 +417,13 @@ export function App() {
 
       {/* Config Panel - Right Side Fixed */}
       <div className="w-72 flex-shrink-0 h-screen sticky top-0">
-        <ConfigPanel config={config} onToggle={toggleConfig} onModeChange={setMode} />
+        <ConfigPanel
+          config={config}
+          onToggle={toggleConfig}
+          onModeChange={setMode}
+          currentTheme={currentThemeName}
+          onThemeChange={handleThemeChange}
+        />
       </div>
     </div>
   );

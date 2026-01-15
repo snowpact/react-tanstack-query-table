@@ -24,35 +24,51 @@ pnpm add @snowpact/react-tanstack-query-table
 npm install @tanstack/react-query @tanstack/react-table react react-dom
 ```
 
-### Tailwind CSS Configuration
+### Import Styles
 
-Tailwind CSS is required. You must configure Tailwind to scan the package's classes:
+Import the library CSS in your app entry point:
 
-**In your `tailwind.config.css` (Tailwind v4):**
+```tsx
+import '@snowpact/react-tanstack-query-table/styles.css';
+```
+
+### Customization (Optional)
+
+You can customize the library appearance by overriding CSS variables:
 
 ```css
-/* Include SnowTable classes for Tailwind scanning */
-@source "node_modules/@snowpact/react-tanstack-query-table/dist";
+:root {
+  --snow-background: #ffffff;           /* Main background (table, rows, inputs) */
+  --snow-foreground: #0a0a0a;           /* Main text color */
+  --snow-secondary: #f5f5f5;            /* Secondary background (headers, hover) */
+  --snow-secondary-foreground: #737373; /* Secondary text color */
+  --snow-border: #e5e5e5;               /* Border color */
+  --snow-ring: #3b82f6;                 /* Focus ring color */
+  --snow-radius: 0.375rem;              /* Border radius */
+}
 ```
 
-**Or in `tailwind.config.js` (Tailwind v3):**
+**Dark mode example:**
 
-```js
-module.exports = {
-  content: [
-    // ... your app files
-    './node_modules/@snowpact/react-tanstack-query-table/dist/**/*.js',
-  ],
-};
+```css
+.dark {
+  --snow-background: #1a1a2e;
+  --snow-foreground: #eaeaea;
+  --snow-secondary: #16213e;
+  --snow-secondary-foreground: #a0a0a0;
+  --snow-border: #0f3460;
+  --snow-ring: #3b82f6;
+}
 ```
-
-> **Note**: The path may vary depending on your project structure. If using a monorepo or workspace, adjust the path accordingly (e.g., `../../node_modules/...`).
 
 ## Quick Start
 
 ### 1. Setup (once in your app)
 
 ```tsx
+// Import styles first
+import '@snowpact/react-tanstack-query-table/styles.css';
+
 import { setupSnowTable } from '@snowpact/react-tanstack-query-table';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';

@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Snow Table CSS Variables - Users can override these */
+:root {
+  --snow-background: #ffffff;
+  --snow-foreground: #0a0a0a;
+  --snow-secondary: #f5f5f5;
+  --snow-secondary-foreground: #737373;
+  --snow-border: #e5e5e5;
+  --snow-ring: #3b82f6;
+  --snow-radius: 0.375rem;
+}

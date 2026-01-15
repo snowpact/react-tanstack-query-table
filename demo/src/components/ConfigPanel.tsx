@@ -1,12 +1,15 @@
-import type { DemoConfig } from './types';
+import type { DemoConfig, ThemeColors } from './types';
+import { themes } from './types';
 
 interface ConfigPanelProps {
   config: DemoConfig;
   onToggle: (key: keyof DemoConfig) => void;
   onModeChange: (mode: 'client' | 'server') => void;
+  currentTheme: string;
+  onThemeChange: (themeName: string, theme: ThemeColors) => void;
 }
 
-export function ConfigPanel({ config, onToggle, onModeChange }: ConfigPanelProps) {
+export function ConfigPanel({ config, onToggle, onModeChange, currentTheme, onThemeChange }: ConfigPanelProps) {
   return (
     <div className="bg-gray-700 text-white p-4 h-full overflow-y-auto custom-scrollbar">
       <h2 className="text-lg font-semibold mb-4 border-b border-gray-500 pb-2">
@@ -43,6 +46,9 @@ export function ConfigPanel({ config, onToggle, onModeChange }: ConfigPanelProps
               ? 'All data loaded, filtered locally'
               : 'Paginated API, server handles filtering'}
           </p>
+          <code className="block mt-2 px-2 py-1 text-xs bg-blue-600 text-white rounded text-center">
+            {config.mode === 'client' ? 'SnowClientDataTable' : 'SnowServerDataTable'}
+          </code>
         </div>
 
         <div className="border-t border-gray-500 pt-4">
@@ -158,6 +164,37 @@ export function ConfigPanel({ config, onToggle, onModeChange }: ConfigPanelProps
         </div>
 
         <div className="border-t border-gray-500 pt-4 mt-4">
+          <h3 className="text-sm font-semibold text-gray-300 mb-2">Theme</h3>
+          <div className="grid grid-cols-3 gap-2">
+            {Object.entries(themes).map(([name, theme]) => (
+              <button
+                key={name}
+                onClick={() => onThemeChange(name, theme)}
+                className={`px-2 py-2 text-xs rounded transition-colors flex flex-col items-center gap-1 ${
+                  currentTheme === name
+                    ? 'ring-2 ring-blue-500 bg-gray-600'
+                    : 'bg-gray-600 hover:bg-gray-500'
+                }`}
+              >
+                <div
+                  className="w-6 h-6 rounded border border-gray-500"
+                  style={{ backgroundColor: theme.background }}
+                >
+                  <div
+                    className="w-full h-1/2 rounded-t"
+                    style={{ backgroundColor: theme.muted }}
+                  />
+                </div>
+                <span className="capitalize">{name}</span>
+              </button>
+            ))}
+          </div>
+          <p className="text-xs text-gray-400 mt-2 text-center">
+            Override CSS variables to customize
+          </p>
+        </div>
+
+        <div className="border-t border-gray-500 pt-4 mt-4">
           <h3 className="text-sm font-semibold text-gray-300 mb-2">Preview Mode</h3>
           <button
             onClick={() => onToggle('mobilePreview')}
@@ -175,38 +212,6 @@ export function ConfigPanel({ config, onToggle, onModeChange }: ConfigPanelProps
           </p>
         </div>
 
-        <div className="border-t border-gray-500 pt-4 mt-4">
-          <h3 className="text-sm font-semibold text-gray-300 mb-2">Components</h3>
-          <div className="flex flex-wrap gap-1 text-xs">
-            {[
-              'SnowClientDataTable',
-              'SnowServerDataTable',
-            ].map(name => (
-              <code
-                key={name}
-                className={`px-1.5 py-0.5 rounded ${
-                  (config.mode === 'client' && name === 'SnowClientDataTable') ||
-                  (config.mode === 'server' && name === 'SnowServerDataTable')
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-600'
-                }`}
-              >
-                {name}
-              </code>
-            ))}
-          </div>
-        </div>
-
-        <div className="border-t border-gray-500 pt-4 mt-4">
-          <h3 className="text-sm font-semibold text-gray-300 mb-2">Action Types</h3>
-          <div className="flex flex-wrap gap-1 text-xs">
-            {['click', 'link', 'endpoint'].map(type => (
-              <code key={type} className="bg-gray-600 px-1.5 py-0.5 rounded">
-                {type}
-              </code>
-            ))}
-          </div>
-        </div>
       </div>
     </div>
   );

@@ -1,15 +1,44 @@
-import type { DemoConfig } from './types';
+import type { DemoConfig, ThemeColors } from './types';
+import { defaultTheme } from './types';
 
 export function generateInstallCode(): string {
-  return `npm install @snowpact/react-tanstack-query-table @tanstack/react-query @tanstack/react-table
+  return `npm install @tanstack/react-query @tanstack/react-table
+npm install @snowpact/react-tanstack-query-table`;
+}
 
-# Tailwind CSS is required
-# Add to your tailwind.config.js content array:
-# './node_modules/@snowpact/react-tanstack-query-table/dist/**/*.js'`;
+export function generateThemeCode(theme: ThemeColors): string {
+  const isDefault = JSON.stringify(theme) === JSON.stringify(defaultTheme);
+
+  if (isDefault) {
+    return `/* Default theme - no customization needed */
+/* Override CSS variables to customize: */
+:root {
+  --snow-background: ${theme.background};
+  --snow-foreground: ${theme.foreground};
+  --snow-secondary: ${theme.secondary};
+  --snow-secondary-foreground: ${theme.secondaryForeground};
+  --snow-border: ${theme.border};
+  --snow-ring: ${theme.ring};
+  --snow-radius: ${theme.radius};
+}`;
+  }
+
+  return `:root {
+  --snow-background: ${theme.background};
+  --snow-foreground: ${theme.foreground};
+  --snow-secondary: ${theme.secondary};
+  --snow-secondary-foreground: ${theme.secondaryForeground};
+  --snow-border: ${theme.border};
+  --snow-ring: ${theme.ring};
+  --snow-radius: ${theme.radius};
+}`;
 }
 
 export function generateSetupCode(): string {
-  return `import { setupSnowTable } from '@snowpact/react-tanstack-query-table';
+  return `// Import styles in your app entry point
+import '@snowpact/react-tanstack-query-table/styles.css';
+
+import { setupSnowTable } from '@snowpact/react-tanstack-query-table';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
@@ -46,15 +75,12 @@ const columns: SnowColumnConfig<User>[] = [
 
 export function generateTableCode(config: DemoConfig): string {
   const Component = config.mode === 'client' ? 'SnowClientDataTable' : 'SnowServerDataTable';
-  const fetchProp = config.mode === 'client'
-    ? 'fetchAllItemsEndpoint={() => fetchUsers()}'
-    : 'fetchServerEndpoint={(params) => fetchUsersServer(params)}';
+  const fetchProp =
+    config.mode === 'client'
+      ? 'fetchAllItemsEndpoint={() => fetchUsers()}'
+      : 'fetchServerEndpoint={(params) => fetchUsersServer(params)}';
 
-  const props: string[] = [
-    `queryKey={['users']}`,
-    fetchProp,
-    `columnConfig={columns}`,
-  ];
+  const props: string[] = [`queryKey={['users']}`, fetchProp, `columnConfig={columns}`];
 
   if (config.enableGlobalSearch) props.push(`enableGlobalSearch`);
   if (config.enablePagination) {
@@ -128,4 +154,3 @@ import { Edit, Trash } from 'lucide-react';
 ${propsStr}
 />`;
 }
-
