@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { SnowClientDataTable } from './SnowClientDataTable';
 import { SnowColumnConfig } from './types';
 
-import { renderWithProviders, screen, userEvent } from './test/test-utils';
+import { renderWithProviders, screen, userEvent, waitFor } from './test/test-utils';
 
 // Store the current URL state for mocking
 let currentUrl = 'http://localhost:3000/';
@@ -232,7 +232,7 @@ describe('SnowClientDataTable with persistState', () => {
     vi.clearAllMocks();
   });
 
-  it('should show reset button when persistState is enabled', async () => {
+  it('should show reset button when enableGlobalSearch is true', async () => {
     const fetchAllItemsEndpoint = vi.fn().mockResolvedValue(mockData);
 
     renderWithProviders(
@@ -242,13 +242,12 @@ describe('SnowClientDataTable with persistState', () => {
         fetchAllItemsEndpoint={fetchAllItemsEndpoint}
         persistState
         enableGlobalSearch
-        enableResetFilters
       />
     );
 
     await screen.findByText('John Doe');
 
-    // Reset button should be visible
+    // Reset button should always be visible when enableGlobalSearch is true
     expect(screen.getByTestId('datatable-reset-filters')).toBeInTheDocument();
   });
 
@@ -331,14 +330,14 @@ describe('SnowClientDataTable with persistState', () => {
         prefilters={prefilters}
         persistState
         enableGlobalSearch
-        enableResetFilters
       />
     );
 
     await screen.findByText('John Doe');
 
-    // Click reset button
-    await user.click(screen.getByTestId('datatable-reset-filters'));
+    // Reset button should be visible because URL has active filters
+    const resetButton = screen.getByTestId('datatable-reset-filters');
+    await user.click(resetButton);
 
     // URL params should be cleared
     expect(getUrlParam(storageKey('prefilter'))).toBeNull();

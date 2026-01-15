@@ -43,7 +43,8 @@
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "prepublishOnly": "pnpm build",
-    "demo": "vite --config demo/vite.config.ts"
+    "demo:dev": "vite --config demo/vite.config.ts",
+    "demo:build": "vite build --config demo/vite.config.ts"
   },
   "peerDependencies": {
     "@tanstack/react-query": ">=5.0.0",

@@ -108,7 +108,6 @@ export interface DataTableUIOptions<T extends object> {
   enableSorting?: boolean;
   enableColumnConfiguration?: boolean;
   enablePagination?: boolean;
-  enableResetFilters?: boolean;
   texts?: {
     searchPlaceholder?: string;
     emptyTitle?: string;

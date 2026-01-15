@@ -248,7 +248,7 @@ describe('DataTable', () => {
   });
 
   describe('reset filters', () => {
-    it('should render reset button when enabled', () => {
+    it('should render reset button when enableGlobalSearch is true', () => {
       const onResetFilters = vi.fn();
 
       renderWithProviders(
@@ -256,7 +256,49 @@ describe('DataTable', () => {
           data={mockData}
           columns={columns}
           enableGlobalSearch
-          enableResetFilters
+          onResetFilters={onResetFilters}
+        />
+      );
+
+      expect(screen.getByTestId('datatable-reset-filters')).toBeInTheDocument();
+    });
+
+    it('should render reset button when prefilters are provided', () => {
+      const onResetFilters = vi.fn();
+      const prefilters = [
+        { id: 'all', label: 'All' },
+        { id: 'active', label: 'Active' },
+      ];
+
+      renderWithProviders(
+        <DataTable
+          data={mockData}
+          columns={columns}
+          prefilters={prefilters}
+          activePrefilter="all"
+          onPrefilterChange={vi.fn()}
+          onResetFilters={onResetFilters}
+        />
+      );
+
+      expect(screen.getByTestId('datatable-reset-filters')).toBeInTheDocument();
+    });
+
+    it('should render reset button when filters are provided', () => {
+      const onResetFilters = vi.fn();
+      const filters = [
+        {
+          key: 'status' as keyof TestItem,
+          label: 'Status',
+          options: [{ value: 'active', label: 'Active' }],
+        },
+      ];
+
+      renderWithProviders(
+        <DataTable
+          data={mockData}
+          columns={columns}
+          filters={filters}
           onResetFilters={onResetFilters}
         />
       );
@@ -273,7 +315,6 @@ describe('DataTable', () => {
           data={mockData}
           columns={columns}
           enableGlobalSearch
-          enableResetFilters
           onResetFilters={onResetFilters}
         />
       );
@@ -283,9 +324,19 @@ describe('DataTable', () => {
       expect(onResetFilters).toHaveBeenCalled();
     });
 
-    it('should not render reset button when not enabled', () => {
+    it('should not render reset button when onResetFilters is not provided', () => {
       renderWithProviders(
-        <DataTable data={mockData} columns={columns} enableGlobalSearch enableResetFilters={false} />
+        <DataTable data={mockData} columns={columns} enableGlobalSearch />
+      );
+
+      expect(screen.queryByTestId('datatable-reset-filters')).not.toBeInTheDocument();
+    });
+
+    it('should not render reset button when no filter features are enabled', () => {
+      const onResetFilters = vi.fn();
+
+      renderWithProviders(
+        <DataTable data={mockData} columns={columns} onResetFilters={onResetFilters} />
       );
 
       expect(screen.queryByTestId('datatable-reset-filters')).not.toBeInTheDocument();

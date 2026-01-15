@@ -92,7 +92,6 @@ export type DataTableProps<T extends object> = {
 
   // === RESET ===
   onResetFilters?: () => void;
-  enableResetFilters?: boolean;
 };
 
 export function DataTable<Data extends object>({
@@ -137,7 +136,6 @@ export function DataTable<Data extends object>({
   texts,
   // Reset
   onResetFilters,
-  enableResetFilters = true,
 }: DataTableProps<Data>) {
   const { t } = useTranslation();
   const styles = getStyles();
@@ -315,7 +313,7 @@ export function DataTable<Data extends object>({
               />
             ))}
             {enableColumnConfiguration && <ColumnConfiguration table={table} />}
-            {enableResetFilters && onResetFilters && (
+            {(enableGlobalSearch || (prefilters && prefilters.length > 0) || (filters && filters.length > 0)) && onResetFilters && (
               <Button
                 onClick={onResetFilters}
                 title={t('dataTable.resetFilters')}

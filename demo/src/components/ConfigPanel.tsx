@@ -1,0 +1,192 @@
+import type { DemoConfig } from './types';
+
+interface ConfigPanelProps {
+  config: DemoConfig;
+  onToggle: (key: keyof DemoConfig) => void;
+  onModeChange: (mode: 'client' | 'server') => void;
+}
+
+export function ConfigPanel({ config, onToggle, onModeChange }: ConfigPanelProps) {
+  return (
+    <div className="bg-gray-700 text-white p-4 h-full overflow-y-auto custom-scrollbar">
+      <h2 className="text-lg font-semibold mb-4 border-b border-gray-500 pb-2">
+        Config Panel
+      </h2>
+
+      <div className="space-y-4">
+        <div className="mb-4">
+          <label className="block text-sm font-medium mb-2">Mode</label>
+          <div className="flex gap-2">
+            <button
+              onClick={() => onModeChange('client')}
+              className={`flex-1 px-3 py-2 text-sm rounded transition-colors ${
+                config.mode === 'client'
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-gray-600 text-gray-300 hover:bg-gray-500'
+              }`}
+            >
+              Client
+            </button>
+            <button
+              onClick={() => onModeChange('server')}
+              className={`flex-1 px-3 py-2 text-sm rounded transition-colors ${
+                config.mode === 'server'
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-gray-600 text-gray-300 hover:bg-gray-500'
+              }`}
+            >
+              Server
+            </button>
+          </div>
+          <p className="text-xs text-gray-400 mt-1">
+            {config.mode === 'client'
+              ? 'All data loaded, filtered locally'
+              : 'Paginated API, server handles filtering'}
+          </p>
+        </div>
+
+        <div className="border-t border-gray-500 pt-4">
+          <h3 className="text-sm font-semibold text-gray-300 mb-3">Features</h3>
+
+          <label className="flex items-start gap-3 cursor-pointer mb-3">
+            <input
+              type="checkbox"
+              checked={config.enableGlobalSearch}
+              onChange={() => onToggle('enableGlobalSearch')}
+              className="w-4 h-4 mt-1 text-blue-500 rounded focus:ring-blue-500"
+            />
+            <div>
+              <span className="font-medium">Global Search</span>
+              <p className="text-xs text-gray-400">
+                Fuzzy search across all columns
+              </p>
+            </div>
+          </label>
+
+          <label className="flex items-start gap-3 cursor-pointer mb-3">
+            <input
+              type="checkbox"
+              checked={config.enablePagination}
+              onChange={() => onToggle('enablePagination')}
+              className="w-4 h-4 mt-1 text-blue-500 rounded focus:ring-blue-500"
+            />
+            <div>
+              <span className="font-medium">Pagination</span>
+              <p className="text-xs text-gray-400">
+                Navigate through pages of data
+              </p>
+            </div>
+          </label>
+
+          <label className="flex items-start gap-3 cursor-pointer mb-3">
+            <input
+              type="checkbox"
+              checked={config.enableSorting}
+              onChange={() => onToggle('enableSorting')}
+              className="w-4 h-4 mt-1 text-blue-500 rounded focus:ring-blue-500"
+            />
+            <div>
+              <span className="font-medium">Sorting</span>
+              <p className="text-xs text-gray-400">
+                Click column headers to sort
+              </p>
+            </div>
+          </label>
+
+          <label className="flex items-start gap-3 cursor-pointer mb-3">
+            <input
+              type="checkbox"
+              checked={config.enableColumnConfiguration}
+              onChange={() => onToggle('enableColumnConfiguration')}
+              className="w-4 h-4 mt-1 text-blue-500 rounded focus:ring-blue-500"
+            />
+            <div>
+              <span className="font-medium">Column Configuration</span>
+              <p className="text-xs text-gray-400">
+                Show/hide columns via settings
+              </p>
+            </div>
+          </label>
+
+          <label className="flex items-start gap-3 cursor-pointer mb-3">
+            <input
+              type="checkbox"
+              checked={config.enableFilters}
+              onChange={() => onToggle('enableFilters')}
+              className="w-4 h-4 mt-1 text-blue-500 rounded focus:ring-blue-500"
+            />
+            <div>
+              <span className="font-medium">Column Filters</span>
+              <p className="text-xs text-gray-400">
+                Multi-select dropdown filters
+              </p>
+            </div>
+          </label>
+
+          <label className="flex items-start gap-3 cursor-pointer mb-3">
+            <input
+              type="checkbox"
+              checked={config.enablePrefilters}
+              onChange={() => onToggle('enablePrefilters')}
+              className="w-4 h-4 mt-1 text-blue-500 rounded focus:ring-blue-500"
+            />
+            <div>
+              <span className="font-medium">Prefilters (Tabs)</span>
+              <p className="text-xs text-gray-400">
+                Quick segmentation via tabs
+              </p>
+            </div>
+          </label>
+
+          <label className="flex items-start gap-3 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={config.persistState}
+              onChange={() => onToggle('persistState')}
+              className="w-4 h-4 mt-1 text-blue-500 rounded focus:ring-blue-500"
+            />
+            <div>
+              <span className="font-medium">Persist State</span>
+              <p className="text-xs text-gray-400">
+                Save state in URL params
+              </p>
+            </div>
+          </label>
+        </div>
+
+        <div className="border-t border-gray-500 pt-4 mt-4">
+          <h3 className="text-sm font-semibold text-gray-300 mb-2">Components</h3>
+          <div className="flex flex-wrap gap-1 text-xs">
+            {[
+              'SnowClientDataTable',
+              'SnowServerDataTable',
+            ].map(name => (
+              <code
+                key={name}
+                className={`px-1.5 py-0.5 rounded ${
+                  (config.mode === 'client' && name === 'SnowClientDataTable') ||
+                  (config.mode === 'server' && name === 'SnowServerDataTable')
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-600'
+                }`}
+              >
+                {name}
+              </code>
+            ))}
+          </div>
+        </div>
+
+        <div className="border-t border-gray-500 pt-4 mt-4">
+          <h3 className="text-sm font-semibold text-gray-300 mb-2">Action Types</h3>
+          <div className="flex flex-wrap gap-1 text-xs">
+            {['click', 'link', 'endpoint'].map(type => (
+              <code key={type} className="bg-gray-600 px-1.5 py-0.5 rounded">
+                {type}
+              </code>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

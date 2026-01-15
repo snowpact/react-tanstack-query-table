@@ -1,17 +1,18 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import path from 'path';
+import { resolve } from 'path';
 
 export default defineConfig({
   plugins: [react()],
-  root: path.resolve(__dirname),
+  root: resolve(__dirname),
+  base: '/react-tanstack-query-table/',
+  build: {
+    outDir: resolve(__dirname, '../demo-dist'),
+    emptyOutDir: true,
+  },
   resolve: {
     alias: {
-      '@': path.resolve(__dirname),
+      '@snowpact/react-tanstack-query-table': resolve(__dirname, '../src'),
     },
-  },
-  server: {
-    port: 3000,
-    open: true,
   },
 });
