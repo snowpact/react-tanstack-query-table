@@ -9,7 +9,6 @@ This guide shows how to configure SnowTable with your UI library.
   - [Shadcn/UI Setup](#shadcnui-setup)
   - [App.tsx Integration](#apptsx-integration)
   - [Custom useConfirm Hook](#custom-useconfirm-hook)
-  - [Tooltip Integration](#tooltip-integration)
   - [Custom Styles](#custom-styles)
   - [Translation Files](#translation-files)
 
@@ -26,7 +25,6 @@ import { Link } from 'react-router-dom';
 import { setupSnowTable } from '@snowpact/react-tanstack-query-table';
 
 import { useConfirm } from '@/hooks/useConfirm';
-import { showTooltip, hideTooltip } from '@/lib/tooltip';
 
 // =============================================================================
 // Setup Function
@@ -68,10 +66,6 @@ export function setupSnowTableConfig(): void {
 
     // Confirm dialog hook (see implementation below)
     useConfirm: () => useConfirm(),
-
-    // Optional: Tooltip handlers
-    onActionHover: ({ label, element }) => showTooltip(label, element),
-    onActionUnhover: () => hideTooltip(),
 
     // Optional: Custom styles (see Custom Styles section)
     // styles: { ... }
@@ -275,60 +269,6 @@ When using forms inside confirm dialogs, use the `close` helper:
   },
 }
 ```
-
----
-
-## Tooltip Integration
-
-SnowTable supports tooltips via `onActionHover` and `onActionUnhover` callbacks. Here's an example using a simple tooltip library:
-
-### Using Tippy.js
-
-```tsx
-// src/lib/tooltip.ts
-import tippy, { Instance } from 'tippy.js';
-import 'tippy.js/dist/tippy.css';
-
-let currentTooltip: Instance | null = null;
-
-export function showTooltip(label: string, element: HTMLElement) {
-  // Destroy existing tooltip
-  if (currentTooltip) {
-    currentTooltip.destroy();
-  }
-
-  // Create new tooltip
-  currentTooltip = tippy(element, {
-    content: label,
-    placement: 'top',
-    trigger: 'manual',
-    arrow: true,
-  });
-
-  currentTooltip.show();
-}
-
-export function hideTooltip() {
-  if (currentTooltip) {
-    currentTooltip.destroy();
-    currentTooltip = null;
-  }
-}
-```
-
-### Using Radix UI Tooltip (Alternative)
-
-If you're using Radix UI tooltips, you'll need a different approach since Radix tooltips are component-based:
-
-```tsx
-// In your setup
-setupSnowTable({
-  // ... other options
-  // Skip onActionHover/onActionUnhover - use CSS title attribute instead
-});
-```
-
-Then SnowTable will fall back to native browser tooltips via the `title` attribute.
 
 ---
 

@@ -81,7 +81,7 @@ setupSnowTable({
 });
 ```
 
-> **Full setup example**: See [examples/full-setup.md](./examples/full-setup.md) for a complete Shadcn/UI integration with custom `useConfirm` hook, tooltips, and translations.
+> **Full setup example**: See [examples/full-setup.md](./examples/full-setup.md) for a complete Shadcn/UI integration with custom `useConfirm` hook and translations.
 
 ### 2. Use a Client Table
 
@@ -428,17 +428,9 @@ setupSnowTable({
 });
 ```
 
-### Action Hover (Tooltips)
+### Action Tooltips
 
-Integrate with your tooltip system:
-
-```tsx
-setupSnowTable({
-  // ... other options
-  onActionHover: ({ label, element }) => showTooltip(label, element),
-  onActionUnhover: () => hideTooltip(),
-});
-```
+Action buttons automatically display tooltips on hover. The tooltip uses your theme's CSS variables (`--snow-foreground`, `--snow-background`, `--snow-radius`) for consistent styling.
 
 ## API Reference
 
