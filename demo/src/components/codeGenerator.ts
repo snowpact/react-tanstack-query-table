@@ -55,7 +55,11 @@ export function generateTableCode(config: DemoConfig): string {
   ];
 
   if (config.enableGlobalSearch) props.push(`enableGlobalSearch`);
-  if (config.enablePagination) props.push(`enablePagination`);
+  if (config.enablePagination) {
+    props.push(`enablePagination`);
+    props.push(`paginationSizes={[10, 25, 50, 100]}`);
+    props.push(`defaultPageSize={10}`);
+  }
   if (config.enableSorting) props.push(`enableSorting`);
   if (config.enableColumnConfiguration) props.push(`enableColumnConfiguration`);
   if (config.persistState) props.push(`persistState`);

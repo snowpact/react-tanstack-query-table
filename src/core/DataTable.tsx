@@ -84,6 +84,7 @@ export type DataTableProps<T extends object> = {
   displayTotalNumber?: boolean;
   enableElementLabel?: boolean;
   enablePagination?: boolean;
+  paginationSizes?: number[];
   enableResponsive?: boolean;
   texts?: {
     searchPlaceholder?: string;
@@ -132,6 +133,7 @@ export function DataTable<Data extends object>({
   displayTotalNumber = true,
   enableElementLabel = true,
   enablePagination = true,
+  paginationSizes,
   enableResponsive = true,
   texts,
   // Reset
@@ -451,7 +453,7 @@ export function DataTable<Data extends object>({
 
         {/* Right - Page size selector */}
         <div className="order-2 sm:order-3">
-          <PageSizeSelector table={table} enableElementLabel={enableElementLabel} />
+          <PageSizeSelector table={table} enableElementLabel={enableElementLabel} paginationSizes={paginationSizes} />
         </div>
       </div>
     </div>

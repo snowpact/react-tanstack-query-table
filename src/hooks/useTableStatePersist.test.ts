@@ -193,7 +193,7 @@ describe('useTableStatePersist', () => {
     });
   });
 
-  it('should reset to defaults and clear URL parameters', () => {
+  it('should reset to defaults and clear URL parameters (except pageSize)', () => {
     const { result } = renderHookWithProviders(() =>
       useTableStatePersist({
         enabled: true,
@@ -217,21 +217,21 @@ describe('useTableStatePersist', () => {
       result.current.resetToDefaults();
     });
 
-    // Check the final URL state (should be cleared)
+    // Check the final URL state (pageSize should be preserved)
     const url = new URL(currentUrl);
     const searchParams = url.searchParams;
 
     expect(searchParams.get('dt_prefilter')).toBeNull();
     expect(searchParams.get('dt_search')).toBeNull();
     expect(searchParams.get('dt_page')).toBeNull();
-    expect(searchParams.get('dt_pageSize')).toBeNull();
+    expect(searchParams.get('dt_pageSize')).toBe('20'); // pageSize preserved
     expect(searchParams.get('dt_filters')).toBeNull();
     expect(searchParams.get('dt_sortBy')).toBeNull();
     expect(searchParams.get('dt_sortDesc')).toBeNull();
 
     expect(result.current.activePrefilter).toBe('all');
     expect(result.current.globalFilter).toBe('');
-    expect(result.current.pagination).toEqual({ pageIndex: 0, pageSize: 10 });
+    expect(result.current.pagination).toEqual({ pageIndex: 0, pageSize: 20 }); // pageSize preserved
     expect(result.current.columnFilters).toEqual({});
     expect(result.current.sorting).toEqual([{ id: 'createdAt', desc: false }]);
     expect(result.current.hasActiveFilters).toBe(false);

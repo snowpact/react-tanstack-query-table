@@ -11,14 +11,36 @@ import { CodePanel, ConfigPanel, type DemoConfig, type User } from './components
 
 // Simple icon components (no external dependency)
 const EditIcon = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="16"
+    height="16"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
     <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
     <path d="m15 5 4 4" />
   </svg>
 );
 
 const TrashIcon = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="16"
+    height="16"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
     <path d="M3 6h18" />
     <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
     <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
@@ -28,7 +50,18 @@ const TrashIcon = (props: React.SVGProps<SVGSVGElement>) => (
 );
 
 const EyeIcon = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="16"
+    height="16"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
     <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
     <circle cx="12" cy="12" r="3" />
   </svg>
@@ -52,7 +85,9 @@ const translations: Record<string, string> = {
 setupSnowTable({
   useTranslation: () => ({ t: (key: string) => translations[key] || key }),
   LinkComponent: ({ href, children, ...props }) => (
-    <a href={href as string} {...props}>{children}</a>
+    <a href={href as string} {...props}>
+      {children}
+    </a>
   ),
   useConfirm: () => ({
     confirm: ({ title, content }) => {
@@ -64,7 +99,18 @@ setupSnowTable({
 
 // Mock data generator
 const generateUsers = (count: number): User[] => {
-  const names = ['Alice Martin', 'Bob Smith', 'Charlie Brown', 'Diana Prince', 'Edward Norton', 'Fiona Apple', 'George Lucas', 'Helen Troy', 'Ivan Drago', 'Julia Roberts'];
+  const names = [
+    'Alice Martin',
+    'Bob Smith',
+    'Charlie Brown',
+    'Diana Prince',
+    'Edward Norton',
+    'Fiona Apple',
+    'George Lucas',
+    'Helen Troy',
+    'Ivan Drago',
+    'Julia Roberts',
+  ];
   const departments = ['Engineering', 'Marketing', 'Sales', 'HR', 'Finance', 'Product', 'Design', 'Support'];
   const roles: User['role'][] = ['admin', 'user', 'guest'];
   const statuses: User['status'][] = ['active', 'inactive', 'pending'];
@@ -101,10 +147,11 @@ const fetchUsersServer = async (params: ServerFetchParams): Promise<ServerPagina
   // Apply search
   if (params.search) {
     const search = params.search.toLowerCase();
-    filtered = filtered.filter(u =>
-      u.name.toLowerCase().includes(search) ||
-      u.email.toLowerCase().includes(search) ||
-      u.department.toLowerCase().includes(search)
+    filtered = filtered.filter(
+      u =>
+        u.name.toLowerCase().includes(search) ||
+        u.email.toLowerCase().includes(search) ||
+        u.department.toLowerCase().includes(search)
     );
   }
 
@@ -145,12 +192,16 @@ const columns: SnowColumnConfig<User>[] = [
   {
     key: 'role',
     label: 'Role',
-    render: (item) => (
-      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-        item.role === 'admin' ? 'bg-purple-100 text-purple-700' :
-        item.role === 'user' ? 'bg-blue-100 text-blue-700' :
-        'bg-gray-100 text-gray-700'
-      }`}>
+    render: item => (
+      <span
+        className={`px-2 py-1 rounded-full text-xs font-medium ${
+          item.role === 'admin'
+            ? 'bg-purple-100 text-purple-700'
+            : item.role === 'user'
+            ? 'bg-blue-100 text-blue-700'
+            : 'bg-gray-100 text-gray-700'
+        }`}
+      >
         {item.role}
       </span>
     ),
@@ -244,12 +295,14 @@ export function App() {
     enableColumnConfiguration: config.enableColumnConfiguration,
     persistState: config.persistState,
     defaultPageSize: 10,
+    paginationSizes: [10, 25, 50, 100],
     displayTotalNumber: true,
     ...(config.enableFilters && { filters }),
     ...(config.enablePrefilters && { prefilters }),
-    ...(config.enablePrefilters && config.mode === 'client' && {
-      prefilterFn: (item: User, id: string) => id === 'all' || item.status === id,
-    }),
+    ...(config.enablePrefilters &&
+      config.mode === 'client' && {
+        prefilterFn: (item: User, id: string) => id === 'all' || item.status === id,
+      }),
   };
 
   return (
@@ -262,24 +315,22 @@ export function App() {
       {/* Main Content */}
       <div className="flex-1 bg-gray-50 p-8 overflow-y-auto">
         <div className="max-w-5xl mx-auto">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            @snowpact/react-tanstack-query-table
-          </h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">@snowpact/react-tanstack-query-table</h1>
           <p className="text-gray-600 mb-8">
             Ultra-light, registry-based data table for React + TanStack Table + TanStack Query
           </p>
 
           <div className="bg-white rounded-lg shadow-md p-6 mb-8 overflow-visible">
             <div className="mb-4 flex items-center gap-2 text-sm">
-              <span className={`px-2 py-1 rounded text-xs font-medium ${
-                config.mode === 'client' ? 'bg-blue-100 text-blue-700' : 'bg-green-100 text-green-700'
-              }`}>
+              <span
+                className={`px-2 py-1 rounded text-xs font-medium ${
+                  config.mode === 'client' ? 'bg-blue-100 text-blue-700' : 'bg-green-100 text-green-700'
+                }`}
+              >
                 {config.mode === 'client' ? 'SnowClientDataTable' : 'SnowServerDataTable'}
               </span>
               <span className="text-gray-500">
-                {config.mode === 'client'
-                  ? '50 items loaded, filtered locally'
-                  : 'Server-side pagination & filtering'}
+                {config.mode === 'client' ? '50 items loaded, filtered locally' : 'Server-side pagination & filtering'}
               </span>
             </div>
 

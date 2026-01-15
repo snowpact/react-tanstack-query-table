@@ -199,23 +199,23 @@ export const useTableStatePersist = ({
   }, [globalFilter, activePrefilter, defaultPrefilter, columnFilters, sorting, defaultSortBy, defaultSortOrder]);
 
   // ============================================
-  // Reset to defaults
+  // Reset to defaults (keeps pageSize unchanged)
   // ============================================
   const resetToDefaults = useCallback(() => {
-    // Clear storage
+    // Clear storage (except pageSize)
     if (enabledRef.current) {
       setStoredValue(STORAGE_KEY_PREFILTER, null);
       setStoredValue(STORAGE_KEY_SEARCH, null);
       setStoredValue(STORAGE_KEY_PAGE, null);
-      setStoredValue(STORAGE_KEY_PAGE_SIZE, null);
+      // Don't clear pageSize - user preference should be preserved
       setStoredValue(STORAGE_KEY_FILTERS, null);
       setStoredValue(STORAGE_KEY_SORT_BY, null);
       setStoredValue(STORAGE_KEY_SORT_DESC, null);
     }
-    // Reset states to defaults
+    // Reset states to defaults (preserve current pageSize)
     setActivePrefilterState(defaultPrefilter);
     setGlobalFilterState('');
-    setPaginationState({ pageIndex: 0, pageSize: defaultPageSizeRef.current });
+    setPaginationState(prev => ({ pageIndex: 0, pageSize: prev.pageSize }));
     setColumnFiltersState({});
     setSortingState(defaultSortBy ? [{ id: defaultSortBy, desc: defaultSortOrder === 'desc' }] : []);
   }, [defaultPrefilter, defaultSortBy, defaultSortOrder]);

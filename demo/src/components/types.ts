@@ -9,7 +9,7 @@ export interface DemoConfig {
   persistState: boolean;
 }
 
-export interface User {
+export interface User extends Record<string, unknown> {
   id: string;
   name: string;
   email: string;
