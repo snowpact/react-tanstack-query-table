@@ -209,6 +209,23 @@ const columns: SnowColumnConfig<User>[] = [
       </span>
     ),
   },
+  {
+    key: 'status',
+    label: 'Status',
+    render: item => (
+      <span
+        className={`px-2 py-1 rounded-full text-xs font-medium ${
+          item.status === 'active'
+            ? 'bg-green-100 text-green-700'
+            : item.status === 'inactive'
+            ? 'bg-red-100 text-red-700'
+            : 'bg-yellow-100 text-yellow-700'
+        }`}
+      >
+        {item.status}
+      </span>
+    ),
+  },
   { key: 'department', label: 'Department' },
 ];
 

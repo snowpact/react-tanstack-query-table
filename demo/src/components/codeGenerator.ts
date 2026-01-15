@@ -31,6 +31,7 @@ type User = {
   name: string;
   email: string;
   role: 'admin' | 'user' | 'guest';
+  status: 'active' | 'inactive' | 'pending';
   department: string;
 };
 
@@ -38,6 +39,7 @@ const columns: SnowColumnConfig<User>[] = [
   { key: 'name', label: 'Name' },
   { key: 'email', label: 'Email' },
   { key: 'role', label: 'Role' },
+  { key: 'status', label: 'Status' },
   { key: 'department', label: 'Department' },
 ];`;
 }
