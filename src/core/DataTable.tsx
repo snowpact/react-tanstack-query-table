@@ -444,7 +444,7 @@ export function DataTable<Data extends object>({
         {/* Item count */}
         {displayTotalNumber && (
           <div className={cn('snow-table-count text-sm order-3 lg:order-1 text-center lg:text-left', styles.table.empty)} data-testid="datatable-count">
-            {t('dataTable.element', { count: itemCount, total: totalCount })}
+            {totalCount} {t('dataTable.elements')}
           </div>
         )}
 

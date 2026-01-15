@@ -70,7 +70,6 @@ const EyeIcon = (props: React.SVGProps<SVGSVGElement>) => (
 // i18n translations for the demo
 const translations: Record<string, string> = {
   'dataTable.search': 'Search...',
-  'dataTable.element': '{{total}} elements',
   'dataTable.elements': 'elements',
   'dataTable.paginationSize': 'per page',
   'dataTable.noResults': 'No results',
@@ -82,16 +81,8 @@ const translations: Record<string, string> = {
   'dataTable.searchEmpty': 'No results found',
 };
 
-// Simple t function with interpolation support
-const t = (key: string, params?: Record<string, unknown>) => {
-  let text = translations[key] || key;
-  if (params) {
-    Object.entries(params).forEach(([k, v]) => {
-      text = text.replace(new RegExp(`{{${k}}}`, 'g'), String(v));
-    });
-  }
-  return text;
-};
+// Simple t function
+const t = (key: string) => translations[key] || key;
 
 // Setup Snow Table (simple setup for demo)
 setupSnowTable({
