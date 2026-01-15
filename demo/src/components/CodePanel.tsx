@@ -4,7 +4,6 @@ import { CodeHighlight } from './CodeHighlight';
 import {
   generateInstallCode,
   generateSetupCode,
-  generateColumnConfigCode,
   generateTableCode,
   generateThemeCode,
 } from './codeGenerator';
@@ -94,12 +93,7 @@ export function CodePanel({ config, theme }: CodePanelProps) {
           defaultOpen={false}
         />
         <CodeSection
-          title="3. Define columns"
-          code={generateColumnConfigCode()}
-          defaultOpen={false}
-        />
-        <CodeSection
-          title="4. Use the DataTable"
+          title="3. Use the DataTable"
           code={generateTableCode(config)}
         />
         <DoneSection />

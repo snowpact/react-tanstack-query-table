@@ -52,27 +52,6 @@ setupSnowTable({
 });`;
 }
 
-export function generateColumnConfigCode(): string {
-  return `import { SnowColumnConfig } from '@snowpact/react-tanstack-query-table';
-
-type User = {
-  id: string;
-  name: string;
-  email: string;
-  role: 'admin' | 'user' | 'guest';
-  status: 'active' | 'inactive' | 'pending';
-  department: string;
-};
-
-const columns: SnowColumnConfig<User>[] = [
-  { key: 'name', label: 'Name' },
-  { key: 'email', label: 'Email' },
-  { key: 'role', label: 'Role' },
-  { key: 'status', label: 'Status' },
-  { key: 'department', label: 'Department' },
-];`;
-}
-
 export function generateTableCode(config: DemoConfig): string {
   const Component = config.mode === 'client' ? 'SnowClientDataTable' : 'SnowServerDataTable';
   const fetchProp =
@@ -147,8 +126,25 @@ export function generateTableCode(config: DemoConfig): string {
 
   const propsStr = props.map(p => `  ${p}`).join('\n');
 
-  return `import { ${Component} } from '@snowpact/react-tanstack-query-table';
+  return `import { ${Component}, SnowColumnConfig } from '@snowpact/react-tanstack-query-table';
 import { Edit, Trash } from 'lucide-react';
+
+type User = {
+  id: string;
+  name: string;
+  email: string;
+  role: 'admin' | 'user' | 'guest';
+  status: 'active' | 'inactive' | 'pending';
+  department: string;
+};
+
+const columns: SnowColumnConfig<User>[] = [
+  { key: 'name', label: 'Name' },
+  { key: 'email', label: 'Email' },
+  { key: 'role', label: 'Role' },
+  { key: 'status', label: 'Status' },
+  { key: 'department', label: 'Department' },
+];
 
 <${Component}
 ${propsStr}
