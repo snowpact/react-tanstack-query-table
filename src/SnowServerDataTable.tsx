@@ -104,9 +104,9 @@ export const SnowServerDataTable = <T extends Record<string, unknown>, K>({
       onSortingChange={setSorting}
       // Reset
       onResetFilters={resetToDefaults}
-      // Server mode always requires pagination
-      enablePagination
       {...restProps}
+      // Server mode always requires pagination (must be after restProps to prevent override)
+      enablePagination
     />
   );
 };
