@@ -127,33 +127,3 @@ ${propsStr}
 />`;
 }
 
-export function generateActionsCode(): string {
-  return `// Click action - simple callback
-{
-  type: 'click',
-  icon: Edit,
-  label: 'Edit',
-  onClick: (item) => openEditModal(item),
-}
-
-// Link action - navigation
-{
-  type: 'link',
-  icon: Eye,
-  label: 'View',
-  href: (item) => \`/users/\${item.id}\`,
-}
-
-// Endpoint action - API call with confirmation
-{
-  type: 'endpoint',
-  icon: Trash,
-  label: 'Delete',
-  variant: 'danger',
-  endpoint: (item) => api.deleteUser(item.id),
-  confirm: {
-    title: 'Delete user?',
-    content: 'This action cannot be undone.',
-  },
-}`;
-}
