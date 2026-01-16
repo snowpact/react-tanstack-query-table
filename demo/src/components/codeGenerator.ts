@@ -6,32 +6,6 @@ export function generateInstallCode(): string {
 npm install @snowpact/react-tanstack-query-table`;
 }
 
-export function generateCustomizationCode(): string {
-  return `// You probably won't need this, but it exists if you do!
-// Override internal component styles via the 'styles' option:
-
-setupSnowTable({
-  t,
-  LinkComponent: Link,
-  confirm: ({ title }) => window.confirm(title),
-  styles: {
-    // Override button styles
-    button: {
-      visual: 'rounded-full bg-primary text-primary-foreground',
-      hover: 'hover:bg-primary/90',
-    },
-    // Override table styles
-    table: {
-      header: 'bg-slate-100 dark:bg-slate-800',
-      rowHover: 'hover:bg-slate-50',
-    },
-    // Override input styles
-    input: 'rounded-full border-2 border-primary',
-    // ... see SnowTableStyles for all options
-  },
-});`;
-}
-
 export function generateThemeCode(theme: ThemeColors): string {
   const isDefault = JSON.stringify(theme) === JSON.stringify(defaultTheme);
 
@@ -66,13 +40,21 @@ import '@snowpact/react-tanstack-query-table/styles.css';
 
 import { setupSnowTable } from '@snowpact/react-tanstack-query-table';
 import { Link } from 'react-router-dom';
-import { t } from './i18n'; // Your translation function
+import { t } from './i18n';
 
-// Setup once in your app entry point
 setupSnowTable({
-  t, // (key: string) => string
+  translate: (key) => t(key),
   LinkComponent: Link,
-  confirm: ({ title }) => window.confirm(title),
+  // Optional: override static UI keys (built-in English defaults)
+  translations: {
+    'dataTable.search': 'Search...',
+    'dataTable.elements': 'elements',
+    'dataTable.paginationSize': 'per page',
+    'dataTable.columnsConfiguration': 'Columns',
+    'dataTable.resetFilters': 'Reset filters',
+    'dataTable.searchEmpty': 'No results found',
+    'dataTable.selectFilter': 'Select...',
+  },
 });`;
 }
 
@@ -142,10 +124,7 @@ export function generateTableCode(config: DemoConfig): string {
       label: 'Delete',
       variant: 'danger',
       endpoint: (user) => deleteUser(user.id),
-      confirm: {
-        title: 'Delete user?',
-        content: 'This action cannot be undone.',
-      },
+      withConfirm: (user) => window.confirm(\`Delete \${user.name}?\`),
     },
   ]}`);
 

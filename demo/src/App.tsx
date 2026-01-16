@@ -122,26 +122,11 @@ const ArchiveIcon = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-// i18n translations for the demo
-const translations: Record<string, string> = {
-  'dataTable.search': 'Search...',
-  'dataTable.elements': 'elements',
-  'dataTable.paginationSize': 'per page',
-  'dataTable.noResults': 'No results',
-  'dataTable.columns': 'Columns',
-  'dataTable.columnsConfiguration': 'Columns',
-  'dataTable.resetFilters': 'Reset filters',
-  'dataTable.searchFilters': 'Search...',
-  'dataTable.resetColumns': 'Reset',
-  'dataTable.searchEmpty': 'No results found',
-};
-
-// Simple t function
-const t = (key: string) => translations[key] || key;
-
-// Setup Snow Table (simple setup for demo)
+// Setup Snow Table
+// translate is required for dynamic keys (column labels, etc.)
+// Static UI keys (dataTable.*) have built-in English defaults as fallback
 setupSnowTable({
-  t,
+  translate: (key) => key, // Returns key as-is, built-in defaults are used for dataTable.* keys
   LinkComponent: ({ to, children, ...props }) => (
     <a href={to} {...props}>
       {children}

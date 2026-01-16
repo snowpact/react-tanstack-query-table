@@ -10,7 +10,7 @@ Ultra-light, registry-based data table for React + TanStack Table + TanStack Que
 - **Registry-based**: Inject your own i18n and Link component
 - **TypeScript**: Full type support with generics
 - **Two modes**: Client-side and Server-side pagination/filtering/sorting
-- **Customizable**: Override styles via CSS variables or registry
+- **Customizable**: Override styles via CSS variables
 
 ## Quick Setup
 
@@ -34,13 +34,36 @@ import '@snowpact/react-tanstack-query-table/styles.css';
 // In your app entry point (main.tsx or App.tsx)
 import { setupSnowTable } from '@snowpact/react-tanstack-query-table';
 import { Link } from 'react-router-dom';
-
-// Your translation function (or just return the key)
-const t = (key: string) => translations[key] || key;
+import { t } from './i18n'; // Your translation function
 
 setupSnowTable({
-  t,
+  translate: (key) => t(key),
   LinkComponent: Link,
+});
+```
+
+**Translation keys:**
+- **Dynamic keys** (column labels, etc.) - Your `translate` function handles these
+- **Static UI keys** (`dataTable.*`) - Built-in English defaults if `translate` returns the key unchanged
+
+| Key | Default |
+|-----|---------|
+| `dataTable.search` | "Search..." |
+| `dataTable.elements` | "elements" |
+| `dataTable.paginationSize` | "per page" |
+| `dataTable.columnsConfiguration` | "Columns" |
+| `dataTable.resetFilters` | "Reset filters" |
+| `dataTable.resetColumns` | "Reset" |
+| `dataTable.searchFilters` | "Search..." |
+| `dataTable.searchEmpty` | "No results found" |
+| `dataTable.selectFilter` | "Select..." |
+
+Override static keys without i18n:
+```tsx
+setupSnowTable({
+  translate: (key) => key,
+  LinkComponent: Link,
+  translations: { 'dataTable.search': 'Rechercher...' },
 });
 ```
 
@@ -102,51 +125,6 @@ Override CSS variables to match your design:
   --snow-border: #0f3460;
   --snow-ring: #3b82f6;
 }
-```
-
-### Setup with i18n (react-i18next)
-
-```tsx
-import { useTranslation } from 'react-i18next';
-
-// Get t function at module level or use a hook wrapper
-const { t } = i18n;
-
-setupSnowTable({
-  t: (key) => t(key),
-  LinkComponent: Link,
-});
-```
-
-The `t` function is automatically called with:
-- All column `key` values from your `columnConfig` (e.g., `t('name')`, `t('email')`, `t('status')`)
-- Internal UI keys:
-  - `dataTable.search` - Search placeholder
-  - `dataTable.elements` - "elements" label
-  - `dataTable.searchEmpty` - Empty state text
-  - `dataTable.resetFilters` - Reset button tooltip
-  - `dataTable.columns` - Columns button label
-
-### Override component styles (rare)
-
-For deep customization, override internal Tailwind classes:
-
-```tsx
-setupSnowTable({
-  t,
-  LinkComponent: Link,
-  styles: {
-    button: {
-      visual: 'rounded-full bg-primary text-primary-foreground',
-      hover: 'hover:bg-primary/90',
-    },
-    table: {
-      header: 'bg-slate-100 dark:bg-slate-800',
-      rowHover: 'hover:bg-slate-50',
-    },
-    input: 'rounded-full border-2 border-primary',
-  },
-});
 ```
 
 ---
@@ -243,7 +221,7 @@ For API calls with built-in mutation handling:
 
 ### Endpoint with Confirmation
 
-Use `withConfirm` for optional confirmation before the endpoint is called:
+Use `withConfirm` to show a confirmation dialog before the endpoint is called:
 
 ```tsx
 {
@@ -252,12 +230,16 @@ Use `withConfirm` for optional confirmation before the endpoint is called:
   label: 'Delete',
   variant: 'danger',
   endpoint: (item) => api.deleteUser(item.id),
-  withConfirm: (item) => myConfirmDialog(`Delete ${item.name}?`),
+  withConfirm: async (item) => {
+    // Return true to proceed, false to cancel
+    return window.confirm(`Delete ${item.name}?`);
+    // Or use your own dialog library (e.g., sweetalert2, radix-ui/dialog)
+  },
   onSuccess: () => queryClient.invalidateQueries(['users']),
 }
 ```
 
-If `withConfirm` returns `false`, the endpoint is not called.
+The endpoint is only called if `withConfirm` returns `true` (or a truthy Promise).
 
 ### Dynamic Actions
 

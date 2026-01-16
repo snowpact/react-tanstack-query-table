@@ -13,7 +13,7 @@ afterEach(() => {
 // Setup SnowTable with mock dependencies before all tests
 beforeAll(() => {
   setupSnowTable({
-    t: (key: string) => key,
+    translate: (key: string) => key,
     LinkComponent: ({ to, children, ...props }) => (
       <a href={to} {...props}>
         {children}
