@@ -2,6 +2,8 @@
 
 Ultra-light, registry-based data table for React + TanStack Table + TanStack Query.
 
+**[Live Demo](https://snowpact.github.io/react-tanstack-query-table/)**
+
 ## Features
 
 - **Zero heavy dependencies**: No clsx, no tailwind-merge, no lucide-react bundled
@@ -29,6 +31,7 @@ import '@snowpact/react-tanstack-query-table/styles.css';
 ### 3. Setup once
 
 ```tsx
+// In your app entry point (main.tsx or App.tsx)
 import { setupSnowTable } from '@snowpact/react-tanstack-query-table';
 import { Link } from 'react-router-dom';
 
