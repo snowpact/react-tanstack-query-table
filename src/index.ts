@@ -9,7 +9,6 @@
  * setupSnowTable({
  *   t: (key) => i18n.t(key),
  *   LinkComponent: Link,
- *   confirm: ({ title }) => window.confirm(title),
  * });
  * ```
  */
@@ -55,11 +54,9 @@ export type {
   ServerFetchParams,
   TableAction,
   ClickAction,
-  EndpointAction,
   LinkAction,
   BaseAction,
   ActionButtonVariant,
-  ActionConfirmContent,
   ErrorResponse,
   DataTableUIOptions,
   BaseSnowTableProps,
@@ -74,7 +71,7 @@ export { redirectToPageWithParam } from './utils';
 
 // Registry (for setup)
 export { setupSnowTable, isSnowTableSetup } from './registry';
-export type { SetupSnowTableOptions, ConfirmContent, ConfirmHelpers, ConfirmFunction } from './registry';
+export type { SetupSnowTableOptions } from './registry';
 
 // Internal (for customization)
 export { ActionCell } from './components';

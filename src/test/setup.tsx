@@ -19,7 +19,6 @@ beforeAll(() => {
         {children}
       </a>
     ),
-    confirm: vi.fn().mockResolvedValue(true),
   });
 });
 

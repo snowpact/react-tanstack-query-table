@@ -7,7 +7,7 @@ Ultra-light, registry-based data table for React + TanStack Table + TanStack Que
 ## Features
 
 - **Zero heavy dependencies**: Only `@tanstack/react-query` and `@tanstack/react-table` as peer dependencies
-- **Registry-based**: Inject your own i18n, Link component, confirmation dialogs
+- **Registry-based**: Inject your own i18n and Link component
 - **TypeScript**: Full type support with generics
 - **Two modes**: Client-side and Server-side pagination/filtering/sorting
 - **Customizable**: Override styles via CSS variables or registry
@@ -41,7 +41,6 @@ const t = (key: string) => translations[key] || key;
 setupSnowTable({
   t,
   LinkComponent: Link,
-  confirm: ({ title }) => window.confirm(title),
 });
 ```
 
@@ -116,10 +115,6 @@ const { t } = i18n;
 setupSnowTable({
   t: (key) => t(key),
   LinkComponent: Link,
-  confirm: ({ title, content }) => {
-    const message = typeof content === 'string' ? `${title}\n\n${content}` : title;
-    return window.confirm(message);
-  },
 });
 ```
 
@@ -132,28 +127,6 @@ The `t` function is automatically called with:
   - `dataTable.resetFilters` - Reset button tooltip
   - `dataTable.columns` - Columns button label
 
-### Setup with custom confirm dialog
-
-```tsx
-import { useConfirmDialog } from './your-confirm-hook';
-
-// If you have a hook-based confirm dialog
-const confirmDialog = useConfirmDialog();
-
-setupSnowTable({
-  t,
-  LinkComponent: Link,
-  confirm: async ({ title, content, confirmText, cancelText }) => {
-    return confirmDialog.open({
-      title,
-      description: content,
-      confirmLabel: confirmText,
-      cancelLabel: cancelText,
-    });
-  },
-});
-```
-
 ### Override component styles (rare)
 
 For deep customization, override internal Tailwind classes:
@@ -162,7 +135,6 @@ For deep customization, override internal Tailwind classes:
 setupSnowTable({
   t,
   LinkComponent: Link,
-  confirm: ({ title }) => window.confirm(title),
   styles: {
     button: {
       visual: 'rounded-full bg-primary text-primary-foreground',
@@ -225,7 +197,7 @@ const fetchUsers = async (params: ServerFetchParams) => {
 
 ## Actions
 
-Actions appear as buttons in each row:
+Actions appear as buttons in each row. You have full control over what happens when an action is triggered.
 
 ### Click Action
 
@@ -250,19 +222,43 @@ Actions appear as buttons in each row:
 }
 ```
 
-### Endpoint Action
+### Click Action with Confirmation
+
+Handle confirmation dialogs yourself in the onClick handler:
 
 ```tsx
 {
-  type: 'endpoint',
+  type: 'click',
   icon: TrashIcon,
   label: 'Delete',
   variant: 'danger',
-  endpoint: (item) => api.deleteUser(item.id),
-  onSuccess: () => queryClient.invalidateQueries(['users']),
-  confirm: {
-    title: 'Delete user?',
-    content: 'This action cannot be undone.',
+  onClick: async (item) => {
+    // Use your own confirmation dialog
+    if (await myConfirmDialog(`Delete ${item.name}?`)) {
+      await api.deleteUser(item.id);
+      toast.success('User deleted');
+      queryClient.invalidateQueries(['users']);
+    }
+  },
+}
+```
+
+### Click Action with API Call
+
+```tsx
+{
+  type: 'click',
+  icon: TrashIcon,
+  label: 'Delete',
+  variant: 'danger',
+  onClick: async (item) => {
+    try {
+      await api.deleteUser(item.id);
+      toast.success('User deleted');
+      queryClient.invalidateQueries(['users']);
+    } catch (error) {
+      toast.error('Failed to delete user');
+    }
   },
 }
 ```

@@ -2,23 +2,22 @@
  * Hook for building table columns and handling actions
  */
 
-import { useMutation } from '@tanstack/react-query';
 import { ColumnDef } from '@tanstack/react-table';
 import { useMemo } from 'react';
 
 import { ActionCell } from '../components/ActionCell';
 import { FilterConfig } from '../core/SingleFilterDropdown';
-import { getConfirm, getT } from '../registry';
-import { ErrorResponse, SnowColumnConfig, TableAction } from '../types';
+import { getT } from '../registry';
+import { SnowColumnConfig, TableAction } from '../types';
 import { printValue } from '../utils';
 
 // ============================================
 // Hook Options
 // ============================================
 
-export interface UseSnowColumnsOptions<T extends Record<string, unknown>, K> {
+export interface UseSnowColumnsOptions<T extends Record<string, unknown>> {
   columnConfig: SnowColumnConfig<T>[];
-  actions?: TableAction<T, K>[];
+  actions?: TableAction<T>[];
   filters?: FilterConfig<T>[];
   /**
    * Mode determines how global filter behaves:
@@ -32,9 +31,9 @@ export interface UseSnowColumnsOptions<T extends Record<string, unknown>, K> {
 // Hook Return Type
 // ============================================
 
-export interface UseSnowColumnsReturn<T extends Record<string, unknown>, K> {
+export interface UseSnowColumnsReturn<T extends Record<string, unknown>> {
   columns: ColumnDef<T, unknown>[];
-  handleAction: (action: TableAction<T, K>, item: T) => Promise<void>;
+  handleAction: (action: TableAction<T>, item: T) => void;
 }
 
 // ============================================
@@ -47,59 +46,26 @@ export interface UseSnowColumnsReturn<T extends Record<string, unknown>, K> {
  * Extracts the common logic for:
  * - Transforming SnowColumnConfig into TanStack Table ColumnDef
  * - Adding action column with ActionCell
- * - Handling action execution with confirmation dialogs and mutations
+ * - Handling action execution (click actions)
  */
-export const useSnowColumns = <T extends Record<string, unknown>, K>({
+export const useSnowColumns = <T extends Record<string, unknown>>({
   columnConfig,
   actions,
   filters,
   mode,
-}: UseSnowColumnsOptions<T, K>): UseSnowColumnsReturn<T, K> => {
-  const confirm = getConfirm();
+}: UseSnowColumnsOptions<T>): UseSnowColumnsReturn<T> => {
   const t = getT();
-
-  // ============================================
-  // Action Mutation
-  // ============================================
-  const { mutate: mutateEndpoint } = useMutation<K, ErrorResponse, { item: T; endpoint: (item: T) => Promise<K> }>({
-    mutationFn: async params => {
-      return params.endpoint(params.item);
-    },
-  });
 
   // ============================================
   // Action Handler
   // ============================================
-  const handleAction = async (a: TableAction<T, K>, item: T) => {
+  const handleAction = (a: TableAction<T>, item: T) => {
     const action = typeof a === 'function' ? a(item) : a;
 
-    if (action.confirm) {
-      const confirmed = await confirm({
-        title: action.confirm.title,
-        subtitle: action.confirm.subtitle,
-        content: action.confirm.content,
-      });
-
-      if (!confirmed) return;
-    }
-
-    if (action.type === 'endpoint') {
-      mutateEndpoint(
-        {
-          item: item,
-          endpoint: action.endpoint,
-        },
-        {
-          onError: (error, variables, context) => action.onError?.(error, variables.item, context),
-          onSuccess: (data, variables, context) => action.onSuccess?.(data, variables.item, context),
-        }
-      );
-    } else if (action.type === 'click') {
+    if (action.type === 'click') {
       action.onClick(item);
-    } else if (action.type === 'link') {
-      // Link actions are handled by ActionCell directly via <a> tag
-      return;
     }
+    // Link actions are handled by ActionCell directly via <a> tag
   };
 
   // ============================================

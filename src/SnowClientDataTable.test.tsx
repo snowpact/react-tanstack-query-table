@@ -66,7 +66,7 @@ describe('SnowClientDataTable', () => {
     const fetchAllItemsEndpoint = vi.fn().mockResolvedValue(mockData);
 
     renderWithProviders(
-      <SnowClientDataTable<TestItem, void>
+      <SnowClientDataTable<TestItem>
         queryKey={['test-items']}
         columnConfig={columnConfig}
         fetchAllItemsEndpoint={fetchAllItemsEndpoint}
@@ -83,7 +83,7 @@ describe('SnowClientDataTable', () => {
     const fetchAllItemsEndpoint = vi.fn().mockResolvedValue(mockData);
 
     renderWithProviders(
-      <SnowClientDataTable<TestItem, void>
+      <SnowClientDataTable<TestItem>
         queryKey={['test-items']}
         columnConfig={columnConfig}
         fetchAllItemsEndpoint={fetchAllItemsEndpoint}
@@ -109,7 +109,7 @@ describe('SnowClientDataTable', () => {
     );
 
     renderWithProviders(
-      <SnowClientDataTable<TestItem, void>
+      <SnowClientDataTable<TestItem>
         queryKey={['test-items-loading']}
         columnConfig={columnConfig}
         fetchAllItemsEndpoint={fetchAllItemsEndpoint}
@@ -129,7 +129,7 @@ describe('SnowClientDataTable', () => {
     ];
 
     renderWithProviders(
-      <SnowClientDataTable<TestItem, void>
+      <SnowClientDataTable<TestItem>
         queryKey={['test-items-prefilter']}
         columnConfig={columnConfig}
         fetchAllItemsEndpoint={fetchAllItemsEndpoint}
@@ -148,7 +148,7 @@ describe('SnowClientDataTable', () => {
     const fetchAllItemsEndpoint = vi.fn().mockResolvedValue(mockData);
 
     renderWithProviders(
-      <SnowClientDataTable<TestItem, void>
+      <SnowClientDataTable<TestItem>
         queryKey={['test-items-fetch']}
         columnConfig={columnConfig}
         fetchAllItemsEndpoint={fetchAllItemsEndpoint}
@@ -164,7 +164,7 @@ describe('SnowClientDataTable', () => {
     const fetchAllItemsEndpoint = vi.fn().mockResolvedValue([]);
 
     renderWithProviders(
-      <SnowClientDataTable<TestItem, void>
+      <SnowClientDataTable<TestItem>
         queryKey={['test-items-empty']}
         columnConfig={columnConfig}
         fetchAllItemsEndpoint={fetchAllItemsEndpoint}
@@ -184,7 +184,7 @@ describe('SnowClientDataTable', () => {
     ];
 
     renderWithProviders(
-      <SnowClientDataTable<TestItem, void>
+      <SnowClientDataTable<TestItem>
         queryKey={['test-items-hidden']}
         columnConfig={configWithHidden}
         fetchAllItemsEndpoint={fetchAllItemsEndpoint}
@@ -205,7 +205,7 @@ describe('SnowClientDataTable', () => {
     const fetchAllItemsEndpoint = vi.fn().mockResolvedValue(mockData);
 
     renderWithProviders(
-      <SnowClientDataTable<TestItem, void>
+      <SnowClientDataTable<TestItem>
         queryKey={['test-items-search']}
         columnConfig={columnConfig}
         fetchAllItemsEndpoint={fetchAllItemsEndpoint}
@@ -273,7 +273,7 @@ describe('SnowClientDataTable with persistState', () => {
     const fetchAllItemsEndpoint = vi.fn().mockResolvedValue(mockData);
 
     renderWithProviders(
-      <SnowClientDataTable<TestItem, void>
+      <SnowClientDataTable<TestItem>
         queryKey={['test-persist']}
         columnConfig={columnConfig}
         fetchAllItemsEndpoint={fetchAllItemsEndpoint}
@@ -297,7 +297,7 @@ describe('SnowClientDataTable with persistState', () => {
     ];
 
     renderWithProviders(
-      <SnowClientDataTable<TestItem, void>
+      <SnowClientDataTable<TestItem>
         queryKey={['test-persist']}
         columnConfig={columnConfig}
         fetchAllItemsEndpoint={fetchAllItemsEndpoint}
@@ -328,7 +328,7 @@ describe('SnowClientDataTable with persistState', () => {
     setupLocationMock(params.toString());
 
     renderWithProviders(
-      <SnowClientDataTable<TestItem, void>
+      <SnowClientDataTable<TestItem>
         queryKey={['test-persist']}
         columnConfig={columnConfig}
         fetchAllItemsEndpoint={fetchAllItemsEndpoint}
@@ -360,7 +360,7 @@ describe('SnowClientDataTable with persistState', () => {
     setupLocationMock(params.toString());
 
     renderWithProviders(
-      <SnowClientDataTable<TestItem, void>
+      <SnowClientDataTable<TestItem>
         queryKey={['test-persist']}
         columnConfig={columnConfig}
         fetchAllItemsEndpoint={fetchAllItemsEndpoint}

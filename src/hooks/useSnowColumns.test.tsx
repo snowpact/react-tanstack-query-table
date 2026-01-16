@@ -28,7 +28,7 @@ describe('useSnowColumns', () => {
   describe('column transformation', () => {
     it('should transform columnConfig into ColumnDef array', () => {
       const { result } = renderHookWithProviders(() =>
-        useSnowColumns<TestData, void>({
+        useSnowColumns<TestData>({
           columnConfig: baseColumnConfig,
           mode: 'client',
         })
@@ -49,7 +49,7 @@ describe('useSnowColumns', () => {
       ];
 
       const { result } = renderHookWithProviders(() =>
-        useSnowColumns<TestData, void>({
+        useSnowColumns<TestData>({
           columnConfig: configWithHidden,
           mode: 'client',
         })
@@ -69,7 +69,7 @@ describe('useSnowColumns', () => {
       ];
 
       const { result } = renderHookWithProviders(() =>
-        useSnowColumns<TestData, void>({
+        useSnowColumns<TestData>({
           columnConfig: configMixed,
           mode: 'client',
         })
@@ -81,7 +81,7 @@ describe('useSnowColumns', () => {
 
     it('should enable sorting by default', () => {
       const { result } = renderHookWithProviders(() =>
-        useSnowColumns<TestData, void>({
+        useSnowColumns<TestData>({
           columnConfig: baseColumnConfig,
           mode: 'client',
         })
@@ -97,7 +97,7 @@ describe('useSnowColumns', () => {
       ];
 
       const { result } = renderHookWithProviders(() =>
-        useSnowColumns<TestData, void>({
+        useSnowColumns<TestData>({
           columnConfig: configWithSortable,
           mode: 'client',
         })
@@ -116,7 +116,7 @@ describe('useSnowColumns', () => {
       ];
 
       const { result } = renderHookWithProviders(() =>
-        useSnowColumns<TestData, void>({
+        useSnowColumns<TestData>({
           columnConfig: configWithSearch,
           mode: 'client',
         })
@@ -133,7 +133,7 @@ describe('useSnowColumns', () => {
       ];
 
       const { result } = renderHookWithProviders(() =>
-        useSnowColumns<TestData, void>({
+        useSnowColumns<TestData>({
           columnConfig: configWithSearch,
           mode: 'server',
         })
@@ -145,7 +145,7 @@ describe('useSnowColumns', () => {
 
   describe('actions column', () => {
     it('should add actions column when actions are provided', () => {
-      const actions: TableAction<TestData, void>[] = [
+      const actions: TableAction<TestData>[] = [
         {
           type: 'click',
           icon: MockIcon,
@@ -155,7 +155,7 @@ describe('useSnowColumns', () => {
       ];
 
       const { result } = renderHookWithProviders(() =>
-        useSnowColumns<TestData, void>({
+        useSnowColumns<TestData>({
           columnConfig: baseColumnConfig,
           actions,
           mode: 'client',
@@ -171,7 +171,7 @@ describe('useSnowColumns', () => {
 
     it('should not add actions column when no actions provided', () => {
       const { result } = renderHookWithProviders(() =>
-        useSnowColumns<TestData, void>({
+        useSnowColumns<TestData>({
           columnConfig: baseColumnConfig,
           mode: 'client',
         })
@@ -192,7 +192,7 @@ describe('useSnowColumns', () => {
       ];
 
       const { result } = renderHookWithProviders(() =>
-        useSnowColumns<TestData, void>({
+        useSnowColumns<TestData>({
           columnConfig: configWithStatus,
           filters,
           mode: 'client',
@@ -207,7 +207,7 @@ describe('useSnowColumns', () => {
   describe('handleAction', () => {
     it('should be a function', () => {
       const { result } = renderHookWithProviders(() =>
-        useSnowColumns<TestData, void>({
+        useSnowColumns<TestData>({
           columnConfig: baseColumnConfig,
           mode: 'client',
         })

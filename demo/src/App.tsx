@@ -6,7 +6,6 @@ import {
   type SnowColumnConfig,
   type ServerFetchParams,
   type ServerPaginatedResponse,
-  type ConfirmHelpers,
 } from '@snowpact/react-tanstack-query-table';
 import { CodePanel, ConfigPanel, type DemoConfig, type User, type ThemeColors, defaultTheme } from './components';
 
@@ -93,9 +92,6 @@ setupSnowTable({
       {children}
     </a>
   ),
-  confirm: async ({ title }) => {
-    return window.confirm(title);
-  },
 });
 
 // Mock data generator
@@ -313,32 +309,15 @@ export function App() {
       },
     },
     {
-      type: 'endpoint' as const,
+      type: 'click' as const,
       icon: TrashIcon,
       label: 'Delete',
       variant: 'danger' as const,
-      endpoint: (user: User) => deleteUser(user.id),
-      confirm: {
-        title: 'Delete user?',
-        content: ({ close, confirm }: ConfirmHelpers) => (
-          <div className="space-y-4">
-            <p>Are you sure you want to delete this user? This action cannot be undone.</p>
-            <div className="flex justify-end gap-2">
-              <button
-                className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
-                onClick={close}
-              >
-                Cancel
-              </button>
-              <button
-                className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700"
-                onClick={confirm}
-              >
-                Delete
-              </button>
-            </div>
-          </div>
-        ),
+      onClick: async (user: User) => {
+        if (window.confirm(`Delete user "${user.name}"?`)) {
+          await deleteUser(user.id);
+          alert('User deleted!');
+        }
       },
     },
   ];

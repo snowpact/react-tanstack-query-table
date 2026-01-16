@@ -8,7 +8,6 @@ This guide shows how to configure SnowTable with your UI library.
   - [Table of Contents](#table-of-contents)
   - [Shadcn/UI Setup](#shadcnui-setup)
   - [App.tsx Integration](#apptsx-integration)
-  - [Custom useConfirm Hook](#custom-useconfirm-hook)
   - [Custom Styles](#custom-styles)
   - [Translation Files](#translation-files)
 
@@ -23,8 +22,6 @@ import i18n from '@/i18n';
 import { Link } from 'react-router-dom';
 
 import { setupSnowTable } from '@snowpact/react-tanstack-query-table';
-
-import { useConfirm } from '@/hooks/useConfirm';
 
 // =============================================================================
 // Setup Function
@@ -55,9 +52,6 @@ export function setupSnowTableConfig(): void {
     // Link component (react-router-dom, Next.js Link, etc.)
     LinkComponent: Link,
 
-    // Confirm dialog hook (see implementation below)
-    useConfirm: () => useConfirm(),
-
     // Optional: Custom styles (see Custom Styles section)
     // styles: { ... }
   });
@@ -79,7 +73,6 @@ import { BrowserRouter } from 'react-router-dom';
 import { Toaster } from 'sonner';
 
 import { setupSnowTableConfig } from '@/lib/snow-table-setup';
-import { ConfirmDialogProvider } from '@/components/ConfirmDialog';
 
 // Initialize SnowTable before rendering
 setupSnowTableConfig();
@@ -90,9 +83,7 @@ export function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <ConfirmDialogProvider>
-          <Routes />
-        </ConfirmDialogProvider>
+        <Routes />
       </BrowserRouter>
       <Toaster />
     </QueryClientProvider>
@@ -102,225 +93,80 @@ export function App() {
 
 ---
 
-## Custom useConfirm Hook
+## Actions Examples
 
-SnowTable requires a `useConfirm` hook that returns a `confirm` function. Here's a complete implementation using Shadcn/UI Dialog:
+Actions are simple: `click` for interactions, `link` for navigation. You handle everything in the callback.
 
-### ConfirmDialogProvider.tsx
-
-```tsx
-// src/components/ConfirmDialog/ConfirmDialogProvider.tsx
-import { createContext, useCallback, useContext, useState, type ReactNode } from 'react';
-
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-
-// =============================================================================
-// Types
-// =============================================================================
-
-interface ConfirmHelpers {
-  close: () => void;    // Close + resolve false (cancel)
-  confirm: () => void;  // Close + resolve true (confirm)
-}
-
-type ConfirmContent = (helpers: ConfirmHelpers) => ReactNode;
-
-interface ConfirmOptions {
-  title: string;
-  subtitle?: string;
-  content: ConfirmContent;
-}
-
-interface ConfirmContextValue {
-  confirm: (options: ConfirmOptions) => Promise<boolean>;
-}
-
-// =============================================================================
-// Context
-// =============================================================================
-
-const ConfirmContext = createContext<ConfirmContextValue | null>(null);
-
-// =============================================================================
-// Provider
-// =============================================================================
-
-export function ConfirmDialogProvider({ children }: { children: ReactNode }) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [options, setOptions] = useState<ConfirmOptions | null>(null);
-  const [resolvePromise, setResolvePromise] = useState<((value: boolean) => void) | null>(null);
-
-  const confirm = useCallback((opts: ConfirmOptions): Promise<boolean> => {
-    setOptions(opts);
-    setIsOpen(true);
-
-    return new Promise<boolean>(resolve => {
-      setResolvePromise(() => resolve);
-    });
-  }, []);
-
-  const handleClose = useCallback(() => {
-    setIsOpen(false);
-    resolvePromise?.(false);
-  }, [resolvePromise]);
-
-  const handleConfirm = useCallback(() => {
-    setIsOpen(false);
-    resolvePromise?.(true);
-  }, [resolvePromise]);
-
-  // Helpers for custom content
-  const helpers: ConfirmHelpers = {
-    close: handleClose,
-    confirm: handleConfirm,
-  };
-
-  // Render content (always a function)
-  const renderContent = () => {
-    if (!options?.content) return null;
-    return options.content(helpers);
-  };
-
-  return (
-    <ConfirmContext.Provider value={{ confirm }}>
-      {children}
-
-      <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>{options?.title}</DialogTitle>
-            {options?.subtitle && <DialogDescription>{options.subtitle}</DialogDescription>}
-          </DialogHeader>
-
-          <div className="py-4">{renderContent()}</div>
-        </DialogContent>
-      </Dialog>
-    </ConfirmContext.Provider>
-  );
-}
-
-// =============================================================================
-// Hook
-// =============================================================================
-
-export function useConfirm(): ConfirmContextValue {
-  const context = useContext(ConfirmContext);
-  if (!context) {
-    throw new Error('useConfirm must be used within ConfirmDialogProvider');
-  }
-  return context;
-}
-```
-
-### Usage Examples
-
-Content is always a function that receives `{ close, confirm }` helpers. You control the buttons:
+### Click Action with Confirmation
 
 ```tsx
-// Simple confirmation with custom buttons
+import { useConfirm } from '@/hooks/useConfirm'; // Your own confirm hook
+
+// In your table actions
 {
-  type: 'endpoint',
+  type: 'click',
   icon: Trash,
   label: 'Delete',
   variant: 'danger',
-  endpoint: (item) => deleteItem(item.id),
-  confirm: {
-    title: 'Delete item?',
-    content: ({ close, confirm }) => (
-      <div className="space-y-4">
-        <p>Are you sure you want to delete this item? This action cannot be undone.</p>
-        <div className="flex justify-end gap-2">
-          <Button variant="outline" onClick={close}>Cancel</Button>
-          <Button variant="destructive" onClick={confirm}>Delete</Button>
-        </div>
-      </div>
-    ),
+  onClick: async (item) => {
+    const confirmed = await confirm({
+      title: 'Delete item?',
+      description: 'This action cannot be undone.',
+    });
+
+    if (confirmed) {
+      await deleteItem(item.id);
+      toast.success('Item deleted');
+      queryClient.invalidateQueries(['items']);
+    }
   },
 }
 ```
 
-### Usage with Forms
-
-When using forms inside confirm dialogs, use the `close` helper:
+### Click Action with Form Dialog
 
 ```tsx
-// In your table actions
 {
   type: 'click',
   icon: Edit,
   label: 'Change Status',
-  onClick: () => {},
-  confirm: {
-    title: 'Change Status',
-    content: ({ close }) => (
-      <StatusForm
-        itemId={item.id}
-        onSuccess={() => {
-          queryClient.invalidateQueries(['items']);
-          close(); // Close the dialog (resolves false, but action already done)
-        }}
-        onCancel={close}
-      />
-    ),
+  onClick: (item) => {
+    // Open your own modal/dialog
+    openStatusDialog({
+      itemId: item.id,
+      currentStatus: item.status,
+      onSuccess: () => {
+        queryClient.invalidateQueries(['items']);
+      },
+    });
   },
 }
 ```
 
-### Helper Component for Simple Cases
-
-For simple confirmations, create a reusable helper:
+### Link Action
 
 ```tsx
-// src/components/SimpleConfirmContent.tsx
-interface SimpleConfirmContentProps {
-  message: string;
-  close: () => void;
-  confirm: () => void;
-  cancelText?: string;
-  confirmText?: string;
-  confirmVariant?: 'default' | 'destructive';
+{
+  type: 'link',
+  icon: Eye,
+  label: 'View Details',
+  href: (item) => `/items/${item.id}`,
 }
+```
 
-export function SimpleConfirmContent({
-  message,
-  close,
-  confirm,
-  cancelText = 'Cancel',
-  confirmText = 'Confirm',
-  confirmVariant = 'default',
-}: SimpleConfirmContentProps) {
-  return (
-    <div className="space-y-4">
-      <p>{message}</p>
-      <div className="flex justify-end gap-2">
-        <Button variant="outline" onClick={close}>{cancelText}</Button>
-        <Button variant={confirmVariant} onClick={confirm}>{confirmText}</Button>
-      </div>
-    </div>
-  );
-}
+### Dynamic Action
 
-// Usage
-confirm: {
-  title: 'Delete?',
-  content: ({ close, confirm }) => (
-    <SimpleConfirmContent
-      message="Are you sure?"
-      close={close}
-      confirm={confirm}
-      confirmText="Delete"
-      confirmVariant="destructive"
-    />
-  ),
-}
+```tsx
+(item) => ({
+  type: 'click',
+  icon: item.isActive ? Pause : Play,
+  label: item.isActive ? 'Deactivate' : 'Activate',
+  onClick: async () => {
+    await toggleStatus(item.id);
+    queryClient.invalidateQueries(['items']);
+  },
+  hidden: item.role === 'admin',
+})
 ```
 
 ---
@@ -496,7 +342,6 @@ import { setupSnowTable } from '@snowpact/react-tanstack-query-table';
 setupSnowTable({
   t: (key) => key, // or use next-intl: getTranslations()
   LinkComponent: Link, // Next.js Link
-  useConfirm: () => useConfirm(),
 });
 ```
 
@@ -510,7 +355,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import { setupSnowTableConfig } from '@/lib/snow-table-setup';
-import { ConfirmDialogProvider } from '@/components/ConfirmDialog';
 
 // Initialize once
 setupSnowTableConfig();
@@ -520,7 +364,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ConfirmDialogProvider>{children}</ConfirmDialogProvider>
+      {children}
     </QueryClientProvider>
   );
 }

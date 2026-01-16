@@ -13,7 +13,6 @@ export type IconComponent = ComponentType<SVGProps<SVGSVGElement>>;
 
 import type { PreFilter } from './core/PrefilterTabs';
 import type { FilterConfig } from './core/SingleFilterDropdown';
-import type { ConfirmHelpers } from './registry/confirmRegistry';
 
 // ============================================
 // Shared Types
@@ -43,11 +42,6 @@ export type SnowColumnConfig<T extends object> = {
  */
 export type ActionButtonVariant = 'default' | 'warning' | 'danger' | 'info' | 'success';
 
-/**
- * Confirm content is always a function receiving { close, confirm } helpers
- */
-export type ActionConfirmContent = (helpers: ConfirmHelpers) => ReactNode;
-
 export type BaseAction = {
   icon: IconComponent;
   label: string;
@@ -56,18 +50,6 @@ export type BaseAction = {
   hidden?: boolean;
   disabled?: boolean;
   showLabel?: boolean;
-  confirm?: {
-    title: string;
-    content: ActionConfirmContent;
-    subtitle?: string;
-  };
-};
-
-export type EndpointAction<T, K> = BaseAction & {
-  type: 'endpoint';
-  endpoint: (item: T) => Promise<K>;
-  onSuccess?: (data: K, variables: T, context: unknown) => void;
-  onError?: (error: ErrorResponse, variables: T, context: unknown) => void;
 };
 
 export type ClickAction<T> = BaseAction & {
@@ -81,13 +63,7 @@ export type LinkAction<T> = BaseAction & {
   external?: boolean; // true = target="_blank" + rel="noopener noreferrer"
 };
 
-export type TableAction<T, K> =
-  | EndpointAction<T, K>
-  | ClickAction<T>
-  | LinkAction<T>
-  | ((item: T) => EndpointAction<T, K>)
-  | ((item: T) => ClickAction<T>)
-  | ((item: T) => LinkAction<T>);
+export type TableAction<T> = ClickAction<T> | LinkAction<T> | ((item: T) => ClickAction<T>) | ((item: T) => LinkAction<T>);
 
 // ============================================
 // UI Options (passed through to DataTable)
@@ -119,10 +95,10 @@ export interface DataTableUIOptions<T extends object> {
 /**
  * Base props shared between SnowClientDataTable and SnowServerDataTable
  */
-export interface BaseSnowTableProps<T extends Record<string, unknown>, K> extends DataTableUIOptions<T> {
+export interface BaseSnowTableProps<T extends Record<string, unknown>> extends DataTableUIOptions<T> {
   queryKey: string[];
   columnConfig: SnowColumnConfig<T>[];
-  actions?: TableAction<T, K>[];
+  actions?: TableAction<T>[];
   filters?: FilterConfig<T>[];
   prefilters?: PreFilter[];
   defaultSortBy?: string;
@@ -141,7 +117,7 @@ export interface BaseSnowTableProps<T extends Record<string, unknown>, K> extend
 /**
  * Props for SnowClientDataTable component (client-side filtering/sorting)
  */
-export interface SnowClientDataTableProps<T extends Record<string, unknown>, K> extends BaseSnowTableProps<T, K> {
+export interface SnowClientDataTableProps<T extends Record<string, unknown>> extends BaseSnowTableProps<T> {
   fetchAllItemsEndpoint: () => Promise<T[]>;
   /** Optional function to filter items based on active prefilter */
   prefilterFn?: (item: T, prefilterId: string) => boolean;
@@ -175,7 +151,7 @@ export interface ServerFetchParams {
 /**
  * Props for SnowServerDataTable component (server-side pagination/filtering/sorting)
  */
-export interface SnowServerDataTableProps<T extends Record<string, unknown>, K> extends BaseSnowTableProps<T, K> {
+export interface SnowServerDataTableProps<T extends Record<string, unknown>> extends BaseSnowTableProps<T> {
   fetchServerEndpoint: (params: ServerFetchParams) => Promise<ServerPaginatedResponse<T>>;
   filters?: FilterConfig<Record<string, unknown>>[];
 }
