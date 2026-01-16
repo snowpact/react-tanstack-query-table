@@ -1,70 +1,21 @@
 /**
  * ActionCell component for table row actions
+ * Optimized with React.memo + useMemo + useCallback
+ * Tooltips rendered via React Portal (no manual DOM manipulation)
  */
 
+import React, { useState, useCallback, useMemo, memo } from 'react';
+import { createPortal } from 'react-dom';
 import { MoreVertical } from '../icons';
-
 import { Button } from '../primitives/Button';
 import { DropdownMenu } from '../primitives/DropdownMenu';
 import { getLink } from '../registry';
 import { LinkAction, TableAction } from '../types';
 
-// Tooltip singleton - created once, reused
-let tooltip: HTMLDivElement | null = null;
-
-function getTooltip(): HTMLDivElement {
-  if (!tooltip) {
-    tooltip = document.createElement('div');
-    tooltip.id = 'snow-action-tooltip';
-    tooltip.className = 'fixed z-50 pointer-events-none';
-    tooltip.style.display = 'none';
-    tooltip.innerHTML = `
-      <div class="snow-tooltip-content"></div>
-      <div class="snow-tooltip-arrow"></div>
-    `;
-    document.body.appendChild(tooltip);
-
-    // Hide on click or scroll anywhere
-    const hide = () => {
-      tooltip!.style.display = 'none';
-    };
-    document.addEventListener('click', hide, true);
-    document.addEventListener('scroll', hide, true);
-  }
-  return tooltip;
-}
-
-function showTooltip(label: string, element: HTMLElement) {
-  const tip = getTooltip();
-  const textEl = tip.querySelector('.snow-tooltip-content');
-  if (textEl) textEl.textContent = label;
-
-  tip.style.display = 'block';
-
-  const rect = element.getBoundingClientRect();
-  let left = rect.left + rect.width / 2;
-  const top = rect.top - 8;
-
-  // Measure after content is set
-  const tipRect = tip.getBoundingClientRect();
-  const tipWidth = tipRect.width;
-
-  // Prevent overflow
-  const maxRight = window.innerWidth - 8;
-  if (left + tipWidth / 2 > maxRight) {
-    left = maxRight - tipWidth / 2;
-  }
-  if (left - tipWidth / 2 < 8) {
-    left = 8 + tipWidth / 2;
-  }
-
-  tip.style.left = `${left}px`;
-  tip.style.top = `${top}px`;
-  tip.style.transform = 'translate(-50%, -100%)';
-}
-
-function hideTooltip() {
-  if (tooltip) tooltip.style.display = 'none';
+interface TooltipState {
+  label: string;
+  x: number;
+  y: number;
 }
 
 interface ActionCellProps<T, K> {
@@ -73,39 +24,90 @@ interface ActionCellProps<T, K> {
   onAction: (action: TableAction<T, K>, item: T) => void;
 }
 
-export function ActionCell<T, K>({ item, actions, onAction }: ActionCellProps<T, K>) {
+// Tooltip component rendered via portal
+function Tooltip({ label, x, y }: TooltipState) {
+  const style: React.CSSProperties = {
+    position: 'fixed',
+    left: x,
+    top: y,
+    transform: 'translate(-50%, -100%)',
+    zIndex: 50,
+    pointerEvents: 'none',
+  };
+
+  return createPortal(
+    <div style={style} className="snow-action-tooltip">
+      <div className="snow-tooltip-content">{label}</div>
+      <div className="snow-tooltip-arrow" />
+    </div>,
+    document.body
+  );
+}
+
+function ActionCellInner<T, K>({ item, actions, onAction }: ActionCellProps<T, K>) {
   const Link = getLink();
+  const [tooltip, setTooltip] = useState<TooltipState | null>(null);
 
-  const handleMouseEnter = (label: string, element: HTMLElement) => {
-    showTooltip(label, element);
-  };
+  const handleMouseEnter = useCallback((label: string, element: HTMLElement) => {
+    const rect = element.getBoundingClientRect();
+    let x = rect.left + rect.width / 2;
+    const y = rect.top - 8;
 
-  const handleMouseLeave = () => {
-    hideTooltip();
-  };
+    // Prevent overflow on edges
+    const maxRight = window.innerWidth - 8;
+    const minLeft = 8;
+    const approxWidth = label.length * 7 + 16;
 
-  const visibleActions = actions.filter(a => {
-    const action = typeof a === 'function' ? a(item) : a;
-    return !action.hidden;
-  });
+    if (x + approxWidth / 2 > maxRight) {
+      x = maxRight - approxWidth / 2;
+    }
+    if (x - approxWidth / 2 < minLeft) {
+      x = minLeft + approxWidth / 2;
+    }
 
-  const buttonActions = visibleActions.filter(a => {
-    const action = typeof a === 'function' ? a(item) : a;
-    return action.display !== 'dropdown';
-  });
+    setTooltip({ label, x, y });
+  }, []);
 
-  const dropdownActions = visibleActions.filter(a => {
-    const action = typeof a === 'function' ? a(item) : a;
-    return action.display === 'dropdown';
-  });
+  const handleMouseLeave = useCallback(() => {
+    setTooltip(null);
+  }, []);
+
+  // Memoize action filtering to avoid recalculating on every render
+  const { buttonActions, dropdownActions } = useMemo(() => {
+    const visible = actions.filter(a => {
+      const action = typeof a === 'function' ? a(item) : a;
+      return !action.hidden;
+    });
+
+    return {
+      buttonActions: visible.filter(a => {
+        const action = typeof a === 'function' ? a(item) : a;
+        return action.display !== 'dropdown';
+      }),
+      dropdownActions: visible.filter(a => {
+        const action = typeof a === 'function' ? a(item) : a;
+        return action.display === 'dropdown';
+      }),
+    };
+  }, [actions, item]);
+
+  // Memoize action handler - closes tooltip and calls parent handler
+  const handleAction = useCallback(
+    (action: TableAction<T, K>) => {
+      setTooltip(null);
+      onAction(action, item);
+    },
+    [onAction, item]
+  );
 
   return (
     <div className="flex gap-2 justify-end items-center">
+      {tooltip && <Tooltip {...tooltip} />}
+
       {buttonActions.map((a, index) => {
         const action = typeof a === 'function' ? a(item) : a;
         const Icon = action.icon;
 
-        // Link type: render as Link
         if (action.type === 'link') {
           const linkAction = action as LinkAction<T>;
           const href = linkAction.href(item);
@@ -126,13 +128,12 @@ export function ActionCell<T, K>({ item, actions, onAction }: ActionCellProps<T,
           );
         }
 
-        // Other types: render as button
         return (
           <Button
             key={`button-${action.label}-${index}`}
             className={action.showLabel ? 'h-8 px-3' : 'h-8 w-8 p-0'}
             variant={action.variant}
-            onClick={() => onAction(action, item)}
+            onClick={() => handleAction(action)}
             disabled={action.disabled}
             onMouseEnter={e => handleMouseEnter(action.label, e.currentTarget)}
             onMouseLeave={handleMouseLeave}
@@ -162,9 +163,9 @@ export function ActionCell<T, K>({ item, actions, onAction }: ActionCellProps<T,
                 success: 'text-green-600 hover:text-green-700 focus:text-green-700',
               };
 
-              const className = action.variant && variantClasses[action.variant] ? variantClasses[action.variant] : '';
+              const className =
+                action.variant && variantClasses[action.variant] ? variantClasses[action.variant] : '';
 
-              // Link type: render as Link inside DropdownMenuItem
               if (action.type === 'link') {
                 const linkAction = action as LinkAction<T>;
                 const href = linkAction.href(item);
@@ -186,7 +187,7 @@ export function ActionCell<T, K>({ item, actions, onAction }: ActionCellProps<T,
               return (
                 <DropdownMenu.Item
                   key={`dropdown-${action.label}-${index}`}
-                  onClick={() => onAction(action, item)}
+                  onClick={() => handleAction(action)}
                   disabled={action.disabled}
                   className={className}
                 >
@@ -201,3 +202,6 @@ export function ActionCell<T, K>({ item, actions, onAction }: ActionCellProps<T,
     </div>
   );
 }
+
+// Export memoized component - prevents re-render if props are unchanged
+export const ActionCell = memo(ActionCellInner) as typeof ActionCellInner;
