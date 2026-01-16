@@ -48,7 +48,7 @@ function Trigger({ className, children }: TriggerProps) {
     <SelectPrimitive.Trigger className={cn(STRUCTURE_TRIGGER, styles.select.trigger, className)}>
       {children}
       <SelectPrimitive.Icon asChild>
-        <ChevronDownIcon className="h-4 w-4 opacity-50" />
+        <ChevronDownIcon className={cn('h-4 w-4 opacity-50')} />
       </SelectPrimitive.Icon>
     </SelectPrimitive.Trigger>
   );
@@ -77,7 +77,7 @@ function Content({ children }: ContentProps) {
         position="popper"
         sideOffset={4}
       >
-        <SelectPrimitive.Viewport className={STRUCTURE_VIEWPORT}>{children}</SelectPrimitive.Viewport>
+        <SelectPrimitive.Viewport className={cn(STRUCTURE_VIEWPORT)}>{children}</SelectPrimitive.Viewport>
       </SelectPrimitive.Content>
     </SelectPrimitive.Portal>
   );
@@ -96,9 +96,9 @@ function Item({ value: itemValue, children }: ItemProps) {
       value={itemValue}
       className={cn(STRUCTURE_ITEM, styles.select.item, 'focus:bg-accent focus:text-accent-foreground')}
     >
-      <span className="absolute right-2 flex h-3.5 w-3.5 items-center justify-center">
+      <span className={cn('absolute right-2 flex h-3.5 w-3.5 items-center justify-center')}>
         <SelectPrimitive.ItemIndicator>
-          <CheckIcon className="h-4 w-4" />
+          <CheckIcon className={cn('h-4 w-4')} />
         </SelectPrimitive.ItemIndicator>
       </span>
       <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>

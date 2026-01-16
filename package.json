@@ -39,7 +39,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build && pnpm build:css",
-    "build:css": "pnpm exec tailwindcss -i ./src/styles/index.css -o ./dist/styles.css --minify",
+    "build:css": "pnpm exec tailwindcss -i ./src/styles/index.css -o ./dist/styles.css --minify && node scripts/prefix-css.cjs",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",

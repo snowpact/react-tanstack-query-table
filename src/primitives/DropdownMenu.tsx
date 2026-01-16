@@ -100,9 +100,9 @@ function CheckboxItem({ checked, onCheckedChange, className, children }: Checkbo
       onCheckedChange={onCheckedChange}
       className={cn(STRUCTURE_CHECKBOX_ITEM, styles.dropdown.checkboxItem, className)}
     >
-      <span className="pointer-events-none absolute left-2 flex size-3.5 items-center justify-center">
+      <span className={cn('pointer-events-none absolute left-2 flex size-3.5 items-center justify-center')}>
         <DropdownMenuPrimitive.ItemIndicator>
-          <CheckIcon className="size-4" />
+          <CheckIcon className={cn('size-4')} />
         </DropdownMenuPrimitive.ItemIndicator>
       </span>
       {children}

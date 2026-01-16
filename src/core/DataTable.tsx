@@ -269,7 +269,8 @@ export function DataTable<Data extends object>({
       return externalTotalCount;
     }
     return table.getFilteredRowModel().rows.length;
-  }, [serverSideMode, externalTotalCount, table]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [serverSideMode, externalTotalCount, table, data.length, globalFilter, tanstackColumnFilters]);
 
   return (
     <div className={cn('snow-table-container relative flex flex-col flex-1 text-foreground', styles.table.root)} data-testid="datatable">
@@ -279,9 +280,9 @@ export function DataTable<Data extends object>({
       )}
 
       {displayAdvancedBar && (
-        <div className="snow-table-top-bar grid grid-cols-1 lg:grid-cols-[auto_1fr_auto] py-4 gap-4 items-center">
+        <div className={cn('snow-table-top-bar grid grid-cols-1 lg:grid-cols-[auto_1fr_auto] py-4 gap-4 items-center')}>
           {/* Prefilter tabs */}
-          <div className="snow-table-prefilters flex items-center gap-2">
+          <div className={cn('snow-table-prefilters flex items-center gap-2')}>
             {prefilters && prefilters.length > 0 && onPrefilterChange && (
               <PrefilterTabs
                 prefilters={prefilters}
@@ -292,9 +293,9 @@ export function DataTable<Data extends object>({
           </div>
 
           {/* Search bar */}
-          <div className="snow-table-search flex justify-center">
+          <div className={cn('snow-table-search flex justify-center')}>
             {enableGlobalSearch && (
-              <div className="w-full max-w-sm">
+              <div className={cn('w-full max-w-sm')}>
                 <SearchBar
                   value={globalFilter}
                   onDebouncedChange={handleGlobalFilterChangeWithReset}
@@ -305,7 +306,7 @@ export function DataTable<Data extends object>({
           </div>
 
           {/* Filters and actions */}
-          <div className="snow-table-filters grid grid-cols-1 sm:flex sm:flex-row gap-2 items-center">
+          <div className={cn('snow-table-filters grid grid-cols-1 sm:flex sm:flex-row gap-2 items-center')}>
             {filters?.map(filter => (
               <SingleFilterDropdown
                 key={String(filter.key)}
@@ -314,7 +315,7 @@ export function DataTable<Data extends object>({
                 onFilterChange={handleFilterChange}
               />
             ))}
-            <div className="snow-table-actions flex items-center gap-2 justify-end lg:justify-start">
+            <div className={cn('snow-table-actions flex items-center gap-2 justify-end lg:justify-start')}>
               {enableColumnConfiguration && <ColumnConfiguration table={table} />}
               {(enableGlobalSearch || (prefilters && prefilters.length > 0) || (filters && filters.length > 0)) && onResetFilters && (
                 <Button
@@ -322,7 +323,7 @@ export function DataTable<Data extends object>({
                   title={t('dataTable.resetFilters')}
                   data-testid="datatable-reset-filters"
                 >
-                  <FunnelX className="h-4 w-4" />
+                  <FunnelX className={cn('h-4 w-4')} />
                 </Button>
               )}
             </div>
@@ -356,7 +357,7 @@ export function DataTable<Data extends object>({
                     }}
                   >
                     {header.isPlaceholder ? null : (
-                      <span className="flex gap-2 items-center justify-between w-full">
+                      <span className={cn('flex gap-2 items-center justify-between w-full')}>
                         <h3>{flexRender(header.column.columnDef.header, header.getContext())}</h3>
                         {enableSorting && <SortButton column={header.column} />}
                       </span>
@@ -371,8 +372,8 @@ export function DataTable<Data extends object>({
               {Array.from({ length: pagination.pageSize > 10 ? 10 : pagination.pageSize }).map((_, index) => (
                 <tr key={index} className={cn({ [styles.table.rowAlternate]: index % 2 === 1 })}>
                   {columns.map((_column, colIndex) => (
-                    <td key={`skeleton-table-${colIndex}`} className="px-4 py-3 align-middle">
-                      <Skeleton className="h-4 w-full" />
+                    <td key={`skeleton-table-${colIndex}`} className={cn('px-4 py-3 align-middle')}>
+                      <Skeleton className={cn('h-4 w-full')} />
                     </td>
                   ))}
                 </tr>
@@ -418,7 +419,7 @@ export function DataTable<Data extends object>({
                             : 'px-4 py-3'
                         )}
                       >
-                        {enableResponsive && <span className={RESPONSIVE_STYLES.cellLabel.base}>{headerLabel}</span>}
+                        {enableResponsive && <span className={cn(RESPONSIVE_STYLES.cellLabel.base)}>{headerLabel}</span>}
                         <span className={cn(enableResponsive && RESPONSIVE_STYLES.cellContent.base)}>
                           {flexRender(cell.column.columnDef.cell, cell.getContext())}
                         </span>
@@ -440,7 +441,7 @@ export function DataTable<Data extends object>({
       </div>
 
       {/* Bottom bar */}
-      <div className="snow-table-bottom-bar grid grid-cols-1 lg:grid-cols-[auto_1fr_auto] gap-4 py-4 items-center">
+      <div className={cn('snow-table-bottom-bar grid grid-cols-1 lg:grid-cols-[auto_1fr_auto] gap-4 py-4 items-center')}>
         {/* Item count */}
         {displayTotalNumber && (
           <div className={cn('snow-table-count text-sm order-3 lg:order-1 text-center lg:text-left', styles.table.empty)} data-testid="datatable-count">
@@ -449,13 +450,13 @@ export function DataTable<Data extends object>({
         )}
 
         {/* Pagination */}
-        <div className="snow-table-pagination flex justify-center order-1 lg:order-2">
+        <div className={cn('snow-table-pagination flex justify-center order-1 lg:order-2')}>
           {enablePagination && isPaginationPossible && <Pagination table={table} isLoading={isFetching} />}
         </div>
 
         {/* Page size selector */}
         {enablePagination && (
-          <div className="snow-table-pagesize order-2 lg:order-3 flex justify-center lg:justify-end">
+          <div className={cn('snow-table-pagesize order-2 lg:order-3 flex justify-center lg:justify-end')}>
             <PageSizeSelector table={table} enableElementLabel={enableElementLabel} paginationSizes={paginationSizes} />
           </div>
         )}

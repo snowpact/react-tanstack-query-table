@@ -11,6 +11,7 @@ import { Button } from '../primitives/Button';
 import { DropdownMenu } from '../primitives/DropdownMenu';
 import { getLink } from '../registry';
 import { LinkAction, TableAction } from '../types';
+import { cn } from '../utils';
 
 interface TooltipState {
   label: string;
@@ -101,7 +102,7 @@ function ActionCellInner<T, K>({ item, actions, onAction }: ActionCellProps<T, K
   );
 
   return (
-    <div className="flex gap-2 justify-end items-center">
+    <div className={cn('flex gap-2 justify-end items-center')}>
       {tooltip && <Tooltip {...tooltip} />}
 
       {buttonActions.map((a, index) => {
@@ -121,10 +122,10 @@ function ActionCellInner<T, K>({ item, actions, onAction }: ActionCellProps<T, K
                 to={href}
                 target={linkAction.external ? '_blank' : undefined}
                 rel={linkAction.external ? 'noopener noreferrer' : undefined}
-                className={`inline-flex items-center justify-center gap-1.5 whitespace-nowrap text-sm font-medium cursor-pointer ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-8 rounded-md ${action.showLabel ? 'px-3' : 'w-8'}`}
+                className={cn('inline-flex items-center justify-center gap-1.5 whitespace-nowrap text-sm font-medium cursor-pointer ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-8 rounded-md', action.showLabel ? 'px-3' : 'w-8')}
                 disabled={action.disabled}
               >
-                <Icon className="h-4 w-4" />
+                <Icon className={cn('h-4 w-4')} />
                 {action.showLabel && action.label}
               </Link>
             </div>
@@ -134,14 +135,14 @@ function ActionCellInner<T, K>({ item, actions, onAction }: ActionCellProps<T, K
         return (
           <Button
             key={`button-${action.label}-${index}`}
-            className={action.showLabel ? 'h-8 px-3' : 'h-8 w-8 p-0'}
+            className={cn(action.showLabel ? 'h-8 px-3' : 'h-8 w-8 p-0')}
             variant={action.variant}
             onClick={() => handleAction(action)}
             disabled={action.disabled}
             onMouseEnter={e => handleMouseEnter(action.label, e.currentTarget)}
             onMouseLeave={handleMouseLeave}
           >
-            <Icon className="h-4 w-4" />
+            <Icon className={cn('h-4 w-4')} />
             {action.showLabel && action.label}
           </Button>
         );
@@ -150,8 +151,8 @@ function ActionCellInner<T, K>({ item, actions, onAction }: ActionCellProps<T, K
       {dropdownActions.length > 0 && (
         <DropdownMenu.Root>
           <DropdownMenu.Trigger asChild>
-            <Button className="h-9 w-9 p-0">
-              <MoreVertical className="h-4 w-4" />
+            <Button className={cn('h-9 w-9 p-0')}>
+              <MoreVertical className={cn('h-4 w-4')} />
             </Button>
           </DropdownMenu.Trigger>
           <DropdownMenu.Content align="end">
@@ -166,7 +167,7 @@ function ActionCellInner<T, K>({ item, actions, onAction }: ActionCellProps<T, K
                 success: 'text-green-600 hover:text-green-700 focus:text-green-700',
               };
 
-              const className =
+              const variantClass =
                 action.variant && variantClasses[action.variant] ? variantClasses[action.variant] : '';
 
               if (action.type === 'link') {
@@ -178,9 +179,9 @@ function ActionCellInner<T, K>({ item, actions, onAction }: ActionCellProps<T, K
                       to={href}
                       target={linkAction.external ? '_blank' : undefined}
                       rel={linkAction.external ? 'noopener noreferrer' : undefined}
-                      className={className}
+                      className={cn(variantClass)}
                     >
-                      <Icon className={`mr-2 h-4 w-4 ${className}`} />
+                      <Icon className={cn('mr-2 h-4 w-4', variantClass)} />
                       {action.label}
                     </Link>
                   </DropdownMenu.Item>
@@ -192,9 +193,9 @@ function ActionCellInner<T, K>({ item, actions, onAction }: ActionCellProps<T, K
                   key={`dropdown-${action.label}-${index}`}
                   onClick={() => handleAction(action)}
                   disabled={action.disabled}
-                  className={className}
+                  className={cn(variantClass)}
                 >
-                  <Icon className={`mr-2 h-4 w-4 ${className}`} />
+                  <Icon className={cn('mr-2 h-4 w-4', variantClass)} />
                   {action.label}
                 </DropdownMenu.Item>
               );

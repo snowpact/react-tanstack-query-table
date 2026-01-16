@@ -9,6 +9,7 @@ import { useMemo, useEffect, useRef } from 'react';
 import { Button } from '../primitives/Button';
 import { DropdownMenu } from '../primitives/DropdownMenu';
 import { getT } from '../registry';
+import { cn } from '../utils';
 import {
   saveColumnConfiguration,
   loadColumnConfiguration,
@@ -103,17 +104,17 @@ export function ColumnConfiguration<T extends object>({ table }: ColumnConfigura
     <DropdownMenu.Root>
       <DropdownMenu.Trigger asChild>
         <Button>
-          <Settings className="h-4 w-4" />
+          <Settings className={cn('h-4 w-4')} />
         </Button>
       </DropdownMenu.Trigger>
-      <DropdownMenu.Content align="end" className="w-56">
-        <div className="flex items-center gap-2 px-2 py-1.5 text-sm font-semibold">
-          <Settings className="h-4 w-4" />
+      <DropdownMenu.Content align="end" className={cn('w-56')}>
+        <div className={cn('flex items-center gap-2 px-2 py-1.5 text-sm font-semibold')}>
+          <Settings className={cn('h-4 w-4')} />
           {t('dataTable.columnsConfiguration')}
         </div>
         <DropdownMenu.Separator />
 
-        <div className="max-h-64 overflow-y-auto">
+        <div className={cn('max-h-64 overflow-y-auto')}>
           {configurableColumns.map(column => {
             const isVisible = column.getIsVisible();
             const header = column.columnDef.header;
@@ -141,7 +142,7 @@ export function ColumnConfiguration<T extends object>({ table }: ColumnConfigura
         </div>
 
         <DropdownMenu.Separator />
-        <DropdownMenu.Item onClick={handleResetColumns} className="text-xs cursor-pointer">
+        <DropdownMenu.Item onClick={handleResetColumns} className={cn('text-xs cursor-pointer')}>
           {t('dataTable.resetColumns')}
         </DropdownMenu.Item>
       </DropdownMenu.Content>

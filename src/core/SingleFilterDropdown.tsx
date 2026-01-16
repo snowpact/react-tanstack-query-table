@@ -9,6 +9,7 @@ import { Button } from '../primitives/Button';
 import { DropdownMenu } from '../primitives/DropdownMenu';
 import { Input } from '../primitives/Input';
 import { getStyles, getT } from '../registry';
+import { cn } from '../utils';
 
 export type FilterOption = {
   label: string;
@@ -97,19 +98,19 @@ export function SingleFilterDropdown<T extends object>({
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger asChild>
-        <Button className={`gap-1.5 w-full justify-between ${activeCount > 0 ? styles.state.active : ''}`}>
-          <div className="flex items-center gap-1.5 min-w-0">
-            <Filter className={`h-4 w-4 shrink-0 ${activeCount > 0 ? styles.state.activeText : ''}`} />
-            <span className="truncate">{getDisplayText()}</span>
+        <Button className={cn('gap-1.5 w-full justify-between', activeCount > 0 && styles.state.active)}>
+          <div className={cn('flex items-center gap-1.5 min-w-0')}>
+            <Filter className={cn('h-4 w-4 shrink-0', activeCount > 0 && styles.state.activeText)} />
+            <span className={cn('truncate')}>{getDisplayText()}</span>
           </div>
-          <ChevronDown className="h-3.5 w-3.5 opacity-50 shrink-0" />
+          <ChevronDown className={cn('h-3.5 w-3.5 opacity-50 shrink-0')} />
         </Button>
       </DropdownMenu.Trigger>
-      <DropdownMenu.Content align="start" className="w-56">
+      <DropdownMenu.Content align="start" className={cn('w-56')}>
         {/* Search bar */}
-        <div className="p-2">
-          <div className="relative">
-            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+        <div className={cn('p-2')}>
+          <div className={cn('relative')}>
+            <Search className={cn('absolute left-2 top-2.5 h-4 w-4 text-muted-foreground')} />
             <Input
               placeholder={t('dataTable.searchFilters')}
               value={searchTerm}
@@ -119,20 +120,20 @@ export function SingleFilterDropdown<T extends object>({
                   e.stopPropagation();
                 }
               }}
-              className="pl-8 h-8"
+              className={cn('pl-8 h-8')}
             />
           </div>
         </div>
 
         {filteredOptions.length === 0 ? (
-          <div className="px-2 py-4 text-sm text-muted-foreground text-center">{t('dataTable.searchEmpty')}</div>
+          <div className={cn('px-2 py-4 text-sm text-muted-foreground text-center')}>{t('dataTable.searchEmpty')}</div>
         ) : (
           filteredOptions.map(option => (
             <DropdownMenu.CheckboxItem
               key={option.value}
               checked={selectedValues.includes(option.value)}
               onCheckedChange={() => handleOptionToggle(option.value)}
-              className="cursor-pointer"
+              className={cn('cursor-pointer')}
             >
               {option.label}
             </DropdownMenu.CheckboxItem>
@@ -142,7 +143,7 @@ export function SingleFilterDropdown<T extends object>({
         {activeCount > 0 && (
           <>
             <DropdownMenu.Separator />
-            <DropdownMenu.Item onClick={handleReset} className="text-xs cursor-pointer">
+            <DropdownMenu.Item onClick={handleReset} className={cn('text-xs cursor-pointer')}>
               {t('dataTable.resetFilters')}
             </DropdownMenu.Item>
           </>

@@ -6,6 +6,7 @@ import { Table } from '@tanstack/react-table';
 
 import { Select } from '../primitives/Select';
 import { getT } from '../registry';
+import { cn } from '../utils';
 
 import { DEFAULT_PAGE_SIZES } from './Pagination';
 
@@ -23,15 +24,15 @@ export function PageSizeSelector<Data extends object>({
   const t = getT();
 
   return (
-    <div className="flex items-center gap-2">
-      {enableElementLabel && <span className="text-sm text-muted-foreground">{t('dataTable.paginationSize')}</span>}
+    <div className={cn('flex items-center gap-2')}>
+      {enableElementLabel && <span className={cn('text-sm text-muted-foreground')}>{t('dataTable.paginationSize')}</span>}
       <Select.Root
         value={table.getState().pagination.pageSize.toString()}
         onValueChange={value => {
           table.setPageSize(Number(value));
         }}
       >
-        <Select.Trigger className="h-8 w-[80px]">
+        <Select.Trigger className={cn('h-8 w-[80px]')}>
           <Select.Value />
         </Select.Trigger>
         <Select.Content>
