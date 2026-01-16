@@ -4,9 +4,6 @@
 
 import { Column } from '@tanstack/react-table';
 import { ChevronDown, ChevronUp, ChevronsUpDown } from '../icons';
-import { cn } from '../utils';
-
-const iconClassName = cn('h-[15px] w-[15px] text-foreground');
 
 export interface SortButtonProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -20,11 +17,11 @@ export function SortButton({ column }: SortButtonProps) {
 
   return column.getIsSorted() ? (
     column.getIsSorted() === 'desc' ? (
-      <ChevronDown className={iconClassName} />
+      <ChevronDown className="snow-sort-icon" />
     ) : (
-      <ChevronUp className={iconClassName} />
+      <ChevronUp className="snow-sort-icon" />
     )
   ) : (
-    <ChevronsUpDown className={iconClassName} />
+    <ChevronsUpDown className="snow-sort-icon" />
   );
 }

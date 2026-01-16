@@ -13,5 +13,3 @@ export {
   deleteColumnConfiguration,
   generateColumnConfigurationId,
 } from './columnConfig';
-export { RESPONSIVE_STYLES } from './responsiveStyles';
-export type { ResponsiveStyleKey } from './responsiveStyles';

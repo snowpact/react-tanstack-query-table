@@ -1,19 +1,10 @@
 /**
  * Built-in Button component
- *
- * STRUCTURE (fixed): layout, sizing, focus states
- * VISUAL (customizable via registry): colors, borders, shadows, rounded
  */
 
 import { forwardRef, type ReactNode, type MouseEventHandler, type MouseEvent } from 'react';
 
-import { getStyles } from '../registry';
 import { cn } from '../utils';
-
-// Fixed structural styles - not customizable
-// h-8 and gap-1.5 for compact toolbar buttons (matches shadcn sm size)
-const STRUCTURE =
-  'inline-flex items-center justify-center gap-1.5 whitespace-nowrap h-8 px-3 text-sm font-medium rounded-md cursor-pointer ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0';
 
 export type ButtonVariant = 'default' | 'danger' | 'warning' | 'info' | 'success';
 
@@ -29,6 +20,14 @@ export interface ButtonProps {
   title?: string;
   'data-testid'?: string;
 }
+
+const variantClasses: Record<ButtonVariant, string> = {
+  default: '',
+  danger: 'snow-btn-danger',
+  warning: 'snow-btn-warning',
+  info: 'snow-btn-info',
+  success: 'snow-btn-success',
+};
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   (
@@ -46,11 +45,6 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref
   ) => {
-    const styles = getStyles();
-
-    // For variants, use variant style which overrides visual + hover
-    const isVariant = variant !== 'default';
-
     return (
       <button
         ref={ref}
@@ -60,12 +54,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         onMouseLeave={onMouseLeave}
         disabled={disabled}
         title={title}
-        className={cn(
-          STRUCTURE, // Fixed layout
-          isVariant ? styles.button[variant] : [styles.button.visual, styles.button.hover], // Visual (colors)
-          disabled && styles.button.disabled, // Disabled state
-          className // Consumer override
-        )}
+        className={cn('snow-btn', variantClasses[variant], className)}
         {...props}
       >
         {children}

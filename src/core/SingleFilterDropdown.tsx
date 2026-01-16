@@ -8,7 +8,7 @@ import { useState, useMemo } from 'react';
 import { Button } from '../primitives/Button';
 import { DropdownMenu } from '../primitives/DropdownMenu';
 import { Input } from '../primitives/Input';
-import { getStyles, getT } from '../registry';
+import { getT } from '../registry';
 import { cn } from '../utils';
 
 export type FilterOption = {
@@ -35,7 +35,6 @@ export function SingleFilterDropdown<T extends object>({
   onFilterChange,
 }: SingleFilterDropdownProps<T>) {
   const t = getT();
-  const styles = getStyles();
 
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -98,19 +97,19 @@ export function SingleFilterDropdown<T extends object>({
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger asChild>
-        <Button className={cn('gap-1.5 w-full justify-between', activeCount > 0 && styles.state.active)}>
-          <div className={cn('flex items-center gap-1.5 min-w-0')}>
-            <Filter className={cn('h-4 w-4 shrink-0', activeCount > 0 && styles.state.activeText)} />
-            <span className={cn('truncate')}>{getDisplayText()}</span>
+        <Button className={cn('snow-filter-btn snow-w-full snow-justify-between', activeCount > 0 && 'snow-state-active')}>
+          <div className="snow-filter-btn-content">
+            <Filter className={cn('snow-size-4 snow-shrink-0', activeCount > 0 && 'snow-state-active-text')} />
+            <span className="snow-truncate">{getDisplayText()}</span>
           </div>
-          <ChevronDown className={cn('h-3.5 w-3.5 opacity-50 shrink-0')} />
+          <ChevronDown className="snow-size-3\\.5 snow-opacity-50 snow-shrink-0" />
         </Button>
       </DropdownMenu.Trigger>
-      <DropdownMenu.Content align="start" className={cn('w-56')}>
+      <DropdownMenu.Content align="start" className="snow-w-56">
         {/* Search bar */}
-        <div className={cn('p-2')}>
-          <div className={cn('relative')}>
-            <Search className={cn('absolute left-2 top-2.5 h-4 w-4 text-muted-foreground')} />
+        <div className="snow-p-2">
+          <div className="snow-filter-search">
+            <Search className="snow-filter-search-icon" />
             <Input
               placeholder={t('dataTable.searchFilters')}
               value={searchTerm}
@@ -120,20 +119,20 @@ export function SingleFilterDropdown<T extends object>({
                   e.stopPropagation();
                 }
               }}
-              className={cn('pl-8 h-8')}
+              className="snow-pl-8 snow-h-8"
             />
           </div>
         </div>
 
         {filteredOptions.length === 0 ? (
-          <div className={cn('px-2 py-4 text-sm text-muted-foreground text-center')}>{t('dataTable.searchEmpty')}</div>
+          <div className="snow-filter-empty">{t('dataTable.searchEmpty')}</div>
         ) : (
           filteredOptions.map(option => (
             <DropdownMenu.CheckboxItem
               key={option.value}
               checked={selectedValues.includes(option.value)}
               onCheckedChange={() => handleOptionToggle(option.value)}
-              className={cn('cursor-pointer')}
+              className="snow-cursor-pointer"
             >
               {option.label}
             </DropdownMenu.CheckboxItem>
@@ -143,7 +142,7 @@ export function SingleFilterDropdown<T extends object>({
         {activeCount > 0 && (
           <>
             <DropdownMenu.Separator />
-            <DropdownMenu.Item onClick={handleReset} className={cn('text-xs cursor-pointer')}>
+            <DropdownMenu.Item onClick={handleReset} className="snow-text-xs snow-cursor-pointer">
               {t('dataTable.resetFilters')}
             </DropdownMenu.Item>
           </>

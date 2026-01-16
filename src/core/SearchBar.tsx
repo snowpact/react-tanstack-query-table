@@ -6,7 +6,6 @@ import { Search } from '../icons';
 import { useEffect, useState } from 'react';
 
 import { Input } from '../primitives/Input';
-import { getStyles } from '../registry';
 import { cn } from '../utils';
 
 const SEARCH_DEBOUNCE_MS = 500;
@@ -21,8 +20,6 @@ export interface SearchBarProps {
 }
 
 export function SearchBar({ value = '', onDebouncedChange, placeholder }: SearchBarProps) {
-  const styles = getStyles();
-
   // Internal state for immediate input updates
   const [inputValue, setInputValue] = useState(value);
 
@@ -45,8 +42,8 @@ export function SearchBar({ value = '', onDebouncedChange, placeholder }: Search
   const hasContent = inputValue.length > 0;
 
   return (
-    <div className={cn('relative lg:min-w-[331px] min-w-[220px]')}>
-      <div className={cn('flex relative')}>
+    <div className="snow-searchbar snow-lg:min-w-[331px]">
+      <div className="snow-flex snow-relative">
         <Input
           data-testid="data-table-search-bar"
           type="text"
@@ -55,8 +52,8 @@ export function SearchBar({ value = '', onDebouncedChange, placeholder }: Search
           placeholder={placeholder}
           isActive={hasContent}
         />
-        <span className={cn('absolute inset-y-0 right-0 flex items-center pr-3')}>
-          <Search className={cn('w-5 h-5', hasContent ? styles.state.activeText : 'text-muted-foreground')} />
+        <span className="snow-searchbar-icon">
+          <Search className={cn(hasContent ? 'snow-state-active-text' : 'snow-text-muted-foreground')} />
         </span>
       </div>
     </div>

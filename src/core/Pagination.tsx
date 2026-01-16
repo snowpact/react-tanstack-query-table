@@ -6,7 +6,6 @@ import { Table } from '@tanstack/react-table';
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Loader2 } from '../icons';
 
 import { Button } from '../primitives/Button';
-import { cn } from '../utils';
 
 export const DEFAULT_PAGE_SIZES = [25, 50, 100];
 
@@ -17,41 +16,41 @@ export type PaginationProps<Data extends object> = {
 
 export function Pagination<Data extends object>({ table, isLoading }: PaginationProps<Data>) {
   return (
-    <div className={cn('flex items-center justify-center px-2 py-4')}>
-      <div className={cn('flex items-center gap-2')}>
+    <div className="snow-pagination">
+      <div className="snow-pagination-controls">
         <Button
-          className={cn('h-9 w-9 p-0')}
+          className="snow-btn-icon-lg"
           onClick={() => table.setPageIndex(0)}
           disabled={!table.getCanPreviousPage() || isLoading}
         >
-          <ChevronsLeft className={cn('h-4 w-4')} />
+          <ChevronsLeft />
         </Button>
         <Button
-          className={cn('h-9 w-9 p-0')}
+          className="snow-btn-icon-lg"
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage() || isLoading}
         >
-          <ChevronLeft className={cn('h-4 w-4')} />
+          <ChevronLeft />
         </Button>
-        <div className={cn('flex items-center gap-2 px-4')}>
-          <div className={cn('flex h-8 w-8 items-center justify-center rounded-md border bg-background')}>
-            {isLoading ? <Loader2 className={cn('h-4 w-4 animate-spin')} /> : table.getState().pagination.pageIndex + 1}
+        <div className="snow-pagination-display">
+          <div className="snow-pagination-current">
+            {isLoading ? <Loader2 className="snow-size-4 snow-animate-spin" /> : table.getState().pagination.pageIndex + 1}
           </div>
-          <span className={cn('text-sm text-muted-foreground')}>de {table.getPageCount()}</span>
+          <span className="snow-pagination-total">de {table.getPageCount()}</span>
         </div>
         <Button
-          className={cn('h-9 w-9 p-0')}
+          className="snow-btn-icon-lg"
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage() || isLoading}
         >
-          <ChevronRight className={cn('h-4 w-4')} />
+          <ChevronRight />
         </Button>
         <Button
-          className={cn('h-9 w-9 p-0')}
+          className="snow-btn-icon-lg"
           onClick={() => table.setPageIndex(table.getPageCount() - 1)}
           disabled={!table.getCanNextPage() || isLoading}
         >
-          <ChevronsRight className={cn('h-4 w-4')} />
+          <ChevronsRight />
         </Button>
       </div>
     </div>

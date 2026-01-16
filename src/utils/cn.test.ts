@@ -69,17 +69,19 @@ describe('cn (class name merger)', () => {
     });
   });
 
-  describe('tailwind-merge integration', () => {
+  describe('class joining (pure CSS, no Tailwind merge)', () => {
     it('should keep non-conflicting classes', () => {
       expect(cn('flex', 'items-center', 'gap-2')).toBe('flex items-center gap-2');
     });
 
-    it('should merge conflicting Tailwind classes', () => {
-      expect(cn('text-red-500', 'text-blue-500')).toBe('text-blue-500');
+    it('should keep all classes without merging', () => {
+      // Without tailwind-merge, classes are simply joined
+      expect(cn('text-red-500', 'text-blue-500')).toBe('text-red-500 text-blue-500');
     });
 
-    it('should merge padding classes', () => {
-      expect(cn('p-4', 'p-2')).toBe('p-2');
+    it('should keep duplicate-like classes', () => {
+      // Without tailwind-merge, all classes are kept
+      expect(cn('p-4', 'p-2')).toBe('p-4 p-2');
     });
   });
 });

@@ -1,8 +1,5 @@
 /**
- * Core DataTable component with registry-based dependencies
- *
- * STRUCTURE (fixed): flex layout, overflow, padding, transitions
- * VISUAL (customizable via registry): bg colors, borders, text colors, hover states
+ * Core DataTable component
  */
 
 import {
@@ -25,8 +22,8 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { Button } from '../primitives/Button';
 import { Skeleton } from '../primitives/Skeleton';
-import { getStyles, getT } from '../registry';
-import { cn, fuzzyFilter, RESPONSIVE_STYLES } from '../utils';
+import { getT } from '../registry';
+import { cn, fuzzyFilter } from '../utils';
 
 import { ColumnConfiguration } from './ColumnConfiguration';
 import { PageSizeSelector } from './PageSizeSelector';
@@ -140,7 +137,6 @@ export function DataTable<Data extends object>({
   onResetFilters,
 }: DataTableProps<Data>) {
   const t = getT();
-  const styles = getStyles();
 
   // Internal state (used if external props not provided)
   const [internalPagination, setInternalPagination] = useState<PaginationState>({
@@ -273,16 +269,14 @@ export function DataTable<Data extends object>({
   }, [serverSideMode, externalTotalCount, table, data.length, globalFilter, tanstackColumnFilters]);
 
   return (
-    <div className={cn('snow-table-container relative flex flex-col flex-1 text-foreground', styles.table.root)} data-testid="datatable">
+    <div className="snow-table-container snow-table-root" data-testid="datatable">
       {/* Loading overlay during fetching (server-side) */}
-      {isFetching && !isLoading && (
-        <div className={cn('absolute inset-0 z-10 pointer-events-none', styles.table.loadingOverlay)} />
-      )}
+      {isFetching && !isLoading && <div className="snow-table-loading-overlay" />}
 
       {displayAdvancedBar && (
-        <div className={cn('snow-table-top-bar grid grid-cols-1 lg:grid-cols-[auto_1fr_auto] py-4 gap-4 items-center')}>
-          {/* Prefilter tabs */}
-          <div className={cn('snow-table-prefilters flex items-center gap-2')}>
+        <div className="snow-table-top-bar">
+          {/* Left: Prefilter tabs */}
+          <div className="snow-topbar-left">
             {prefilters && prefilters.length > 0 && onPrefilterChange && (
               <PrefilterTabs
                 prefilters={prefilters}
@@ -292,10 +286,10 @@ export function DataTable<Data extends object>({
             )}
           </div>
 
-          {/* Search bar */}
-          <div className={cn('snow-table-search flex justify-center')}>
+          {/* Center: Search bar */}
+          <div className="snow-topbar-center">
             {enableGlobalSearch && (
-              <div className={cn('w-full max-w-sm')}>
+              <div className="snow-w-full snow-max-w-sm">
                 <SearchBar
                   value={globalFilter}
                   onDebouncedChange={handleGlobalFilterChangeWithReset}
@@ -305,8 +299,8 @@ export function DataTable<Data extends object>({
             )}
           </div>
 
-          {/* Filters and actions */}
-          <div className={cn('snow-table-filters grid grid-cols-1 sm:flex sm:flex-row gap-2 items-center')}>
+          {/* Right: Filters and actions */}
+          <div className="snow-topbar-right">
             {filters?.map(filter => (
               <SingleFilterDropdown
                 key={String(filter.key)}
@@ -315,41 +309,34 @@ export function DataTable<Data extends object>({
                 onFilterChange={handleFilterChange}
               />
             ))}
-            <div className={cn('snow-table-actions flex items-center gap-2 justify-end lg:justify-start')}>
-              {enableColumnConfiguration && <ColumnConfiguration table={table} />}
-              {(enableGlobalSearch || (prefilters && prefilters.length > 0) || (filters && filters.length > 0)) && onResetFilters && (
-                <Button
-                  onClick={onResetFilters}
-                  title={t('dataTable.resetFilters')}
-                  data-testid="datatable-reset-filters"
-                >
-                  <FunnelX className={cn('h-4 w-4')} />
-                </Button>
-              )}
-            </div>
+            {enableColumnConfiguration && <ColumnConfiguration table={table} />}
+            {(enableGlobalSearch || (prefilters && prefilters.length > 0) || (filters && filters.length > 0)) && onResetFilters && (
+              <Button
+                onClick={onResetFilters}
+                title={t('dataTable.resetFilters')}
+                data-testid="datatable-reset-filters"
+              >
+                <FunnelX className="snow-size-4" />
+              </Button>
+            )}
           </div>
         </div>
       )}
 
       <div
         className={cn(
-          'sm:overflow-x-auto',
-          styles.table.container,
-          enableResponsive && RESPONSIVE_STYLES.container.base
+          'snow-table-wrapper',
+          enableResponsive && 'snow-responsive-container'
         )}
       >
-        <table className={cn('w-full text-sm')} data-testid="datatable-table">
-          <thead className={cn(styles.table.header, enableResponsive && RESPONSIVE_STYLES.thead.base)}>
+        <table className="snow-table" data-testid="datatable-table">
+          <thead className={cn('snow-table-header', enableResponsive && 'snow-responsive-thead')}>
             {table.getHeaderGroups().map(headerGroup => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map(header => (
                   <th
                     key={header.id}
-                    className={cn(
-                      'px-4 py-3 text-left align-middle',
-                      styles.table.headerCell,
-                      enableSorting && 'cursor-pointer'
-                    )}
+                    className={cn('snow-table-header-cell', enableSorting && 'snow-cursor-pointer')}
                     onClick={header.column.getToggleSortingHandler()}
                     style={{
                       width: header.column.columnDef?.meta?.width,
@@ -357,7 +344,7 @@ export function DataTable<Data extends object>({
                     }}
                   >
                     {header.isPlaceholder ? null : (
-                      <span className={cn('flex gap-2 items-center justify-between w-full')}>
+                      <span className="snow-table-header-cell-content">
                         <h3>{flexRender(header.column.columnDef.header, header.getContext())}</h3>
                         {enableSorting && <SortButton column={header.column} />}
                       </span>
@@ -368,12 +355,12 @@ export function DataTable<Data extends object>({
             ))}
           </thead>
           {isLoading ? (
-            <tbody className={styles.table.divider} data-testid="datatable-loading">
+            <tbody className="snow-divide-y snow-divide-border" data-testid="datatable-loading">
               {Array.from({ length: pagination.pageSize > 10 ? 10 : pagination.pageSize }).map((_, index) => (
-                <tr key={index} className={cn({ [styles.table.rowAlternate]: index % 2 === 1 })}>
+                <tr key={index} className={cn({ 'snow-table-row-alternate': index % 2 === 1 })}>
                   {columns.map((_column, colIndex) => (
-                    <td key={`skeleton-table-${colIndex}`} className={cn('px-4 py-3 align-middle')}>
-                      <Skeleton className={cn('h-4 w-full')} />
+                    <td key={`skeleton-table-${colIndex}`} className="snow-table-cell">
+                      <Skeleton className="snow-h-4 snow-w-full" />
                     </td>
                   ))}
                 </tr>
@@ -381,7 +368,7 @@ export function DataTable<Data extends object>({
             </tbody>
           ) : itemCount > 0 ? (
             <tbody
-              className={cn(styles.table.divider, enableResponsive && RESPONSIVE_STYLES.tbody.base)}
+              className={cn('snow-divide-y snow-divide-border', enableResponsive && 'snow-responsive-tbody')}
               data-testid="datatable-body"
             >
               {table.getRowModel().rows.map((row, rowIndex) => (
@@ -389,15 +376,13 @@ export function DataTable<Data extends object>({
                   key={row.id}
                   data-testid={`datatable-row-${row.id}`}
                   className={cn(
-                    styles.table.row,
-                    styles.table.rowHover,
-                    'transition-all ease-in-out duration-300',
+                    'snow-table-row snow-transition-all snow-duration-300 snow-ease-in-out',
                     {
-                      [styles.table.rowAlternate]: rowIndex % 2 === 1,
-                      [styles.table.rowActive]:
+                      'snow-table-row-alternate': rowIndex % 2 === 1,
+                      'snow-table-row-active':
                         activeRowId !== undefined && 'id' in row.original && activeRowId === row.original.id,
                     },
-                    enableResponsive && RESPONSIVE_STYLES.row.base
+                    enableResponsive && 'snow-responsive-row'
                   )}
                 >
                   {row.getVisibleCells().map((cell, cellIndex) => {
@@ -412,15 +397,15 @@ export function DataTable<Data extends object>({
                           onRowClick && !cell.column.columnDef?.meta?.disableColumnClick && onRowClick(row.original)
                         }
                         className={cn(
-                          onRowClick && !cell.column.columnDef?.meta?.disableColumnClick && 'cursor-pointer',
-                          cell.column.columnDef?.meta?.center && 'align-middle text-center',
+                          onRowClick && !cell.column.columnDef?.meta?.disableColumnClick && 'snow-cursor-pointer',
+                          cell.column.columnDef?.meta?.center && 'snow-align-middle snow-text-center',
                           enableResponsive
-                            ? cn(RESPONSIVE_STYLES.cell.base, isLastCell && RESPONSIVE_STYLES.cell.last)
-                            : 'px-4 py-3'
+                            ? cn('snow-responsive-cell', isLastCell && 'snow-responsive-cell-last')
+                            : 'snow-table-cell'
                         )}
                       >
-                        {enableResponsive && <span className={cn(RESPONSIVE_STYLES.cellLabel.base)}>{headerLabel}</span>}
-                        <span className={cn(enableResponsive && RESPONSIVE_STYLES.cellContent.base)}>
+                        {enableResponsive && <span className="snow-responsive-cell-label">{headerLabel}</span>}
+                        <span className={cn(enableResponsive && 'snow-responsive-cell-content')}>
                           {flexRender(cell.column.columnDef.cell, cell.getContext())}
                         </span>
                       </td>
@@ -430,10 +415,7 @@ export function DataTable<Data extends object>({
               ))}
             </tbody>
           ) : (
-            <caption
-              className={cn('h-24 flex items-center justify-center w-full pl-10', styles.table.empty)}
-              data-testid="datatable-empty"
-            >
+            <caption className="snow-table-empty" data-testid="datatable-empty">
               {texts?.emptyTitle || t('dataTable.searchEmpty')}
             </caption>
           )}
@@ -441,22 +423,22 @@ export function DataTable<Data extends object>({
       </div>
 
       {/* Bottom bar */}
-      <div className={cn('snow-table-bottom-bar grid grid-cols-1 lg:grid-cols-[auto_1fr_auto] gap-4 py-4 items-center')}>
-        {/* Item count */}
+      <div className="snow-table-bottom-bar">
+        {/* Item count - Left */}
         {displayTotalNumber && (
-          <div className={cn('snow-table-count text-sm order-3 lg:order-1 text-center lg:text-left', styles.table.empty)} data-testid="datatable-count">
+          <div className="snow-table-count" data-testid="datatable-count">
             {totalCount} {t('dataTable.elements')}
           </div>
         )}
 
-        {/* Pagination */}
-        <div className={cn('snow-table-pagination flex justify-center order-1 lg:order-2')}>
+        {/* Pagination - Center */}
+        <div className="snow-flex snow-justify-center">
           {enablePagination && isPaginationPossible && <Pagination table={table} isLoading={isFetching} />}
         </div>
 
-        {/* Page size selector */}
+        {/* Page size selector - Right */}
         {enablePagination && (
-          <div className={cn('snow-table-pagesize order-2 lg:order-3 flex justify-center lg:justify-end')}>
+          <div className="snow-flex snow-justify-end">
             <PageSizeSelector table={table} enableElementLabel={enableElementLabel} paginationSizes={paginationSizes} />
           </div>
         )}
