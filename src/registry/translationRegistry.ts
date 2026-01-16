@@ -1,22 +1,20 @@
 /**
  * Translation Registry
  *
- * Allows consumers to provide their own translation hook (i18next, next-intl, etc.)
+ * Allows consumers to provide their own translation function.
  */
 
-type TranslationFunction = (key: string, options?: Record<string, unknown>) => string;
-type TranslationHook = () => { t: TranslationFunction };
+type TranslationFunction = (key: string) => string;
 
-let useTranslationHook: TranslationHook = () => ({
-  t: (key: string) => key,
-});
+// Default: return the key as-is
+let translateFn: TranslationFunction = (key: string) => key;
 
-export const setTranslationHook = (hook: TranslationHook) => {
-  useTranslationHook = hook;
+export const setTranslationFunction = (fn: TranslationFunction) => {
+  translateFn = fn;
 };
 
-export const useTranslation = () => useTranslationHook();
+export const getT = () => translateFn;
 
 export const resetTranslationRegistry = () => {
-  useTranslationHook = () => ({ t: (key: string) => key });
+  translateFn = (key: string) => key;
 };

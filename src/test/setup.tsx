@@ -13,18 +13,12 @@ afterEach(() => {
 // Setup SnowTable with mock dependencies before all tests
 beforeAll(() => {
   setupSnowTable({
-    useTranslation: () => ({
-      t: (key: string) => key,
-    }),
-    // @ts-expect-error - href is not a valid prop for LinkProps
-    LinkComponent: ({ href, children, ...props }) => {
-      const Component = 'a' as const;
-      return (
-        <Component href={href} {...props}>
-          {children}
-        </Component>
-      );
-    },
+    t: (key: string) => key,
+    LinkComponent: ({ to, children, ...props }) => (
+      <a href={to} {...props}>
+        {children}
+      </a>
+    ),
     useConfirm: () => ({
       confirm: vi.fn().mockResolvedValue(true),
     }),

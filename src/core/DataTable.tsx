@@ -25,7 +25,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { Button } from '../primitives/Button';
 import { Skeleton } from '../primitives/Skeleton';
-import { getStyles, useTranslation } from '../registry';
+import { getStyles, getT } from '../registry';
 import { cn, fuzzyFilter, RESPONSIVE_STYLES } from '../utils';
 
 import { ColumnConfiguration } from './ColumnConfiguration';
@@ -139,7 +139,7 @@ export function DataTable<Data extends object>({
   // Reset
   onResetFilters,
 }: DataTableProps<Data>) {
-  const { t } = useTranslation();
+  const t = getT();
   const styles = getStyles();
 
   // Internal state (used if external props not provided)

@@ -8,7 +8,7 @@ import { useMemo } from 'react';
 
 import { ActionCell } from '../components/ActionCell';
 import { FilterConfig } from '../core/SingleFilterDropdown';
-import { useConfirm, useTranslation } from '../registry';
+import { useConfirm, getT } from '../registry';
 import { ActionConfirmContent, ErrorResponse, SnowColumnConfig, TableAction } from '../types';
 import { printValue } from '../utils';
 
@@ -56,7 +56,7 @@ export const useSnowColumns = <T extends Record<string, unknown>, K>({
   mode,
 }: UseSnowColumnsOptions<T, K>): UseSnowColumnsReturn<T, K> => {
   const { confirm } = useConfirm();
-  const { t } = useTranslation();
+  const t = getT();
 
   // ============================================
   // Action Mutation

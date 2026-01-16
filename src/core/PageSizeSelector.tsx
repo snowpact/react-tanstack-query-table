@@ -5,7 +5,7 @@
 import { Table } from '@tanstack/react-table';
 
 import { Select } from '../primitives/Select';
-import { useTranslation } from '../registry';
+import { getT } from '../registry';
 
 import { DEFAULT_PAGE_SIZES } from './Pagination';
 
@@ -20,7 +20,7 @@ export function PageSizeSelector<Data extends object>({
   paginationSizes = DEFAULT_PAGE_SIZES,
   enableElementLabel = true,
 }: PageSizeSelectorProps<Data>) {
-  const { t } = useTranslation();
+  const t = getT();
 
   return (
     <div className="flex items-center gap-2">

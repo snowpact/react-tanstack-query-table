@@ -70,12 +70,12 @@ You can customize the library appearance by overriding CSS variables:
 import '@snowpact/react-tanstack-query-table/styles.css';
 
 import { setupSnowTable } from '@snowpact/react-tanstack-query-table';
-import { useTranslation } from 'react-i18next';
+import i18n from './i18n';
 import { Link } from 'react-router-dom';
 import { useConfirm } from './your-confirm-dialog';
 
 setupSnowTable({
-  useTranslation: () => useTranslation(),
+  t: (key) => i18n.t(key),
   LinkComponent: Link,
   useConfirm: () => useConfirm(),
 });

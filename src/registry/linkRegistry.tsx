@@ -4,7 +4,7 @@
  * Allows consumers to provide their own Link component (react-router, next/link, etc.)
  */
 
-import type { ComponentType, ReactNode, MouseEvent } from 'react';
+import type { ComponentType, ReactNode } from 'react';
 
 export interface LinkProps {
   to: string;
@@ -12,14 +12,18 @@ export interface LinkProps {
   className?: string;
   target?: string;
   rel?: string;
-  'aria-disabled'?: boolean;
-  onClick?: (e: MouseEvent<HTMLAnchorElement>) => void;
-  onMouseEnter?: (e: MouseEvent<HTMLAnchorElement>) => void;
-  onMouseLeave?: () => void;
+  disabled?: boolean;
 }
 
-const DefaultLink = ({ to, children, className, target, rel, onClick, onMouseEnter, onMouseLeave }: LinkProps) => (
-  <a href={to} className={className} target={target} rel={rel} onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+const DefaultLink = ({ to, children, className, target, rel, disabled }: LinkProps) => (
+  <a
+    href={disabled ? undefined : to}
+    className={className}
+    target={target}
+    rel={rel}
+    aria-disabled={disabled}
+    style={disabled ? { pointerEvents: 'none', opacity: 0.5 } : undefined}
+  >
     {children}
   </a>
 );

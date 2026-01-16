@@ -8,7 +8,7 @@ import { useState, useMemo } from 'react';
 import { Button } from '../primitives/Button';
 import { DropdownMenu } from '../primitives/DropdownMenu';
 import { Input } from '../primitives/Input';
-import { getStyles, useTranslation } from '../registry';
+import { getStyles, getT } from '../registry';
 
 export type FilterOption = {
   label: string;
@@ -33,7 +33,7 @@ export function SingleFilterDropdown<T extends object>({
   selectedValues = [],
   onFilterChange,
 }: SingleFilterDropdownProps<T>) {
-  const { t } = useTranslation();
+  const t = getT();
   const styles = getStyles();
 
   const [searchTerm, setSearchTerm] = useState('');

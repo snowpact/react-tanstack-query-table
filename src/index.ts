@@ -7,7 +7,7 @@
  * import { setupSnowTable } from '@snowpact/react-tanstack-table-react';
  *
  * setupSnowTable({
- *   useTranslation: () => useTranslation(),
+ *   t: (key) => i18n.t(key),
  *   LinkComponent: Link,
  *   useConfirm: () => useConfirm(),
  * });

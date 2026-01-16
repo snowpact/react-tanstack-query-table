@@ -4,7 +4,7 @@
 
 import { Select } from '../primitives/Select';
 import { Tabs } from '../primitives/Tabs';
-import { getStyles, useTranslation } from '../registry';
+import { getStyles, getT } from '../registry';
 import { useIsMobile } from '../utils';
 
 export type PreFilter = {
@@ -20,7 +20,7 @@ export interface PrefilterTabsProps {
 
 export function PrefilterTabs({ prefilters, activePrefilter, onPrefilterChange }: PrefilterTabsProps) {
   const isMobile = useIsMobile();
-  const { t } = useTranslation();
+  const t = getT();
   const styles = getStyles();
 
   const activeFilter = prefilters.find(filter => filter.id === activePrefilter);

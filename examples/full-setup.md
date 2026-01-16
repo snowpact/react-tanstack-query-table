@@ -19,7 +19,7 @@ This guide shows how to configure SnowTable with your UI library.
 Create a setup file (e.g., `src/lib/snow-table-setup.ts`) that configures SnowTable:
 
 ```tsx
-import { useTranslation } from 'react-i18next';
+import i18n from '@/i18n';
 import { Link } from 'react-router-dom';
 
 import { setupSnowTable } from '@snowpact/react-tanstack-query-table';
@@ -36,29 +36,20 @@ export function setupSnowTableConfig(): void {
   if (isSetup) return;
 
   setupSnowTable({
-    // Translation hook (i18next)
-    useTranslation: () => {
-      const { t } = useTranslation();
-      return {
-        t: (key: string, options?: Record<string, unknown>) => {
-          // Map SnowTable keys to your translation keys
-          const keyMap: Record<string, string> = {
-            'table.search': 'common.search',
-            'table.noResults': 'table.empty',
-            'table.elements': 'table.elements',
-            'table.columns': 'table.columns',
-            'table.resetFilters': 'table.resetFilters',
-            'pagination.previous': 'pagination.previous',
-            'pagination.next': 'pagination.next',
-            'pagination.first': 'pagination.first',
-            'pagination.last': 'pagination.last',
-            'pagination.page': 'pagination.page',
-            'pagination.of': 'pagination.of',
-            'pagination.rowsPerPage': 'pagination.rowsPerPage',
-          };
-          return t(keyMap[key] ?? key, options);
-        },
+    // Translation function (i18next, next-intl, etc.)
+    t: (key: string) => {
+      // Map SnowTable keys to your translation keys
+      const keyMap: Record<string, string> = {
+        'dataTable.search': 'common.search',
+        'dataTable.searchEmpty': 'table.empty',
+        'dataTable.paginationSize': 'pagination.rowsPerPage',
+        'dataTable.columnsConfiguration': 'table.columns',
+        'dataTable.resetColumns': 'table.resetColumns',
+        'dataTable.resetFilters': 'table.resetFilters',
+        'dataTable.searchFilters': 'common.search',
+        'dataTable.selectFilter': 'table.selectFilter',
       };
+      return i18n.t(keyMap[key] ?? key);
     },
 
     // Link component (react-router-dom, Next.js Link, etc.)
@@ -441,7 +432,7 @@ import Link from 'next/link';
 import { setupSnowTable } from '@snowpact/react-tanstack-query-table';
 
 setupSnowTable({
-  useTranslation: () => useTranslation(),
+  t: (key) => key, // or use next-intl: getTranslations()
   LinkComponent: Link, // Next.js Link
   useConfirm: () => useConfirm(),
 });

@@ -112,19 +112,22 @@ function ActionCellInner<T, K>({ item, actions, onAction }: ActionCellProps<T, K
           const linkAction = action as LinkAction<T>;
           const href = linkAction.href(item);
           return (
-            <Link
+            <div
               key={`link-${action.label}-${index}`}
-              to={href}
-              target={linkAction.external ? '_blank' : undefined}
-              rel={linkAction.external ? 'noopener noreferrer' : undefined}
-              className={`inline-flex items-center justify-center gap-1.5 whitespace-nowrap text-sm font-medium cursor-pointer ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-8 rounded-md ${action.showLabel ? 'px-3' : 'w-8'}`}
-              aria-disabled={action.disabled}
               onMouseEnter={e => handleMouseEnter(action.label, e.currentTarget)}
               onMouseLeave={handleMouseLeave}
             >
-              <Icon className="h-4 w-4" />
-              {action.showLabel && action.label}
-            </Link>
+              <Link
+                to={href}
+                target={linkAction.external ? '_blank' : undefined}
+                rel={linkAction.external ? 'noopener noreferrer' : undefined}
+                className={`inline-flex items-center justify-center gap-1.5 whitespace-nowrap text-sm font-medium cursor-pointer ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-8 rounded-md ${action.showLabel ? 'px-3' : 'w-8'}`}
+                disabled={action.disabled}
+              >
+                <Icon className="h-4 w-4" />
+                {action.showLabel && action.label}
+              </Link>
+            </div>
           );
         }
 

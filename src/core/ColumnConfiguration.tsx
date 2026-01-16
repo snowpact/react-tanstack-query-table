@@ -8,7 +8,7 @@ import { useMemo, useEffect, useRef } from 'react';
 
 import { Button } from '../primitives/Button';
 import { DropdownMenu } from '../primitives/DropdownMenu';
-import { useTranslation } from '../registry';
+import { getT } from '../registry';
 import {
   saveColumnConfiguration,
   loadColumnConfiguration,
@@ -21,7 +21,7 @@ export type ColumnConfigurationProps<T extends object> = {
 };
 
 export function ColumnConfiguration<T extends object>({ table }: ColumnConfigurationProps<T>) {
-  const { t } = useTranslation();
+  const t = getT();
 
   const configId = useRef(generateColumnConfigurationId());
 

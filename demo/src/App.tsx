@@ -86,9 +86,9 @@ const t = (key: string) => translations[key] || key;
 
 // Setup Snow Table (simple setup for demo)
 setupSnowTable({
-  useTranslation: () => ({ t }),
-  LinkComponent: ({ href, children, ...props }) => (
-    <a href={href as string} {...props}>
+  t,
+  LinkComponent: ({ to, children, ...props }) => (
+    <a href={to} {...props}>
       {children}
     </a>
   ),
