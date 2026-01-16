@@ -6,7 +6,7 @@ Ultra-light, registry-based data table for React + TanStack Table + TanStack Que
 
 ## Features
 
-- **Zero heavy dependencies**: No clsx, no tailwind-merge, no lucide-react bundled
+- **Zero heavy dependencies**: Only `@tanstack/react-query` and `@tanstack/react-table` as peer dependencies
 - **Registry-based**: Inject your own i18n, Link component, confirmation dialogs
 - **TypeScript**: Full type support with generics
 - **Two modes**: Client-side and Server-side pagination/filtering/sorting
@@ -55,7 +55,7 @@ type User = { id: string; name: string; email: string; status: string };
 const columns: SnowColumnConfig<User>[] = [
   { key: 'name', label: 'Name' },
   { key: 'email', label: 'Email' },
-  { key: 'status', label: 'Status' },
+  { key: 'status', label: 'Status', render: (item) => <Badge>{item.status}</Badge> },
 ];
 
 <SnowClientDataTable
@@ -64,6 +64,12 @@ const columns: SnowColumnConfig<User>[] = [
   columnConfig={columns}
   enableGlobalSearch
   enablePagination
+  enableSorting
+  enableColumnConfiguration
+  defaultPageSize={20}
+  defaultSortBy="name"
+  defaultSortOrder="asc"
+  persistState
 />
 ```
 
@@ -117,12 +123,14 @@ setupSnowTable({
 });
 ```
 
-Required translation keys:
-- `dataTable.search` - Search placeholder
-- `dataTable.elements` - "elements" label
-- `dataTable.searchEmpty` - Empty state text
-- `dataTable.resetFilters` - Reset button tooltip
-- `dataTable.columns` - Columns button label
+The `t` function is automatically called with:
+- All column `key` values from your `columnConfig` (e.g., `t('name')`, `t('email')`, `t('status')`)
+- Internal UI keys:
+  - `dataTable.search` - Search placeholder
+  - `dataTable.elements` - "elements" label
+  - `dataTable.searchEmpty` - Empty state text
+  - `dataTable.resetFilters` - Reset button tooltip
+  - `dataTable.columns` - Columns button label
 
 ### Setup with custom confirm dialog
 
