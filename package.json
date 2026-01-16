@@ -39,7 +39,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build && pnpm build:css",
-    "build:css": "pnpm exec tailwindcss -i ./src/styles/index.css -o ./dist/styles.css --minify && node scripts/prefix-css.cjs",
+    "build:css": "pnpm exec tailwindcss -i ./src/styles/index.css -o ./dist/styles.css --minify",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -71,7 +71,9 @@
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@vitejs/plugin-react": "^4.0.0",
+    "autoprefixer": "^10.4.23",
     "jsdom": "^26.0.0",
+    "postcss": "^8.5.6",
     "prism-react-renderer": "^2.4.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
