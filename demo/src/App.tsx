@@ -67,6 +67,61 @@ const EyeIcon = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
+const CopyIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="16"
+    height="16"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
+    <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+    <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+  </svg>
+);
+
+const MailIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="16"
+    height="16"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
+    <rect width="20" height="16" x="2" y="4" rx="2" />
+    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+  </svg>
+);
+
+const ArchiveIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="16"
+    height="16"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
+    <rect width="20" height="5" x="2" y="3" rx="1" />
+    <path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8" />
+    <path d="M10 12h4" />
+  </svg>
+);
+
 // i18n translations for the demo
 const translations: Record<string, string> = {
   'dataTable.search': 'Search...',
@@ -316,6 +371,36 @@ export function App() {
       endpoint: (user: User) => deleteUser(user.id),
       withConfirm: (user: User) => window.confirm(`Delete user "${user.name}"?`),
       onSuccess: () => alert('User deleted!'),
+    },
+    // Dropdown actions
+    {
+      type: 'click' as const,
+      icon: CopyIcon,
+      label: 'Duplicate',
+      display: 'dropdown' as const,
+      onClick: (user: User) => {
+        alert(`Duplicating user: ${user.name}`);
+      },
+    },
+    {
+      type: 'click' as const,
+      icon: MailIcon,
+      label: 'Send Email',
+      display: 'dropdown' as const,
+      variant: 'info' as const,
+      onClick: (user: User) => {
+        alert(`Sending email to: ${user.email}`);
+      },
+    },
+    {
+      type: 'click' as const,
+      icon: ArchiveIcon,
+      label: 'Archive',
+      display: 'dropdown' as const,
+      variant: 'warning' as const,
+      onClick: (user: User) => {
+        alert(`Archiving user: ${user.name}`);
+      },
     },
   ];
 
