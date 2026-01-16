@@ -109,7 +109,7 @@ describe('useSnowColumns', () => {
   });
 
   describe('global filter behavior', () => {
-    it('should enable global filter in client mode when searchableValue is defined', () => {
+    it('should enable global filter for all columns in client mode', () => {
       const configWithSearch: SnowColumnConfig<TestData>[] = [
         { key: 'name', label: 'Name', searchableValue: row => row.name },
         { key: 'email', label: 'Email' },
@@ -122,8 +122,9 @@ describe('useSnowColumns', () => {
         })
       );
 
+      // All columns should have global filter enabled in client mode
       expect(result.current.columns[0].enableGlobalFilter).toBe(true);
-      expect(result.current.columns[1].enableGlobalFilter).toBe(false);
+      expect(result.current.columns[1].enableGlobalFilter).toBe(true);
     });
 
     it('should disable global filter in server mode regardless of searchableValue', () => {

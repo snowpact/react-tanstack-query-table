@@ -7,7 +7,7 @@
 
 import type { ComponentType } from 'react';
 
-import { setUseConfirmHook, resetConfirmRegistry, type UseConfirmReturn } from './confirmRegistry';
+import { setConfirmFunction, resetConfirmRegistry, type ConfirmFunction } from './confirmRegistry';
 import { registerLinkComponent, resetLinkRegistry, type LinkProps } from './linkRegistry';
 import { registerStyles, resetStylesRegistry, type SnowTableStyles, type DeepPartial } from './stylesRegistry';
 import { setTranslationFunction, resetTranslationRegistry } from './translationRegistry';
@@ -15,7 +15,7 @@ import { setTranslationFunction, resetTranslationRegistry } from './translationR
 export interface SetupSnowTableOptions {
   t: (key: string) => string;
   LinkComponent: ComponentType<LinkProps>;
-  useConfirm: () => UseConfirmReturn;
+  confirm: ConfirmFunction;
   styles?: DeepPartial<SnowTableStyles>;
 }
 
@@ -26,7 +26,7 @@ export const setupSnowTable = (options: SetupSnowTableOptions) => {
 
   setTranslationFunction(options.t);
   registerLinkComponent(options.LinkComponent);
-  setUseConfirmHook(options.useConfirm);
+  setConfirmFunction(options.confirm);
 
   if (options.styles) {
     registerStyles(options.styles);
@@ -48,5 +48,5 @@ export const isSnowTableSetup = () => isSetup;
 // Re-export everything needed
 export { getT } from './translationRegistry';
 export { getLink, type LinkProps } from './linkRegistry';
-export { useConfirm, type ConfirmOptions, type ConfirmContent, type ConfirmCloseHelper } from './confirmRegistry';
+export { getConfirm, type ConfirmOptions, type ConfirmContent, type ConfirmCloseHelper, type ConfirmFunction } from './confirmRegistry';
 export { getStyles, type SnowTableStyles as TableStyles } from './stylesRegistry';

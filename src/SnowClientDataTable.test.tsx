@@ -199,6 +199,43 @@ describe('SnowClientDataTable', () => {
     expect(screen.getAllByText('Name').length).toBeGreaterThan(0);
     expect(screen.getAllByText('Email').length).toBeGreaterThan(0);
   });
+
+  it('should filter data when typing in search bar with enableGlobalSearch', async () => {
+    const user = userEvent.setup();
+    const fetchAllItemsEndpoint = vi.fn().mockResolvedValue(mockData);
+
+    renderWithProviders(
+      <SnowClientDataTable<TestItem, void>
+        queryKey={['test-items-search']}
+        columnConfig={columnConfig}
+        fetchAllItemsEndpoint={fetchAllItemsEndpoint}
+        enableGlobalSearch
+        enablePagination={false}
+      />
+    );
+
+    // Wait for data to load
+    await screen.findByText('John Doe');
+
+    // All items should be visible initially
+    expect(screen.getByText('John Doe')).toBeInTheDocument();
+    expect(screen.getByText('Jane Smith')).toBeInTheDocument();
+    expect(screen.getByText('Bob Wilson')).toBeInTheDocument();
+
+    // Type in search bar
+    const searchInput = screen.getByTestId('data-table-search-bar');
+    await user.type(searchInput, 'John');
+
+    // Wait for debounce (500ms) + filtering
+    await waitFor(
+      () => {
+        expect(screen.getByText('John Doe')).toBeInTheDocument();
+        expect(screen.queryByText('Jane Smith')).not.toBeInTheDocument();
+        expect(screen.queryByText('Bob Wilson')).not.toBeInTheDocument();
+      },
+      { timeout: 1000 }
+    );
+  });
 });
 
 describe('SnowClientDataTable with persistState', () => {
@@ -315,10 +352,10 @@ describe('SnowClientDataTable with persistState', () => {
       { id: 'active', label: 'Active' },
     ];
 
-    // Pre-set URL with various values
+    // Pre-set URL with various values (use 'John' as search to match 'John Doe')
     const params = new URLSearchParams();
     params.set(storageKey('prefilter'), 'active');
-    params.set(storageKey('search'), 'test search');
+    params.set(storageKey('search'), 'John');
     params.set(storageKey('page'), '2');
     setupLocationMock(params.toString());
 

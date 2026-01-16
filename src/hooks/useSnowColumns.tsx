@@ -8,7 +8,7 @@ import { useMemo } from 'react';
 
 import { ActionCell } from '../components/ActionCell';
 import { FilterConfig } from '../core/SingleFilterDropdown';
-import { useConfirm, getT } from '../registry';
+import { getConfirm, getT } from '../registry';
 import { ActionConfirmContent, ErrorResponse, SnowColumnConfig, TableAction } from '../types';
 import { printValue } from '../utils';
 
@@ -55,7 +55,7 @@ export const useSnowColumns = <T extends Record<string, unknown>, K>({
   filters,
   mode,
 }: UseSnowColumnsOptions<T, K>): UseSnowColumnsReturn<T, K> => {
-  const { confirm } = useConfirm();
+  const confirm = getConfirm();
   const t = getT();
 
   // ============================================
@@ -128,9 +128,9 @@ export const useSnowColumns = <T extends Record<string, unknown>, K>({
           header: column.label ?? t(`data.${column.key as string}`),
           enableSorting: column.sortable ?? true,
           enableColumnFilter: hasFilter,
-          // Client mode: enable global filter if searchableValue is defined
+          // Client mode: enable global filter by default (use searchableValue if defined, otherwise use accessor)
           // Server mode: always false (server handles search)
-          enableGlobalFilter: mode === 'client' ? !!column.searchableValue : false,
+          enableGlobalFilter: mode === 'client',
           filterFn: hasFilter ? 'multiSelect' : undefined,
           meta: column.meta,
           cell: ({ row }: { row: { original: T } }) => {

@@ -6,6 +6,32 @@ export function generateInstallCode(): string {
 npm install @snowpact/react-tanstack-query-table`;
 }
 
+export function generateCustomizationCode(): string {
+  return `// You probably won't need this, but it exists if you do!
+// Override internal component styles via the 'styles' option:
+
+setupSnowTable({
+  t,
+  LinkComponent: Link,
+  confirm: ({ title }) => window.confirm(title),
+  styles: {
+    // Override button styles
+    button: {
+      visual: 'rounded-full bg-primary text-primary-foreground',
+      hover: 'hover:bg-primary/90',
+    },
+    // Override table styles
+    table: {
+      header: 'bg-slate-100 dark:bg-slate-800',
+      rowHover: 'hover:bg-slate-50',
+    },
+    // Override input styles
+    input: 'rounded-full border-2 border-primary',
+    // ... see SnowTableStyles for all options
+  },
+});`;
+}
+
 export function generateThemeCode(theme: ThemeColors): string {
   const isDefault = JSON.stringify(theme) === JSON.stringify(defaultTheme);
 
@@ -39,16 +65,14 @@ export function generateSetupCode(): string {
 import '@snowpact/react-tanstack-query-table/styles.css';
 
 import { setupSnowTable } from '@snowpact/react-tanstack-query-table';
-import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import { t } from './i18n'; // Your translation function
 
 // Setup once in your app entry point
 setupSnowTable({
-  useTranslation: () => useTranslation(),
+  t, // (key: string) => string
   LinkComponent: Link,
-  useConfirm: () => ({
-    confirm: ({ title, content }) => window.confirm(title),
-  }),
+  confirm: ({ title }) => window.confirm(title),
 });`;
 }
 
@@ -85,6 +109,7 @@ export function generateTableCode(config: DemoConfig): string {
     {
       key: 'status',
       label: 'Status',
+      multipleSelection: true,
       options: [
         { value: 'active', label: 'Active' },
         { value: 'inactive', label: 'Inactive' },

@@ -128,6 +128,39 @@ describe('DataTable', () => {
 
       expect(screen.getByPlaceholderText('Search items...')).toBeInTheDocument();
     });
+
+    it('should filter data in client mode when typing in search bar', async () => {
+      const user = userEvent.setup();
+
+      renderWithProviders(
+        <DataTable
+          data={mockData}
+          columns={columns}
+          mode="client"
+          enableGlobalSearch
+          enablePagination={false}
+        />
+      );
+
+      // All items should be visible initially
+      expect(screen.getByText('Item 1')).toBeInTheDocument();
+      expect(screen.getByText('Item 2')).toBeInTheDocument();
+      expect(screen.getByText('Item 3')).toBeInTheDocument();
+
+      // Type in search bar
+      const searchInput = screen.getByTestId('data-table-search-bar');
+      await user.type(searchInput, 'Item 1');
+
+      // Wait for debounce (500ms) + filtering
+      await waitFor(
+        () => {
+          expect(screen.getByText('Item 1')).toBeInTheDocument();
+          expect(screen.queryByText('Item 2')).not.toBeInTheDocument();
+          expect(screen.queryByText('Item 3')).not.toBeInTheDocument();
+        },
+        { timeout: 1000 }
+      );
+    });
   });
 
   describe('prefilters', () => {

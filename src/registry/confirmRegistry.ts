@@ -1,7 +1,7 @@
 /**
  * Confirm Registry
  *
- * Allows consumers to provide their own confirm dialog hook.
+ * Allows consumers to provide their own confirm dialog function.
  * Supports both static content and render functions with close callback.
  */
 
@@ -22,22 +22,17 @@ export interface ConfirmOptions {
   hideButtons?: boolean;
 }
 
-export interface UseConfirmReturn {
-  confirm: (options: ConfirmOptions) => Promise<boolean>;
-}
+export type ConfirmFunction = (options: ConfirmOptions) => Promise<boolean>;
 
-type UseConfirmHook = () => UseConfirmReturn;
+// Default: always return true (no confirmation)
+let confirmFn: ConfirmFunction = async () => true;
 
-let useConfirmHook: UseConfirmHook = () => ({
-  confirm: async () => true,
-});
-
-export const setUseConfirmHook = (hook: UseConfirmHook) => {
-  useConfirmHook = hook;
+export const setConfirmFunction = (fn: ConfirmFunction) => {
+  confirmFn = fn;
 };
 
-export const useConfirm = () => useConfirmHook();
+export const getConfirm = () => confirmFn;
 
 export const resetConfirmRegistry = () => {
-  useConfirmHook = () => ({ confirm: async () => true });
+  confirmFn = async () => true;
 };

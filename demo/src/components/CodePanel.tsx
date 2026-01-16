@@ -6,6 +6,7 @@ import {
   generateSetupCode,
   generateTableCode,
   generateThemeCode,
+  generateCustomizationCode,
 } from './codeGenerator';
 
 interface CodeSectionProps {
@@ -95,6 +96,11 @@ export function CodePanel({ config, theme }: CodePanelProps) {
         <CodeSection
           title="3. Use the DataTable"
           code={generateTableCode(config)}
+        />
+        <CodeSection
+          title="4. Override styles (rare)"
+          code={generateCustomizationCode()}
+          defaultOpen={false}
         />
         <DoneSection />
       </div>

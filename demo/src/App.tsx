@@ -92,12 +92,10 @@ setupSnowTable({
       {children}
     </a>
   ),
-  useConfirm: () => ({
-    confirm: async ({ title, content }) => {
-      const message = typeof content === 'string' ? `${title}\n\n${content}` : title;
-      return window.confirm(message);
-    },
-  }),
+  confirm: async ({ title, content }) => {
+    const message = typeof content === 'string' ? `${title}\n\n${content}` : title;
+    return window.confirm(message);
+  },
 });
 
 // Mock data generator
@@ -243,6 +241,7 @@ const filters = [
   {
     key: 'status' as const,
     label: 'Status',
+    multipleSelection: true,
     options: [
       { value: 'active', label: 'Active' },
       { value: 'inactive', label: 'Inactive' },
