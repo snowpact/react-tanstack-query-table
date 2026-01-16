@@ -126,19 +126,17 @@ import { Button } from '@/components/ui/button';
 // Types
 // =============================================================================
 
-interface ConfirmCloseHelper {
-  close: () => void;
+interface ConfirmHelpers {
+  close: () => void;    // Close + resolve false (cancel)
+  confirm: () => void;  // Close + resolve true (confirm)
 }
 
-type ConfirmContent = ReactNode | ((helpers: ConfirmCloseHelper) => ReactNode);
+type ConfirmContent = (helpers: ConfirmHelpers) => ReactNode;
 
 interface ConfirmOptions {
   title: string;
   subtitle?: string;
   content: ConfirmContent;
-  confirmText?: string;
-  cancelText?: string;
-  hideButtons?: boolean;
 }
 
 interface ConfirmContextValue {
@@ -179,18 +177,16 @@ export function ConfirmDialogProvider({ children }: { children: ReactNode }) {
     resolvePromise?.(true);
   }, [resolvePromise]);
 
-  // Close helper for custom content
-  const closeHelper: ConfirmCloseHelper = {
+  // Helpers for custom content
+  const helpers: ConfirmHelpers = {
     close: handleClose,
+    confirm: handleConfirm,
   };
 
-  // Render content (supports function or ReactNode)
+  // Render content (always a function)
   const renderContent = () => {
     if (!options?.content) return null;
-    if (typeof options.content === 'function') {
-      return options.content(closeHelper);
-    }
-    return options.content;
+    return options.content(helpers);
   };
 
   return (
@@ -205,15 +201,6 @@ export function ConfirmDialogProvider({ children }: { children: ReactNode }) {
           </DialogHeader>
 
           <div className="py-4">{renderContent()}</div>
-
-          {!options?.hideButtons && (
-            <DialogFooter>
-              <Button variant="outline" onClick={handleClose}>
-                {options?.cancelText ?? 'Cancel'}
-              </Button>
-              <Button onClick={handleConfirm}>{options?.confirmText ?? 'Confirm'}</Button>
-            </DialogFooter>
-          )}
         </DialogContent>
       </Dialog>
     </ConfirmContext.Provider>
@@ -233,6 +220,33 @@ export function useConfirm(): ConfirmContextValue {
 }
 ```
 
+### Usage Examples
+
+Content is always a function that receives `{ close, confirm }` helpers. You control the buttons:
+
+```tsx
+// Simple confirmation with custom buttons
+{
+  type: 'endpoint',
+  icon: Trash,
+  label: 'Delete',
+  variant: 'danger',
+  endpoint: (item) => deleteItem(item.id),
+  confirm: {
+    title: 'Delete item?',
+    content: ({ close, confirm }) => (
+      <div className="space-y-4">
+        <p>Are you sure you want to delete this item? This action cannot be undone.</p>
+        <div className="flex justify-end gap-2">
+          <Button variant="outline" onClick={close}>Cancel</Button>
+          <Button variant="destructive" onClick={confirm}>Delete</Button>
+        </div>
+      </div>
+    ),
+  },
+}
+```
+
 ### Usage with Forms
 
 When using forms inside confirm dialogs, use the `close` helper:
@@ -246,18 +260,66 @@ When using forms inside confirm dialogs, use the `close` helper:
   onClick: () => {},
   confirm: {
     title: 'Change Status',
-    hideButtons: true,
     content: ({ close }) => (
       <StatusForm
         itemId={item.id}
         onSuccess={() => {
           queryClient.invalidateQueries(['items']);
-          close(); // Close the dialog
+          close(); // Close the dialog (resolves false, but action already done)
         }}
         onCancel={close}
       />
     ),
   },
+}
+```
+
+### Helper Component for Simple Cases
+
+For simple confirmations, create a reusable helper:
+
+```tsx
+// src/components/SimpleConfirmContent.tsx
+interface SimpleConfirmContentProps {
+  message: string;
+  close: () => void;
+  confirm: () => void;
+  cancelText?: string;
+  confirmText?: string;
+  confirmVariant?: 'default' | 'destructive';
+}
+
+export function SimpleConfirmContent({
+  message,
+  close,
+  confirm,
+  cancelText = 'Cancel',
+  confirmText = 'Confirm',
+  confirmVariant = 'default',
+}: SimpleConfirmContentProps) {
+  return (
+    <div className="space-y-4">
+      <p>{message}</p>
+      <div className="flex justify-end gap-2">
+        <Button variant="outline" onClick={close}>{cancelText}</Button>
+        <Button variant={confirmVariant} onClick={confirm}>{confirmText}</Button>
+      </div>
+    </div>
+  );
+}
+
+// Usage
+confirm: {
+  title: 'Delete?',
+  content: ({ close, confirm }) => (
+    <SimpleConfirmContent
+      message="Are you sure?"
+      close={close}
+      confirm={confirm}
+      confirmText="Delete"
+      confirmVariant="destructive"
+    />
+  ),
 }
 ```
 

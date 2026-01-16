@@ -74,7 +74,7 @@ export { redirectToPageWithParam } from './utils';
 
 // Registry (for setup)
 export { setupSnowTable, isSnowTableSetup } from './registry';
-export type { SetupSnowTableOptions, ConfirmContent, ConfirmCloseHelper, ConfirmFunction } from './registry';
+export type { SetupSnowTableOptions, ConfirmContent, ConfirmHelpers, ConfirmFunction } from './registry';
 
 // Internal (for customization)
 export { ActionCell } from './components';

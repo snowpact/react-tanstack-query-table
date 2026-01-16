@@ -6,6 +6,7 @@ import {
   type SnowColumnConfig,
   type ServerFetchParams,
   type ServerPaginatedResponse,
+  type ConfirmHelpers,
 } from '@snowpact/react-tanstack-query-table';
 import { CodePanel, ConfigPanel, type DemoConfig, type User, type ThemeColors, defaultTheme } from './components';
 
@@ -92,9 +93,8 @@ setupSnowTable({
       {children}
     </a>
   ),
-  confirm: async ({ title, content }) => {
-    const message = typeof content === 'string' ? `${title}\n\n${content}` : title;
-    return window.confirm(message);
+  confirm: async ({ title }) => {
+    return window.confirm(title);
   },
 });
 
@@ -320,7 +320,25 @@ export function App() {
       endpoint: (user: User) => deleteUser(user.id),
       confirm: {
         title: 'Delete user?',
-        content: `Are you sure you want to delete "${config.mode}"? This action cannot be undone.`,
+        content: ({ close, confirm }: ConfirmHelpers) => (
+          <div className="space-y-4">
+            <p>Are you sure you want to delete this user? This action cannot be undone.</p>
+            <div className="flex justify-end gap-2">
+              <button
+                className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+                onClick={close}
+              >
+                Cancel
+              </button>
+              <button
+                className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700"
+                onClick={confirm}
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        ),
       },
     },
   ];
@@ -360,9 +378,11 @@ export function App() {
             Ultra-light, registry-based data table for React + TanStack Table + TanStack Query
           </p>
 
-          <div className={`bg-white rounded-lg shadow-md p-6 mb-8 overflow-visible transition-all ${
-            config.mobilePreview ? 'max-w-[375px] mx-auto ring-2 ring-purple-500' : ''
-          }`}>
+          <div
+            className={`bg-white rounded-lg shadow-md p-6 mb-8 overflow-visible transition-all ${
+              config.mobilePreview ? 'max-w-[375px] mx-auto ring-2 ring-purple-500' : ''
+            }`}
+          >
             <div className="mb-4 flex items-center gap-2 text-sm flex-wrap">
               <span
                 className={`px-2 py-1 rounded text-xs font-medium ${

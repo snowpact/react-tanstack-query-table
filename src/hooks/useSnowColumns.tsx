@@ -9,7 +9,7 @@ import { useMemo } from 'react';
 import { ActionCell } from '../components/ActionCell';
 import { FilterConfig } from '../core/SingleFilterDropdown';
 import { getConfirm, getT } from '../registry';
-import { ActionConfirmContent, ErrorResponse, SnowColumnConfig, TableAction } from '../types';
+import { ErrorResponse, SnowColumnConfig, TableAction } from '../types';
 import { printValue } from '../utils';
 
 // ============================================
@@ -74,21 +74,10 @@ export const useSnowColumns = <T extends Record<string, unknown>, K>({
     const action = typeof a === 'function' ? a(item) : a;
 
     if (action.confirm) {
-      // Resolve content - support both static and function form
-      const resolveContent = (content: ActionConfirmContent, close: () => void) => {
-        if (typeof content === 'function') {
-          return content({ close });
-        }
-        return content;
-      };
-
       const confirmed = await confirm({
         title: action.confirm.title,
-        content: helpers => resolveContent(action.confirm!.content, helpers.close),
-        confirmText: action.confirm.confirmText,
-        cancelText: action.confirm.cancelText,
         subtitle: action.confirm.subtitle,
-        hideButtons: action.confirm.hideButtons,
+        content: action.confirm.content,
       });
 
       if (!confirmed) return;

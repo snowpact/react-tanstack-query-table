@@ -13,7 +13,7 @@ export type IconComponent = ComponentType<SVGProps<SVGSVGElement>>;
 
 import type { PreFilter } from './core/PrefilterTabs';
 import type { FilterConfig } from './core/SingleFilterDropdown';
-import type { ConfirmCloseHelper } from './registry/confirmRegistry';
+import type { ConfirmHelpers } from './registry/confirmRegistry';
 
 // ============================================
 // Shared Types
@@ -44,9 +44,9 @@ export type SnowColumnConfig<T extends object> = {
 export type ActionButtonVariant = 'default' | 'warning' | 'danger' | 'info' | 'success';
 
 /**
- * Confirm content can be static or a function receiving close helper
+ * Confirm content is always a function receiving { close, confirm } helpers
  */
-export type ActionConfirmContent = ReactNode | ((helpers: ConfirmCloseHelper) => ReactNode);
+export type ActionConfirmContent = (helpers: ConfirmHelpers) => ReactNode;
 
 export type BaseAction = {
   icon: IconComponent;
@@ -60,9 +60,6 @@ export type BaseAction = {
     title: string;
     content: ActionConfirmContent;
     subtitle?: string;
-    confirmText?: string;
-    cancelText?: string;
-    hideButtons?: boolean;
   };
 };
 

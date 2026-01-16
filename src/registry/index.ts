@@ -48,5 +48,5 @@ export const isSnowTableSetup = () => isSetup;
 // Re-export everything needed
 export { getT } from './translationRegistry';
 export { getLink, type LinkProps } from './linkRegistry';
-export { getConfirm, type ConfirmOptions, type ConfirmContent, type ConfirmCloseHelper, type ConfirmFunction } from './confirmRegistry';
+export { getConfirm, type ConfirmOptions, type ConfirmContent, type ConfirmHelpers, type ConfirmFunction } from './confirmRegistry';
 export { getStyles, type SnowTableStyles as TableStyles } from './stylesRegistry';
