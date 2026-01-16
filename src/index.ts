@@ -55,6 +55,7 @@ export type {
   TableAction,
   ClickAction,
   LinkAction,
+  EndpointAction,
   BaseAction,
   ActionButtonVariant,
   ErrorResponse,

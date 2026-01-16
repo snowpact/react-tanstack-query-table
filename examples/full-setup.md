@@ -95,35 +95,9 @@ export function App() {
 
 ## Actions Examples
 
-Actions are simple: `click` for interactions, `link` for navigation. You handle everything in the callback.
+Three action types: `click` for custom logic, `link` for navigation, `endpoint` for API calls.
 
-### Click Action with Confirmation
-
-```tsx
-import { useConfirm } from '@/hooks/useConfirm'; // Your own confirm hook
-
-// In your table actions
-{
-  type: 'click',
-  icon: Trash,
-  label: 'Delete',
-  variant: 'danger',
-  onClick: async (item) => {
-    const confirmed = await confirm({
-      title: 'Delete item?',
-      description: 'This action cannot be undone.',
-    });
-
-    if (confirmed) {
-      await deleteItem(item.id);
-      toast.success('Item deleted');
-      queryClient.invalidateQueries(['items']);
-    }
-  },
-}
-```
-
-### Click Action with Form Dialog
+### Click Action
 
 ```tsx
 {
@@ -131,13 +105,10 @@ import { useConfirm } from '@/hooks/useConfirm'; // Your own confirm hook
   icon: Edit,
   label: 'Change Status',
   onClick: (item) => {
-    // Open your own modal/dialog
     openStatusDialog({
       itemId: item.id,
       currentStatus: item.status,
-      onSuccess: () => {
-        queryClient.invalidateQueries(['items']);
-      },
+      onSuccess: () => queryClient.invalidateQueries(['items']),
     });
   },
 }
@@ -154,17 +125,52 @@ import { useConfirm } from '@/hooks/useConfirm'; // Your own confirm hook
 }
 ```
 
+### Endpoint Action
+
+For API calls with built-in mutation handling:
+
+```tsx
+{
+  type: 'endpoint',
+  icon: Trash,
+  label: 'Delete',
+  variant: 'danger',
+  endpoint: (item) => api.deleteItem(item.id),
+  onSuccess: () => {
+    toast.success('Item deleted');
+    queryClient.invalidateQueries(['items']);
+  },
+  onError: (error) => toast.error(error.message),
+}
+```
+
+### Endpoint with Confirmation
+
+Use `withConfirm` for optional confirmation before the endpoint is called:
+
+```tsx
+{
+  type: 'endpoint',
+  icon: Trash,
+  label: 'Delete',
+  variant: 'danger',
+  endpoint: (item) => api.deleteItem(item.id),
+  withConfirm: (item) => myConfirmDialog(`Delete ${item.name}?`),
+  onSuccess: () => queryClient.invalidateQueries(['items']),
+}
+```
+
+If `withConfirm` returns `false`, the endpoint is not called. You provide your own confirm dialog.
+
 ### Dynamic Action
 
 ```tsx
 (item) => ({
-  type: 'click',
+  type: 'endpoint',
   icon: item.isActive ? Pause : Play,
   label: item.isActive ? 'Deactivate' : 'Activate',
-  onClick: async () => {
-    await toggleStatus(item.id);
-    queryClient.invalidateQueries(['items']);
-  },
+  endpoint: () => api.toggleStatus(item.id),
+  onSuccess: () => queryClient.invalidateQueries(['items']),
   hidden: item.role === 'admin',
 })
 ```

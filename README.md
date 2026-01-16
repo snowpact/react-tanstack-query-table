@@ -197,7 +197,7 @@ const fetchUsers = async (params: ServerFetchParams) => {
 
 ## Actions
 
-Actions appear as buttons in each row. You have full control over what happens when an action is triggered.
+Actions appear as buttons in each row:
 
 ### Click Action
 
@@ -222,46 +222,42 @@ Actions appear as buttons in each row. You have full control over what happens w
 }
 ```
 
-### Click Action with Confirmation
+### Endpoint Action
 
-Handle confirmation dialogs yourself in the onClick handler:
-
-```tsx
-{
-  type: 'click',
-  icon: TrashIcon,
-  label: 'Delete',
-  variant: 'danger',
-  onClick: async (item) => {
-    // Use your own confirmation dialog
-    if (await myConfirmDialog(`Delete ${item.name}?`)) {
-      await api.deleteUser(item.id);
-      toast.success('User deleted');
-      queryClient.invalidateQueries(['users']);
-    }
-  },
-}
-```
-
-### Click Action with API Call
+For API calls with built-in mutation handling:
 
 ```tsx
 {
-  type: 'click',
+  type: 'endpoint',
   icon: TrashIcon,
   label: 'Delete',
   variant: 'danger',
-  onClick: async (item) => {
-    try {
-      await api.deleteUser(item.id);
-      toast.success('User deleted');
-      queryClient.invalidateQueries(['users']);
-    } catch (error) {
-      toast.error('Failed to delete user');
-    }
+  endpoint: (item) => api.deleteUser(item.id),
+  onSuccess: () => {
+    toast.success('User deleted');
+    queryClient.invalidateQueries(['users']);
   },
+  onError: (error) => toast.error(error.message),
 }
 ```
+
+### Endpoint with Confirmation
+
+Use `withConfirm` for optional confirmation before the endpoint is called:
+
+```tsx
+{
+  type: 'endpoint',
+  icon: TrashIcon,
+  label: 'Delete',
+  variant: 'danger',
+  endpoint: (item) => api.deleteUser(item.id),
+  withConfirm: (item) => myConfirmDialog(`Delete ${item.name}?`),
+  onSuccess: () => queryClient.invalidateQueries(['users']),
+}
+```
+
+If `withConfirm` returns `false`, the endpoint is not called.
 
 ### Dynamic Actions
 

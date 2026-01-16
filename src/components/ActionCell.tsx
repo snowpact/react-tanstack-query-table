@@ -19,10 +19,10 @@ interface TooltipState {
   y: number;
 }
 
-interface ActionCellProps<T> {
+interface ActionCellProps<T, K> {
   item: T;
-  actions: TableAction<T>[];
-  onAction: (action: TableAction<T>, item: T) => void;
+  actions: TableAction<T, K>[];
+  onAction: (action: TableAction<T, K>, item: T) => void;
 }
 
 // Tooltip component rendered via portal
@@ -45,7 +45,7 @@ function Tooltip({ label, x, y }: TooltipState) {
   );
 }
 
-function ActionCellInner<T>({ item, actions, onAction }: ActionCellProps<T>) {
+function ActionCellInner<T, K>({ item, actions, onAction }: ActionCellProps<T, K>) {
   const Link = getLink();
   const [tooltip, setTooltip] = useState<TooltipState | null>(null);
 
@@ -94,7 +94,7 @@ function ActionCellInner<T>({ item, actions, onAction }: ActionCellProps<T>) {
 
   // Memoize action handler - closes tooltip and calls parent handler
   const handleAction = useCallback(
-    (action: TableAction<T>) => {
+    (action: TableAction<T, K>) => {
       setTooltip(null);
       onAction(action, item);
     },

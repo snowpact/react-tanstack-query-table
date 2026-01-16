@@ -63,7 +63,22 @@ export type LinkAction<T> = BaseAction & {
   external?: boolean; // true = target="_blank" + rel="noopener noreferrer"
 };
 
-export type TableAction<T> = ClickAction<T> | LinkAction<T> | ((item: T) => ClickAction<T>) | ((item: T) => LinkAction<T>);
+export type EndpointAction<T, K> = BaseAction & {
+  type: 'endpoint';
+  endpoint: (item: T) => Promise<K>;
+  /** Optional confirmation - if returns false, endpoint is not called */
+  withConfirm?: (item: T) => Promise<boolean> | boolean;
+  onSuccess?: (data: K, item: T) => void;
+  onError?: (error: ErrorResponse, item: T) => void;
+};
+
+export type TableAction<T, K = unknown> =
+  | ClickAction<T>
+  | LinkAction<T>
+  | EndpointAction<T, K>
+  | ((item: T) => ClickAction<T>)
+  | ((item: T) => LinkAction<T>)
+  | ((item: T) => EndpointAction<T, K>);
 
 // ============================================
 // UI Options (passed through to DataTable)
@@ -95,10 +110,10 @@ export interface DataTableUIOptions<T extends object> {
 /**
  * Base props shared between SnowClientDataTable and SnowServerDataTable
  */
-export interface BaseSnowTableProps<T extends Record<string, unknown>> extends DataTableUIOptions<T> {
+export interface BaseSnowTableProps<T extends Record<string, unknown>, K = unknown> extends DataTableUIOptions<T> {
   queryKey: string[];
   columnConfig: SnowColumnConfig<T>[];
-  actions?: TableAction<T>[];
+  actions?: TableAction<T, K>[];
   filters?: FilterConfig<T>[];
   prefilters?: PreFilter[];
   defaultSortBy?: string;
@@ -117,7 +132,7 @@ export interface BaseSnowTableProps<T extends Record<string, unknown>> extends D
 /**
  * Props for SnowClientDataTable component (client-side filtering/sorting)
  */
-export interface SnowClientDataTableProps<T extends Record<string, unknown>> extends BaseSnowTableProps<T> {
+export interface SnowClientDataTableProps<T extends Record<string, unknown>, K = unknown> extends BaseSnowTableProps<T, K> {
   fetchAllItemsEndpoint: () => Promise<T[]>;
   /** Optional function to filter items based on active prefilter */
   prefilterFn?: (item: T, prefilterId: string) => boolean;
@@ -151,7 +166,7 @@ export interface ServerFetchParams {
 /**
  * Props for SnowServerDataTable component (server-side pagination/filtering/sorting)
  */
-export interface SnowServerDataTableProps<T extends Record<string, unknown>> extends BaseSnowTableProps<T> {
+export interface SnowServerDataTableProps<T extends Record<string, unknown>, K = unknown> extends BaseSnowTableProps<T, K> {
   fetchServerEndpoint: (params: ServerFetchParams) => Promise<ServerPaginatedResponse<T>>;
   filters?: FilterConfig<Record<string, unknown>>[];
 }

@@ -309,16 +309,13 @@ export function App() {
       },
     },
     {
-      type: 'click' as const,
+      type: 'endpoint' as const,
       icon: TrashIcon,
       label: 'Delete',
       variant: 'danger' as const,
-      onClick: async (user: User) => {
-        if (window.confirm(`Delete user "${user.name}"?`)) {
-          await deleteUser(user.id);
-          alert('User deleted!');
-        }
-      },
+      endpoint: (user: User) => deleteUser(user.id),
+      withConfirm: (user: User) => window.confirm(`Delete user "${user.name}"?`),
+      onSuccess: () => alert('User deleted!'),
     },
   ];
 

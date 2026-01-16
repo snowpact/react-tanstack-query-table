@@ -10,7 +10,7 @@ import { useSnowColumns } from './hooks/useSnowColumns';
 import { useTableStatePersist } from './hooks/useTableStatePersist';
 import { SnowClientDataTableProps } from './types';
 
-export const SnowClientDataTable = <T extends Record<string, unknown>>({
+export const SnowClientDataTable = <T extends Record<string, unknown>, K = unknown>({
   queryKey,
   columnConfig,
   actions,
@@ -23,7 +23,7 @@ export const SnowClientDataTable = <T extends Record<string, unknown>>({
   persistState = false,
   fetchAllItemsEndpoint,
   ...restProps
-}: SnowClientDataTableProps<T>) => {
+}: SnowClientDataTableProps<T, K>) => {
   // ============================================
   // State Management (with optional persistence)
   // ============================================
@@ -66,7 +66,7 @@ export const SnowClientDataTable = <T extends Record<string, unknown>>({
   // ============================================
   // Columns & Actions (via shared hook)
   // ============================================
-  const { columns } = useSnowColumns<T>({
+  const { columns } = useSnowColumns<T, K>({
     columnConfig,
     actions,
     filters,
