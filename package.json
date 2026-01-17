@@ -38,8 +38,7 @@
   "sideEffects": false,
   "scripts": {
     "dev": "vite",
-    "build": "vite build && pnpm build:css",
-    "build:css": "pnpm exec postcss ./src/styles/index.css -o ./dist/styles.css",
+    "build": "vite build",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -73,7 +72,6 @@
     "cssnano": "^7.1.2",
     "jsdom": "^26.0.0",
     "postcss": "^8.5.6",
-    "postcss-cli": "^11.0.1",
     "prism-react-renderer": "^2.4.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
