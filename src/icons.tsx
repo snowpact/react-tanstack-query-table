@@ -83,6 +83,14 @@ export const Filter = (props: IconProps) => (
   </Icon>
 );
 
+export const ListFilter = (props: IconProps) => (
+  <Icon {...props}>
+    <path d="M3 6h18" />
+    <path d="M7 12h10" />
+    <path d="M10 18h4" />
+  </Icon>
+);
+
 export const FunnelX = (props: IconProps) => (
   <Icon {...props}>
     <path d="M10 20v-6L3.6 5.2A2 2 0 0 1 5.17 2h13.66a2 2 0 0 1 1.57 3.2L14 12.9" />

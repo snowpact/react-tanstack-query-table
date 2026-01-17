@@ -2,7 +2,7 @@
  * Single filter dropdown with multi-select support
  */
 
-import { ChevronDown, Filter, Search } from '../icons';
+import { ChevronDown, Filter, ListFilter, Search } from '../icons';
 import { useState, useMemo } from 'react';
 
 import { Button } from '../primitives/Button';
@@ -99,7 +99,11 @@ export function SingleFilterDropdown<T extends object>({
       <DropdownMenu.Trigger asChild>
         <Button className={cn('snow-filter-btn snow-w-full snow-justify-between', activeCount > 0 && 'snow-state-active')}>
           <div className="snow-filter-btn-content">
-            <Filter className={cn('snow-size-4 snow-shrink-0', activeCount > 0 && 'snow-state-active-text')} />
+            {filter.multipleSelection ? (
+              <ListFilter className={cn('snow-size-4 snow-shrink-0', activeCount > 0 && 'snow-state-active-text')} />
+            ) : (
+              <Filter className={cn('snow-size-4 snow-shrink-0', activeCount > 0 && 'snow-state-active-text')} />
+            )}
             <span className="snow-truncate">{getDisplayText()}</span>
           </div>
           <ChevronDown className="snow-size-3\\.5 snow-opacity-50 snow-shrink-0" />
@@ -142,7 +146,7 @@ export function SingleFilterDropdown<T extends object>({
         {activeCount > 0 && (
           <>
             <DropdownMenu.Separator />
-            <DropdownMenu.Item onClick={handleReset} className="snow-text-xs snow-cursor-pointer">
+            <DropdownMenu.Item onClick={handleReset} className="snow-text-xs snow-cursor-pointer snow-text-center snow-text-muted-foreground">
               {t('dataTable.resetFilters')}
             </DropdownMenu.Item>
           </>

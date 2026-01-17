@@ -351,7 +351,7 @@
   overflow-y: hidden;
 }
 
-.snow-table { width: 100%; font-size: 0.875rem; border-collapse: collapse; }
+.snow-table { width: 100%; font-size: 0.875rem; border-collapse: collapse; min-width: max-content; }
 .snow-table-header { background-color: var(--snow-secondary); }
 
 .snow-table-header-cell {
