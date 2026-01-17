@@ -466,4 +466,58 @@ describe('DataTable', () => {
       expect(screen.getByText('No items found')).toBeInTheDocument();
     });
   });
+
+  describe('column meta (width, minWidth, maxWidth)', () => {
+    it('should apply width style to header and cells', () => {
+      const columnsWithMeta: ColumnDef<TestItem>[] = [
+        { accessorKey: 'id', header: 'ID', meta: { width: '100px' } },
+        { accessorKey: 'name', header: 'Name' },
+        { accessorKey: 'status', header: 'Status' },
+      ];
+
+      renderWithProviders(<DataTable data={mockData} columns={columnsWithMeta} />);
+
+      const headers = screen.getAllByRole('columnheader');
+      expect(headers[0]).toHaveStyle({ width: '100px' });
+
+      const rows = screen.getAllByTestId(/^datatable-row-/);
+      const firstRowCells = rows[0].querySelectorAll('td');
+      expect(firstRowCells[0]).toHaveStyle({ width: '100px' });
+    });
+
+    it('should apply minWidth style to header and cells', () => {
+      const columnsWithMeta: ColumnDef<TestItem>[] = [
+        { accessorKey: 'id', header: 'ID', meta: { minWidth: '150px' } },
+        { accessorKey: 'name', header: 'Name' },
+        { accessorKey: 'status', header: 'Status' },
+      ];
+
+      renderWithProviders(<DataTable data={mockData} columns={columnsWithMeta} />);
+
+      const headers = screen.getAllByRole('columnheader');
+      expect(headers[0]).toHaveStyle({ minWidth: '150px' });
+
+      const rows = screen.getAllByTestId(/^datatable-row-/);
+      const firstRowCells = rows[0].querySelectorAll('td');
+      expect(firstRowCells[0]).toHaveStyle({ minWidth: '150px' });
+    });
+
+    it('should apply maxWidth style to header and cells with truncate class', () => {
+      const columnsWithMeta: ColumnDef<TestItem>[] = [
+        { accessorKey: 'id', header: 'ID', meta: { maxWidth: '200px' } },
+        { accessorKey: 'name', header: 'Name' },
+        { accessorKey: 'status', header: 'Status' },
+      ];
+
+      renderWithProviders(<DataTable data={mockData} columns={columnsWithMeta} />);
+
+      const headers = screen.getAllByRole('columnheader');
+      expect(headers[0]).toHaveStyle({ maxWidth: '200px' });
+
+      const rows = screen.getAllByTestId(/^datatable-row-/);
+      const firstRowCells = rows[0].querySelectorAll('td');
+      expect(firstRowCells[0]).toHaveStyle({ maxWidth: '200px' });
+      expect(firstRowCells[0]).toHaveClass('snow-cell-truncate');
+    });
+  });
 });
