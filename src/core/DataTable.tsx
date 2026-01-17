@@ -341,6 +341,7 @@ export function DataTable<Data extends object>({
                     style={{
                       width: header.column.columnDef?.meta?.width,
                       minWidth: header.column.columnDef?.meta?.minWidth,
+                      maxWidth: header.column.columnDef?.meta?.maxWidth,
                     }}
                   >
                     {header.isPlaceholder ? null : (

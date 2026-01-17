@@ -48,6 +48,7 @@ export type {
 export type {
   IconComponent,
   SnowColumnConfig,
+  SnowColumnMeta,
   SnowClientDataTableProps,
   SnowServerDataTableProps,
   ServerPaginatedResponse,

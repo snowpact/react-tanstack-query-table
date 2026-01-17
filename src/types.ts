@@ -2,7 +2,6 @@
  * SnowTable types
  */
 
-import { ColumnMeta } from '@tanstack/react-table';
 import type { ComponentType, ReactNode, SVGProps } from 'react';
 
 /**
@@ -23,6 +22,24 @@ export type ErrorResponse = {
   status: number;
 };
 
+/**
+ * Column metadata for customizing column appearance and behavior
+ */
+export type SnowColumnMeta = {
+  /** Column width (CSS value, e.g., '200px', '20%', 'auto') */
+  width?: string | number;
+  /** Column minimum width (CSS value) */
+  minWidth?: string | number;
+  /** Column maximum width (CSS value) */
+  maxWidth?: string | number;
+  /** Whether the column is hidden by default in column configuration */
+  defaultHidden?: boolean;
+  /** Disable row click handler for this column (e.g., for action columns) */
+  disableColumnClick?: boolean;
+  /** Center the content of this column */
+  center?: boolean;
+};
+
 export type SnowColumnConfig<T extends object> = {
   key: keyof T | '_extra' | '_extra_' | `_extra_${string}`;
   label?: string;
@@ -30,7 +47,7 @@ export type SnowColumnConfig<T extends object> = {
   sortable?: boolean;
   render?: (item: T) => ReactNode;
   searchableValue?: (item: T) => string;
-  meta?: ColumnMeta<T, unknown>;
+  meta?: SnowColumnMeta;
 };
 
 // ============================================

@@ -375,6 +375,59 @@ const columns: SnowColumnConfig<User>[] = [
 ];
 ```
 
+### Column Metadata (meta)
+
+Use `meta` to customize column appearance and behavior:
+
+```tsx
+import { SnowColumnConfig, SnowColumnMeta } from '@snowpact/react-tanstack-query-table';
+
+const columns: SnowColumnConfig<User>[] = [
+  {
+    key: 'id',
+    label: 'ID',
+    meta: {
+      width: '80px',
+      center: true,
+    },
+  },
+  {
+    key: 'name',
+    label: 'Name',
+    meta: {
+      minWidth: '150px',
+      maxWidth: '300px',
+    },
+  },
+  {
+    key: 'description',
+    label: 'Description',
+    meta: {
+      defaultHidden: true,  // Hidden by default in column configuration
+    },
+  },
+  {
+    key: 'actions',
+    label: '',
+    meta: {
+      width: 'auto',
+      disableColumnClick: true,  // Don't trigger onRowClick for this column
+    },
+  },
+];
+```
+
+#### SnowColumnMeta options
+
+| Option               | Type               | Description                                      |
+| -------------------- | ------------------ | ------------------------------------------------ |
+| `width`              | `string \| number` | Column width (e.g., `'200px'`, `'20%'`, `'auto'`) |
+| `minWidth`           | `string \| number` | Minimum column width                             |
+| `maxWidth`           | `string \| number` | Maximum column width                             |
+| `defaultHidden`      | `boolean`          | Hide column by default (with `enableColumnConfiguration`) |
+| `disableColumnClick` | `boolean`          | Disable `onRowClick` for this column             |
+| `center`             | `boolean`          | Center column content                            |
+
 ---
 
 ## API Reference

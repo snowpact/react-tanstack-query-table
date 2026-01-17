@@ -11,6 +11,8 @@ declare module '@tanstack/react-table' {
     width?: string | number;
     /** Column minimum width (CSS value) */
     minWidth?: string | number;
+    /** Column maximum width (CSS value) */
+    maxWidth?: string | number;
     /** Whether the column is hidden by default in column configuration */
     defaultHidden?: boolean;
     /** Disable row click handler for this column (e.g., for action columns) */
