@@ -380,6 +380,7 @@
 .snow-table-row-alternate { background-color: rgba(245, 245, 245, 0.2); }
 .snow-table-row-active { background-color: rgba(245, 245, 245, 0.2); }
 .snow-table-cell { padding: 0.75rem 1rem; vertical-align: middle; }
+.snow-cell-truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 .snow-table-empty {
   height: 6rem;

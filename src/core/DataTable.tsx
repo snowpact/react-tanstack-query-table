@@ -400,10 +400,16 @@ export function DataTable<Data extends object>({
                         className={cn(
                           onRowClick && !cell.column.columnDef?.meta?.disableColumnClick && 'snow-cursor-pointer',
                           cell.column.columnDef?.meta?.center && 'snow-align-middle snow-text-center',
+                          cell.column.columnDef?.meta?.maxWidth !== undefined && 'snow-cell-truncate',
                           enableResponsive
                             ? cn('snow-responsive-cell', isLastCell && 'snow-responsive-cell-last')
                             : 'snow-table-cell'
                         )}
+                        style={{
+                          width: cell.column.columnDef?.meta?.width,
+                          minWidth: cell.column.columnDef?.meta?.minWidth,
+                          maxWidth: cell.column.columnDef?.meta?.maxWidth,
+                        }}
                       >
                         {enableResponsive && <span className="snow-responsive-cell-label">{headerLabel}</span>}
                         <span className={cn(enableResponsive && 'snow-responsive-cell-content')}>
