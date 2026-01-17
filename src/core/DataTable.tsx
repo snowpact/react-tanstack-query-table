@@ -334,17 +334,17 @@ export function DataTable<Data extends object>({
             {table.getHeaderGroups().map(headerGroup => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map(header => {
-                  const skipWidth = enableResponsive && header.column.columnDef?.meta?.skipWidthOnResponsive;
+                  const meta = header.column.columnDef?.meta;
                   return (
                   <th
                     key={header.id}
                     className={cn('snow-table-header-cell', enableSorting && 'snow-cursor-pointer')}
                     onClick={header.column.getToggleSortingHandler()}
-                    style={skipWidth ? undefined : {
-                      width: header.column.columnDef?.meta?.width,
-                      minWidth: header.column.columnDef?.meta?.minWidth,
-                      maxWidth: header.column.columnDef?.meta?.maxWidth,
-                    }}
+                    style={{
+                      '--snow-col-width': meta?.width,
+                      '--snow-col-min-width': meta?.minWidth,
+                      '--snow-col-max-width': meta?.maxWidth,
+                    } as React.CSSProperties}
                   >
                     {header.isPlaceholder ? null : (
                       <span className="snow-table-header-cell-content">
@@ -393,27 +393,27 @@ export function DataTable<Data extends object>({
                     const headerLabel =
                       typeof cell.column.columnDef.header === 'string' ? cell.column.columnDef.header : cell.column.id;
                     const isLastCell = cellIndex === row.getVisibleCells().length - 1;
-                    const skipWidth = enableResponsive && cell.column.columnDef?.meta?.skipWidthOnResponsive;
+                    const meta = cell.column.columnDef?.meta;
 
                     return (
                       <td
                         key={cell.id}
                         onClick={() =>
-                          onRowClick && !cell.column.columnDef?.meta?.disableColumnClick && onRowClick(row.original)
+                          onRowClick && !meta?.disableColumnClick && onRowClick(row.original)
                         }
                         className={cn(
-                          onRowClick && !cell.column.columnDef?.meta?.disableColumnClick && 'snow-cursor-pointer',
-                          cell.column.columnDef?.meta?.center && 'snow-align-middle snow-text-center',
-                          !skipWidth && cell.column.columnDef?.meta?.maxWidth !== undefined && 'snow-cell-truncate',
+                          onRowClick && !meta?.disableColumnClick && 'snow-cursor-pointer',
+                          meta?.center && 'snow-align-middle snow-text-center',
+                          meta?.maxWidth !== undefined && 'snow-cell-truncate',
                           enableResponsive
                             ? cn('snow-responsive-cell', isLastCell && 'snow-responsive-cell-last')
                             : 'snow-table-cell'
                         )}
-                        style={skipWidth ? undefined : {
-                          width: cell.column.columnDef?.meta?.width,
-                          minWidth: cell.column.columnDef?.meta?.minWidth,
-                          maxWidth: cell.column.columnDef?.meta?.maxWidth,
-                        }}
+                        style={{
+                          '--snow-col-width': meta?.width,
+                          '--snow-col-min-width': meta?.minWidth,
+                          '--snow-col-max-width': meta?.maxWidth,
+                        } as React.CSSProperties}
                       >
                         {enableResponsive && <span className="snow-responsive-cell-label">{headerLabel}</span>}
                         <span className={cn(enableResponsive && 'snow-responsive-cell-content')}>

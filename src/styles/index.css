@@ -359,6 +359,9 @@
   text-align: left;
   vertical-align: middle;
   color: var(--snow-secondary-foreground);
+  width: var(--snow-col-width);
+  min-width: var(--snow-col-min-width);
+  max-width: var(--snow-col-max-width);
 }
 
 .snow-table-header-cell-content {
@@ -379,7 +382,7 @@
 .snow-table-row:hover { background-color: var(--snow-secondary); }
 .snow-table-row-alternate { background-color: rgba(245, 245, 245, 0.2); }
 .snow-table-row-active { background-color: rgba(245, 245, 245, 0.2); }
-.snow-table-cell { padding: 0.75rem 1rem; vertical-align: middle; }
+.snow-table-cell { padding: 0.75rem 1rem; vertical-align: middle; width: var(--snow-col-width); min-width: var(--snow-col-min-width); max-width: var(--snow-col-max-width); }
 .snow-cell-truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 .snow-table-empty {
@@ -581,6 +584,10 @@
   flex-direction: column;
   padding: 0.5rem 0;
   border-bottom: 1px solid var(--snow-border);
+  /* In mobile mode, ignore width/minWidth/maxWidth - use auto */
+  width: auto;
+  min-width: unset;
+  max-width: unset;
 }
 
 .snow-responsive-cell-last { border-bottom: none; }
@@ -634,6 +641,9 @@
     display: table-cell !important;
     padding: 0.75rem 1rem;
     border: none !important;
+    width: var(--snow-col-width);
+    min-width: var(--snow-col-min-width);
+    max-width: var(--snow-col-max-width);
   }
 
   .snow-responsive-cell-label { display: none; }

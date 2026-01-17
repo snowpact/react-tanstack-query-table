@@ -7,14 +7,12 @@ import '@tanstack/react-table';
 declare module '@tanstack/react-table' {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interface ColumnMeta<TData extends unknown, TValue> {
-    /** Column width (CSS value) */
+    /** Column width (CSS value) - only applied in desktop mode */
     width?: string | number;
-    /** Column minimum width (CSS value) */
+    /** Column minimum width (CSS value) - only applied in desktop mode */
     minWidth?: string | number;
-    /** Column maximum width (CSS value) */
+    /** Column maximum width (CSS value) - only applied in desktop mode */
     maxWidth?: string | number;
-    /** Skip width/minWidth/maxWidth in responsive mode (mobile) */
-    skipWidthOnResponsive?: boolean;
     /** Whether the column is hidden by default in column configuration */
     defaultHidden?: boolean;
     /** Disable row click handler for this column (e.g., for action columns) */

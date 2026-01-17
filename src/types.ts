@@ -26,14 +26,12 @@ export type ErrorResponse = {
  * Column metadata for customizing column appearance and behavior
  */
 export type SnowColumnMeta = {
-  /** Column width (CSS value, e.g., '200px', '20%', 'auto') */
+  /** Column width (CSS value, e.g., '200px', '20%', 'auto') - only applied in desktop mode */
   width?: string | number;
-  /** Column minimum width (CSS value) */
+  /** Column minimum width (CSS value) - only applied in desktop mode */
   minWidth?: string | number;
-  /** Column maximum width (CSS value) */
+  /** Column maximum width (CSS value) - only applied in desktop mode */
   maxWidth?: string | number;
-  /** Skip width/minWidth/maxWidth in responsive mode (mobile) */
-  skipWidthOnResponsive?: boolean;
   /** Whether the column is hidden by default in column configuration */
   defaultHidden?: boolean;
   /** Disable row click handler for this column (e.g., for action columns) */
