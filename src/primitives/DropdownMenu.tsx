@@ -10,10 +10,11 @@ import { cn } from '../utils';
 
 interface RootProps {
   children: ReactNode;
+  modal?: boolean;
 }
 
-function Root({ children }: RootProps) {
-  return <DropdownMenuPrimitive.Root>{children}</DropdownMenuPrimitive.Root>;
+function Root({ children, modal = false }: RootProps) {
+  return <DropdownMenuPrimitive.Root modal={modal}>{children}</DropdownMenuPrimitive.Root>;
 }
 
 interface TriggerProps {
