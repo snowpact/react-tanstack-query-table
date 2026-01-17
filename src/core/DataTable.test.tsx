@@ -519,5 +519,42 @@ describe('DataTable', () => {
       expect(firstRowCells[0]).toHaveStyle({ maxWidth: '200px' });
       expect(firstRowCells[0]).toHaveClass('snow-cell-truncate');
     });
+
+    it('should skip width styles when skipWidthOnResponsive is true and enableResponsive is true', () => {
+      const columnsWithMeta: ColumnDef<TestItem>[] = [
+        { accessorKey: 'id', header: 'ID', meta: { width: '100px', minWidth: '50px', maxWidth: '150px', skipWidthOnResponsive: true } },
+        { accessorKey: 'name', header: 'Name' },
+        { accessorKey: 'status', header: 'Status' },
+      ];
+
+      renderWithProviders(<DataTable data={mockData} columns={columnsWithMeta} enableResponsive />);
+
+      const headers = screen.getAllByRole('columnheader');
+      expect(headers[0]).not.toHaveStyle({ width: '100px' });
+      expect(headers[0]).not.toHaveStyle({ minWidth: '50px' });
+      expect(headers[0]).not.toHaveStyle({ maxWidth: '150px' });
+
+      const rows = screen.getAllByTestId(/^datatable-row-/);
+      const firstRowCells = rows[0].querySelectorAll('td');
+      expect(firstRowCells[0]).not.toHaveStyle({ width: '100px' });
+      expect(firstRowCells[0]).not.toHaveClass('snow-cell-truncate');
+    });
+
+    it('should apply width styles when skipWidthOnResponsive is true but enableResponsive is false', () => {
+      const columnsWithMeta: ColumnDef<TestItem>[] = [
+        { accessorKey: 'id', header: 'ID', meta: { width: '100px', skipWidthOnResponsive: true } },
+        { accessorKey: 'name', header: 'Name' },
+        { accessorKey: 'status', header: 'Status' },
+      ];
+
+      renderWithProviders(<DataTable data={mockData} columns={columnsWithMeta} enableResponsive={false} />);
+
+      const headers = screen.getAllByRole('columnheader');
+      expect(headers[0]).toHaveStyle({ width: '100px' });
+
+      const rows = screen.getAllByTestId(/^datatable-row-/);
+      const firstRowCells = rows[0].querySelectorAll('td');
+      expect(firstRowCells[0]).toHaveStyle({ width: '100px' });
+    });
   });
 });

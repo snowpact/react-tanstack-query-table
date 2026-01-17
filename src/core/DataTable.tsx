@@ -333,12 +333,14 @@ export function DataTable<Data extends object>({
           <thead className={cn('snow-table-header', enableResponsive && 'snow-responsive-thead')}>
             {table.getHeaderGroups().map(headerGroup => (
               <tr key={headerGroup.id}>
-                {headerGroup.headers.map(header => (
+                {headerGroup.headers.map(header => {
+                  const skipWidth = enableResponsive && header.column.columnDef?.meta?.skipWidthOnResponsive;
+                  return (
                   <th
                     key={header.id}
                     className={cn('snow-table-header-cell', enableSorting && 'snow-cursor-pointer')}
                     onClick={header.column.getToggleSortingHandler()}
-                    style={{
+                    style={skipWidth ? undefined : {
                       width: header.column.columnDef?.meta?.width,
                       minWidth: header.column.columnDef?.meta?.minWidth,
                       maxWidth: header.column.columnDef?.meta?.maxWidth,
@@ -351,7 +353,8 @@ export function DataTable<Data extends object>({
                       </span>
                     )}
                   </th>
-                ))}
+                  );
+                })}
               </tr>
             ))}
           </thead>
@@ -390,6 +393,7 @@ export function DataTable<Data extends object>({
                     const headerLabel =
                       typeof cell.column.columnDef.header === 'string' ? cell.column.columnDef.header : cell.column.id;
                     const isLastCell = cellIndex === row.getVisibleCells().length - 1;
+                    const skipWidth = enableResponsive && cell.column.columnDef?.meta?.skipWidthOnResponsive;
 
                     return (
                       <td
@@ -400,12 +404,12 @@ export function DataTable<Data extends object>({
                         className={cn(
                           onRowClick && !cell.column.columnDef?.meta?.disableColumnClick && 'snow-cursor-pointer',
                           cell.column.columnDef?.meta?.center && 'snow-align-middle snow-text-center',
-                          cell.column.columnDef?.meta?.maxWidth !== undefined && 'snow-cell-truncate',
+                          !skipWidth && cell.column.columnDef?.meta?.maxWidth !== undefined && 'snow-cell-truncate',
                           enableResponsive
                             ? cn('snow-responsive-cell', isLastCell && 'snow-responsive-cell-last')
                             : 'snow-table-cell'
                         )}
-                        style={{
+                        style={skipWidth ? undefined : {
                           width: cell.column.columnDef?.meta?.width,
                           minWidth: cell.column.columnDef?.meta?.minWidth,
                           maxWidth: cell.column.columnDef?.meta?.maxWidth,
