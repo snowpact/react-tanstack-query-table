@@ -262,9 +262,9 @@
 .snow-dropdown-checkbox-item[data-disabled] { pointer-events: none; opacity: 0.5; }
 
 .snow-select-item { padding-right: 2rem; }
-.snow-dropdown-item { gap: 0.5rem; }
+.snow-dropdown-item { gap: 0.5rem; cursor: pointer; }
 .snow-dropdown-item svg { pointer-events: none; flex-shrink: 0; width: 1rem; height: 1rem; }
-.snow-dropdown-checkbox-item { gap: 0.5rem; padding-left: 2rem; }
+.snow-dropdown-checkbox-item { gap: 0.5rem; padding-left: 2rem; cursor: pointer; }
 
 .snow-dropdown-checkbox-indicator {
   pointer-events: none;
