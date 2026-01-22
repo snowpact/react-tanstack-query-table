@@ -54,15 +54,10 @@ export type SnowColumnConfig<T extends object> = {
 // Action Types
 // ============================================
 
-/**
- * Button variants supported by actions
- */
-export type ActionButtonVariant = 'default' | 'warning' | 'danger' | 'info' | 'success';
-
 export type BaseAction = {
   icon: IconComponent;
   label: string;
-  variant?: ActionButtonVariant;
+  className?: string;
   display?: 'button' | 'dropdown';
   hidden?: boolean;
   disabled?: boolean;

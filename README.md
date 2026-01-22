@@ -46,17 +46,17 @@ setupSnowTable({
 - **Dynamic keys** (column labels, etc.) - Your `translate` function handles these
 - **Static UI keys** (`dataTable.*`) - Built-in English defaults if `translate` returns the key unchanged
 
-| Key | Default |
-|-----|---------|
-| `dataTable.search` | "Search..." |
-| `dataTable.elements` | "elements" |
-| `dataTable.paginationSize` | "per page" |
-| `dataTable.columnsConfiguration` | "Columns" |
-| `dataTable.resetFilters` | "Reset filters" |
-| `dataTable.resetColumns` | "Reset" |
-| `dataTable.searchFilters` | "Search..." |
-| `dataTable.searchEmpty` | "No results found" |
-| `dataTable.selectFilter` | "Select..." |
+| Key                              | Default            |
+| -------------------------------- | ------------------ |
+| `dataTable.search`               | "Search..."        |
+| `dataTable.elements`             | "elements"         |
+| `dataTable.paginationSize`       | "per page"         |
+| `dataTable.columnsConfiguration` | "Columns"          |
+| `dataTable.resetFilters`         | "Reset filters"    |
+| `dataTable.resetColumns`         | "Reset"            |
+| `dataTable.searchFilters`        | "Search..."        |
+| `dataTable.searchEmpty`          | "No results found" |
+| `dataTable.selectFilter`         | "Select..."        |
 
 Override static keys without i18n:
 ```tsx
@@ -118,9 +118,12 @@ Override CSS variables to match your design. Variables use `@property` so they w
   --snow-table-hover: #f5f5f5;       /* Hover states */
   --snow-table-skeleton: #f5f5f5;    /* Skeleton loader */
   --snow-table-separator: #e5e5e5;   /* Dropdown separators */
-  --snow-table-row-even: #fafafa;    /* Alternating rows */
   --snow-table-placeholder: #a3a3a3; /* Input placeholders, icons */
   --snow-table-text: #737373;        /* Secondary text (labels, counts) */
+
+  /* Optional (transparent/inherited by default) */
+  --snow-table-row-even: #fafafa;    /* Alternating rows - only set if you want zebra striping */
+  --snow-table-button: #f0f0f0;      /* Button background - falls back to --snow-table-background */
 
   /* Other */
   --snow-table-radius: 0.375rem;
@@ -140,6 +143,7 @@ Override CSS variables to match your design. Variables use `@property` so they w
   --snow-table-row-even: #1f1f3a;
   --snow-table-placeholder: #6b7280;
   --snow-table-text: #a0a0a0;
+  --snow-table-button: #16213e;
 }
 ```
 
@@ -225,7 +229,7 @@ For API calls with built-in mutation handling:
   type: 'endpoint',
   icon: TrashIcon,
   label: 'Delete',
-  variant: 'danger',
+  className: 'my-danger-btn',  // Optional: add custom styling
   endpoint: (item) => api.deleteUser(item.id),
   onSuccess: () => {
     toast.success('User deleted');
@@ -244,7 +248,6 @@ Use `withConfirm` to show a confirmation dialog before the endpoint is called:
   type: 'endpoint',
   icon: TrashIcon,
   label: 'Delete',
-  variant: 'danger',
   endpoint: (item) => api.deleteUser(item.id),
   withConfirm: async (item) => {
     // Return true to proceed, false to cancel
@@ -435,14 +438,14 @@ const columns: SnowColumnConfig<User>[] = [
 
 #### SnowColumnMeta options
 
-| Option               | Type               | Description                                      |
-| -------------------- | ------------------ | ------------------------------------------------ |
-| `width`              | `string \| number` | Column width (e.g., `'200px'`, `'20%'`, `'auto'`) |
-| `minWidth`           | `string \| number` | Minimum column width                             |
-| `maxWidth`           | `string \| number` | Maximum column width                             |
+| Option               | Type               | Description                                               |
+| -------------------- | ------------------ | --------------------------------------------------------- |
+| `width`              | `string \| number` | Column width (e.g., `'200px'`, `'20%'`, `'auto'`)         |
+| `minWidth`           | `string \| number` | Minimum column width                                      |
+| `maxWidth`           | `string \| number` | Maximum column width                                      |
 | `defaultHidden`      | `boolean`          | Hide column by default (with `enableColumnConfiguration`) |
-| `disableColumnClick` | `boolean`          | Disable `onRowClick` for this column             |
-| `center`             | `boolean`          | Center column content                            |
+| `disableColumnClick` | `boolean`          | Disable `onRowClick` for this column                      |
+| `center`             | `boolean`          | Center column content                                     |
 
 ---
 

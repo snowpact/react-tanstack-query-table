@@ -1,73 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@snowpact/react-tanstack-query-table Demo</title>
-    <!-- Tailwind CDN for demo page layout only (not the library) -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-      /* Fix dropdown overflow */
-      [data-radix-popper-content-wrapper] {
-        z-index: 50 !important;
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>@snowpact/react-tanstack-query-table Demo</title>
+  <!-- Tailwind CDN for demo page layout only (not the library) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Fix dropdown overflow */
+    [data-radix-popper-content-wrapper] {
+      z-index: 50 !important;
+    }
+
+    /* Custom scrollbar */
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #4b5563;
+      border-radius: 3px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #6b7280;
+    }
+
+    /* Demo: Red delete button */
+    .demo-btn-danger {
+      color: #dc2626 !important;
+
+    }
+
+    .demo-btn-danger:hover {
+      background-color: #fef2f2 !important;
+    }
+
+    /* Container queries for mobile preview */
+    .snow-table-container {
+      container-type: inline-size;
+    }
+
+    /* Top bar - mobile layout when container is narrow */
+    @container (max-width: 700px) {
+      .snow-table-top-bar {
+        grid-template-columns: 1fr !important;
       }
 
-      /* Custom scrollbar */
-      .custom-scrollbar::-webkit-scrollbar {
-        width: 6px;
-        height: 6px;
-      }
-      .custom-scrollbar::-webkit-scrollbar-track {
-        background: transparent;
-      }
-      .custom-scrollbar::-webkit-scrollbar-thumb {
-        background: #4b5563;
-        border-radius: 3px;
-      }
-      .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-        background: #6b7280;
+      .snow-table-filters {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
       }
 
-      /* Container queries for mobile preview */
-      .snow-table-container {
-        container-type: inline-size;
+      .snow-table-actions {
+        justify-content: flex-end !important;
+      }
+    }
+
+    /* Bottom bar - mobile layout when container is narrow */
+    @container (max-width: 700px) {
+      .snow-table-bottom-bar {
+        grid-template-columns: 1fr !important;
       }
 
-      /* Top bar - mobile layout when container is narrow */
-      @container (max-width: 700px) {
-        .snow-table-top-bar {
-          grid-template-columns: 1fr !important;
-        }
-        .snow-table-filters {
-          display: grid !important;
-          grid-template-columns: 1fr !important;
-        }
-        .snow-table-actions {
-          justify-content: flex-end !important;
-        }
+      .snow-table-count {
+        order: 3 !important;
+        text-align: center !important;
       }
 
-      /* Bottom bar - mobile layout when container is narrow */
-      @container (max-width: 700px) {
-        .snow-table-bottom-bar {
-          grid-template-columns: 1fr !important;
-        }
-        .snow-table-count {
-          order: 3 !important;
-          text-align: center !important;
-        }
-        .snow-table-pagination {
-          order: 1 !important;
-        }
-        .snow-table-pagesize {
-          order: 2 !important;
-          justify-content: center !important;
-        }
+      .snow-table-pagination {
+        order: 1 !important;
       }
-    </style>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+
+      .snow-table-pagesize {
+        order: 2 !important;
+        justify-content: center !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+
 </html>

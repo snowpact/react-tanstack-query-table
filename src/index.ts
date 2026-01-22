@@ -58,7 +58,6 @@ export type {
   LinkAction,
   EndpointAction,
   BaseAction,
-  ActionButtonVariant,
   ErrorResponse,
   DataTableUIOptions,
   BaseSnowTableProps,
@@ -66,7 +65,9 @@ export type {
 
 // Hooks
 export { useSnowColumns, useTableStatePersist } from './hooks';
+export { useTooltip, Tooltip } from './hooks/useTooltip';
 export type { UseSnowColumnsOptions, UseSnowColumnsReturn } from './hooks';
+export type { TooltipState } from './hooks/useTooltip';
 
 // Utils
 export { redirectToPageWithParam } from './utils';

@@ -6,11 +6,8 @@ import { forwardRef, type ReactNode, type MouseEventHandler, type MouseEvent } f
 
 import { cn } from '../utils';
 
-export type ButtonVariant = 'default' | 'danger' | 'warning' | 'info' | 'success';
-
 export interface ButtonProps {
   children?: ReactNode;
-  variant?: ButtonVariant;
   onClick?: MouseEventHandler<HTMLButtonElement>;
   onMouseEnter?: (e: MouseEvent<HTMLButtonElement>) => void;
   onMouseLeave?: () => void;
@@ -21,19 +18,10 @@ export interface ButtonProps {
   'data-testid'?: string;
 }
 
-const variantClasses: Record<ButtonVariant, string> = {
-  default: '',
-  danger: 'snow-btn-danger',
-  warning: 'snow-btn-warning',
-  info: 'snow-btn-info',
-  success: 'snow-btn-success',
-};
-
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
       children,
-      variant = 'default',
       onClick,
       onMouseEnter,
       onMouseLeave,
@@ -54,7 +42,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         onMouseLeave={onMouseLeave}
         disabled={disabled}
         title={title}
-        className={cn('snow-btn', variantClasses[variant], className)}
+        className={cn('snow-btn', className)}
         {...props}
       >
         {children}

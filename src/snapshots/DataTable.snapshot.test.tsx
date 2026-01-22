@@ -138,7 +138,7 @@ describe('DataTable HTML Snapshots', () => {
             type: 'click',
             icon: TestIcon,
             label: 'Delete',
-            variant: 'danger',
+            className: 'action-danger',
             onClick: () => {},
           },
         ]}

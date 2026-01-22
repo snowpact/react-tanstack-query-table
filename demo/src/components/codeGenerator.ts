@@ -55,9 +55,8 @@ import { Link } from 'react-router-dom';
 import { t } from './i18n';
 
 setupSnowTable({
-  translate: (key) => t(key),
   LinkComponent: Link,
-  // Optional: override static UI keys (built-in English defaults)
+  translate: (key) => t(key),
   translations: {
     'dataTable.search': 'Search...',
     'dataTable.elements': 'elements',
@@ -134,7 +133,7 @@ export function generateTableCode(config: DemoConfig): string {
       type: 'endpoint',
       icon: Trash,
       label: 'Delete',
-      variant: 'danger',
+      className: 'my-danger-class',
       endpoint: (user) => deleteUser(user.id),
       withConfirm: (user) => window.confirm(\`Delete \${user.name}?\`),
     },

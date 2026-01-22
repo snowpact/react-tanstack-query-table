@@ -246,7 +246,7 @@ export function App() {
       type: 'endpoint' as const,
       icon: TrashIcon,
       label: 'Delete',
-      variant: 'danger' as const,
+      className: 'demo-btn-danger',
       endpoint: (user: User) => deleteUser(user.id),
       withConfirm: (user: User) => window.confirm(`Delete user "${user.name}"?`),
       onSuccess: () => alert('User deleted!'),
@@ -266,7 +266,6 @@ export function App() {
       icon: MailIcon,
       label: 'Send Email',
       display: 'dropdown' as const,
-      variant: 'info' as const,
       onClick: (user: User) => {
         alert(`Sending email to: ${user.email}`);
       },
@@ -276,7 +275,6 @@ export function App() {
       icon: ArchiveIcon,
       label: 'Archive',
       display: 'dropdown' as const,
-      variant: 'warning' as const,
       onClick: (user: User) => {
         alert(`Archiving user: ${user.name}`);
       },

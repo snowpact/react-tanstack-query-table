@@ -35,7 +35,7 @@ export const defaultTheme: ThemeColors = {
   hover: '#f5f5f5',
   skeleton: '#f5f5f5',
   separator: '#e5e5e5',
-  rowEven: '#fafafa',
+  rowEven: 'transparent',
   placeholder: '#a3a3a3',
   text: '#737373',
   radius: '0.375rem',
