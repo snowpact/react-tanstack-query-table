@@ -199,13 +199,19 @@ export function App() {
   // Apply theme CSS variables to document
   useEffect(() => {
     const root = document.documentElement;
-    root.style.setProperty('--snow-background', currentTheme.background);
-    root.style.setProperty('--snow-foreground', currentTheme.foreground);
-    root.style.setProperty('--snow-secondary', currentTheme.secondary);
-    root.style.setProperty('--snow-secondary-foreground', currentTheme.secondaryForeground);
-    root.style.setProperty('--snow-border', currentTheme.border);
-    root.style.setProperty('--snow-ring', currentTheme.ring);
-    root.style.setProperty('--snow-radius', currentTheme.radius);
+    root.style.setProperty('--snow-table-background', currentTheme.background);
+    root.style.setProperty('--snow-table-foreground', currentTheme.foreground);
+    root.style.setProperty('--snow-table-border', currentTheme.border);
+    root.style.setProperty('--snow-table-ring', currentTheme.ring);
+    root.style.setProperty('--snow-table-header', currentTheme.header);
+    root.style.setProperty('--snow-table-hover', currentTheme.hover);
+    root.style.setProperty('--snow-table-skeleton', currentTheme.skeleton);
+    root.style.setProperty('--snow-table-separator', currentTheme.separator);
+    root.style.setProperty('--snow-table-row-even', currentTheme.rowEven);
+    root.style.setProperty('--snow-table-placeholder', currentTheme.placeholder);
+    root.style.setProperty('--snow-table-text', currentTheme.text);
+    root.style.setProperty('--snow-table-radius', currentTheme.radius);
+    root.style.setProperty('--snow-table-shadow', currentTheme.shadow);
   }, [currentTheme]);
 
   const handleThemeChange = useCallback((themeName: string, theme: ThemeColors) => {

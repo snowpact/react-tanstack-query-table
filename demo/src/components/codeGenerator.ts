@@ -13,24 +13,36 @@ export function generateThemeCode(theme: ThemeColors): string {
     return `/* Default theme - no customization needed */
 /* Override CSS variables to customize: */
 :root {
-  --snow-background: ${theme.background};
-  --snow-foreground: ${theme.foreground};
-  --snow-secondary: ${theme.secondary};
-  --snow-secondary-foreground: ${theme.secondaryForeground};
-  --snow-border: ${theme.border};
-  --snow-ring: ${theme.ring};
-  --snow-radius: ${theme.radius};
+  --snow-table-background: ${theme.background};
+  --snow-table-foreground: ${theme.foreground};
+  --snow-table-border: ${theme.border};
+  --snow-table-ring: ${theme.ring};
+  --snow-table-header: ${theme.header};
+  --snow-table-hover: ${theme.hover};
+  --snow-table-skeleton: ${theme.skeleton};
+  --snow-table-separator: ${theme.separator};
+  --snow-table-row-even: ${theme.rowEven};
+  --snow-table-placeholder: ${theme.placeholder};
+  --snow-table-text: ${theme.text};
+  --snow-table-radius: ${theme.radius};
+  --snow-table-shadow: ${theme.shadow};
 }`;
   }
 
   return `:root {
-  --snow-background: ${theme.background};
-  --snow-foreground: ${theme.foreground};
-  --snow-secondary: ${theme.secondary};
-  --snow-secondary-foreground: ${theme.secondaryForeground};
-  --snow-border: ${theme.border};
-  --snow-ring: ${theme.ring};
-  --snow-radius: ${theme.radius};
+  --snow-table-background: ${theme.background};
+  --snow-table-foreground: ${theme.foreground};
+  --snow-table-border: ${theme.border};
+  --snow-table-ring: ${theme.ring};
+  --snow-table-header: ${theme.header};
+  --snow-table-hover: ${theme.hover};
+  --snow-table-skeleton: ${theme.skeleton};
+  --snow-table-separator: ${theme.separator};
+  --snow-table-row-even: ${theme.rowEven};
+  --snow-table-placeholder: ${theme.placeholder};
+  --snow-table-text: ${theme.text};
+  --snow-table-radius: ${theme.radius};
+  --snow-table-shadow: ${theme.shadow};
 }`;
 }
 

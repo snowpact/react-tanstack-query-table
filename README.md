@@ -103,27 +103,43 @@ That's it! You have a working data table.
 
 ### Theme Customization
 
-Override CSS variables to match your design:
+Override CSS variables to match your design. Variables use `@property` so they won't override values you set before importing the styles.
 
 ```css
 :root {
-  --snow-background: #ffffff;
-  --snow-foreground: #0a0a0a;
-  --snow-secondary: #f5f5f5;
-  --snow-secondary-foreground: #737373;
-  --snow-border: #d4d4d4;
-  --snow-ring: #a3a3a3;
-  --snow-radius: 0.375rem;
+  /* Base colors */
+  --snow-table-background: #ffffff;
+  --snow-table-foreground: #0a0a0a;
+  --snow-table-border: #e5e5e5;
+  --snow-table-ring: #a3a3a3;
+
+  /* UI-specific colors */
+  --snow-table-header: #f5f5f5;      /* Table headers, tab list */
+  --snow-table-hover: #f5f5f5;       /* Hover states */
+  --snow-table-skeleton: #f5f5f5;    /* Skeleton loader */
+  --snow-table-separator: #e5e5e5;   /* Dropdown separators */
+  --snow-table-row-even: #fafafa;    /* Alternating rows */
+  --snow-table-placeholder: #a3a3a3; /* Input placeholders, icons */
+  --snow-table-text: #737373;        /* Secondary text (labels, counts) */
+
+  /* Other */
+  --snow-table-radius: 0.375rem;
+  --snow-table-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
 
-/* Dark mode */
+/* Dark mode example */
 .dark {
-  --snow-background: #1a1a2e;
-  --snow-foreground: #eaeaea;
-  --snow-secondary: #16213e;
-  --snow-secondary-foreground: #a0a0a0;
-  --snow-border: #0f3460;
-  --snow-ring: #3b82f6;
+  --snow-table-background: #1a1a2e;
+  --snow-table-foreground: #eaeaea;
+  --snow-table-border: #0f3460;
+  --snow-table-ring: #3b82f6;
+  --snow-table-header: #16213e;
+  --snow-table-hover: #16213e;
+  --snow-table-skeleton: #16213e;
+  --snow-table-separator: #0f3460;
+  --snow-table-row-even: #1f1f3a;
+  --snow-table-placeholder: #6b7280;
+  --snow-table-text: #a0a0a0;
 }
 ```
 

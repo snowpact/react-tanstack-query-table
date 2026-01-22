@@ -182,7 +182,7 @@ export function ConfigPanel({ config, onToggle, onModeChange, currentTheme, onTh
                 >
                   <div
                     className="w-full h-1/2 rounded-t"
-                    style={{ backgroundColor: theme.muted }}
+                    style={{ backgroundColor: theme.header }}
                   />
                 </div>
                 <span className="capitalize">{name}</span>
