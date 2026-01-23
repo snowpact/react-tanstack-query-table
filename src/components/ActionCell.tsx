@@ -10,8 +10,22 @@ import { useTooltip, Tooltip } from '../hooks/useTooltip';
 import { Button } from '../primitives/Button';
 import { DropdownMenu } from '../primitives/DropdownMenu';
 import { getLink } from '../registry';
-import { LinkAction, TableAction } from '../types';
+import { BaseAction, LinkAction, TableAction } from '../types';
 import { cn } from '../utils';
+
+/** Get CSS class for action color variant */
+const getColorClass = (color: BaseAction['color']) => {
+  switch (color) {
+    case 'danger':
+      return 'snow-action-danger';
+    case 'info':
+      return 'snow-action-info';
+    case 'warning':
+      return 'snow-action-warning';
+    default:
+      return 'snow-action-default';
+  }
+};
 
 interface ActionCellProps<T, K> {
   item: T;
@@ -62,6 +76,7 @@ function ActionCellInner<T, K>({ item, actions, onAction }: ActionCellProps<T, K
         if (action.type === 'link') {
           const linkAction = action as LinkAction<T>;
           const href = linkAction.href(item);
+          const colorClass = getColorClass(action.color);
           return (
             <div
               key={`link-${action.label}-${index}`}
@@ -72,7 +87,7 @@ function ActionCellInner<T, K>({ item, actions, onAction }: ActionCellProps<T, K
                 to={href}
                 target={linkAction.external ? '_blank' : undefined}
                 rel={linkAction.external ? 'noopener noreferrer' : undefined}
-                className={cn('snow-action-link', action.showLabel ? 'snow-px-3' : 'snow-w-8')}
+                className={cn('snow-action-link', action.showLabel ? 'snow-px-3' : 'snow-w-8', colorClass)}
                 disabled={action.disabled}
               >
                 <Icon className="snow-size-4" />
@@ -82,10 +97,11 @@ function ActionCellInner<T, K>({ item, actions, onAction }: ActionCellProps<T, K
           );
         }
 
+        const colorClass = getColorClass(action.color);
         return (
           <Button
             key={`button-${action.label}-${index}`}
-            className={cn('snow-action-btn', action.showLabel ? '' : 'snow-btn-icon', action.className)}
+            className={cn('snow-action-btn', action.showLabel ? '' : 'snow-btn-icon', colorClass)}
             onClick={() => handleAction(action)}
             disabled={action.disabled}
             onMouseEnter={e => tooltip.show(action.label, e.currentTarget)}
@@ -112,29 +128,31 @@ function ActionCellInner<T, K>({ item, actions, onAction }: ActionCellProps<T, K
               if (action.type === 'link') {
                 const linkAction = action as LinkAction<T>;
                 const href = linkAction.href(item);
+                const colorClass = getColorClass(action.color);
                 return (
                   <DropdownMenu.Item key={`dropdown-${action.label}-${index}`} asChild disabled={action.disabled}>
                     <Link
                       to={href}
                       target={linkAction.external ? '_blank' : undefined}
                       rel={linkAction.external ? 'noopener noreferrer' : undefined}
-                      className={action.className}
+                      className={colorClass}
                     >
-                      <Icon className={cn('snow-mr-2 snow-size-4', action.className)} />
+                      <Icon className="snow-mr-2 snow-size-4" />
                       {action.label}
                     </Link>
                   </DropdownMenu.Item>
                 );
               }
 
+              const colorClass = getColorClass(action.color);
               return (
                 <DropdownMenu.Item
                   key={`dropdown-${action.label}-${index}`}
                   onClick={() => handleAction(action)}
                   disabled={action.disabled}
-                  className={action.className}
+                  className={colorClass}
                 >
-                  <Icon className={cn('snow-mr-2 snow-size-4', action.className)} />
+                  <Icon className="snow-mr-2 snow-size-4" />
                   {action.label}
                 </DropdownMenu.Item>
               );

@@ -57,11 +57,11 @@ export type SnowColumnConfig<T extends object> = {
 export type BaseAction = {
   icon: IconComponent;
   label: string;
-  className?: string;
   display?: 'button' | 'dropdown';
   hidden?: boolean;
   disabled?: boolean;
   showLabel?: boolean;
+  color?: 'default' | 'danger' | 'info' | 'warning';
 };
 
 export type ClickAction<T> = BaseAction & {
@@ -88,9 +88,7 @@ export type TableAction<T, K = unknown> =
   | ClickAction<T>
   | LinkAction<T>
   | EndpointAction<T, K>
-  | ((item: T) => ClickAction<T>)
-  | ((item: T) => LinkAction<T>)
-  | ((item: T) => EndpointAction<T, K>);
+  | ((item: T) => ClickAction<T> | LinkAction<T> | EndpointAction<T, K>);
 
 // ============================================
 // UI Options (passed through to DataTable)

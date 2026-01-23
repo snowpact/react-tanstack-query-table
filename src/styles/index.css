@@ -61,6 +61,31 @@
   initial-value: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
 
+/* Action color variants */
+@property --snow-table-action-default {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #0a0a0a;
+}
+
+@property --snow-table-action-danger {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #ef4444;
+}
+
+@property --snow-table-action-info {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #3b82f6;
+}
+
+@property --snow-table-action-warning {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #f59e0b;
+}
+
 
 /* =============================================
    BASE RESET & DERIVED VARIABLES
@@ -374,9 +399,6 @@
   flex-shrink: 0;
 }
 
-/* Button variant classes - override these to customize button colors */
-/* Example: .my-danger-btn { background-color: #ef4444; color: #fff; } */
-
 .snow-btn-icon {
   width: 2rem;
   padding: 0;
@@ -391,6 +413,23 @@
 /* Action button - uses surface color */
 .snow-action-btn {
   background-color: var(--snow-table-surface);
+}
+
+/* Action color variants */
+.snow-action-default {
+  color: var(--snow-table-action-default);
+}
+
+.snow-action-danger {
+  color: var(--snow-table-action-danger);
+}
+
+.snow-action-info {
+  color: var(--snow-table-action-info);
+}
+
+.snow-action-warning {
+  color: var(--snow-table-action-warning);
 }
 
 /* =============================================
@@ -753,7 +792,7 @@
 
 .snow-table-row {
   background-color: var(--snow-table-background);
-  transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background-color 300ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .snow-table-row:hover {

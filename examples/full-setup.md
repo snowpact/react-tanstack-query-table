@@ -134,7 +134,6 @@ For API calls with built-in mutation handling:
   type: 'endpoint',
   icon: Trash,
   label: 'Delete',
-  variant: 'danger',
   endpoint: (item) => api.deleteItem(item.id),
   onSuccess: () => {
     toast.success('Item deleted');
@@ -153,7 +152,6 @@ Use `withConfirm` for optional confirmation before the endpoint is called:
   type: 'endpoint',
   icon: Trash,
   label: 'Delete',
-  variant: 'danger',
   endpoint: (item) => api.deleteItem(item.id),
   withConfirm: (item) => myConfirmDialog(`Delete ${item.name}?`),
   onSuccess: () => queryClient.invalidateQueries(['items']),
