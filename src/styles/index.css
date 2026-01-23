@@ -24,7 +24,7 @@
   initial-value: #e5e5e5;
 }
 
-@property --snow-table-ring {
+@property --snow-table-active-ring {
   syntax: '<color>';
   inherits: true;
   initial-value: #a3a3a3;
@@ -48,7 +48,7 @@
   initial-value: #f5f5f5;
 }
 
-@property --snow-table-separator {
+@property --snow-table-input-border {
   syntax: '<color>';
   inherits: true;
   initial-value: #e5e5e5;
@@ -60,7 +60,7 @@
   initial-value: transparent;
 }
 
-/* --snow-table-button: Optional button background color (uses fallback to background if not set) */
+/* --snow-table-action-button: Optional action button background (fallback to background) */
 
 @property --snow-table-placeholder {
   syntax: '<color>';
@@ -68,7 +68,7 @@
   initial-value: #a3a3a3;
 }
 
-@property --snow-table-text {
+@property --snow-table-muted {
   syntax: '<color>';
   inherits: true;
   initial-value: #737373;
@@ -290,7 +290,7 @@
 }
 
 .snow-text-muted-foreground {
-  color: var(--snow-table-text);
+  color: var(--snow-table-muted);
 }
 
 .snow-font-semibold {
@@ -361,8 +361,8 @@
   font-size: 0.875rem;
   font-weight: 500;
   border-radius: var(--snow-table-radius);
-  border: 1px solid var(--snow-table-border);
-  background-color: var(--snow-table-button, var(--snow-table-background));
+  border: 1px solid var(--snow-table-input-border);
+  background-color: var(--snow-table-background);
   color: var(--snow-table-foreground);
   cursor: pointer;
   transition: color 150ms, background-color 150ms, border-color 150ms;
@@ -374,7 +374,7 @@
 
 .snow-btn:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px var(--snow-table-ring);
+  box-shadow: 0 0 0 1px var(--snow-table-active-ring);
 }
 
 .snow-btn:disabled {
@@ -404,6 +404,11 @@
   padding: 0;
 }
 
+/* Action button - uses optional --snow-table-action-button variable */
+.snow-action-btn {
+  background-color: var(--snow-table-action-button, var(--snow-table-background));
+}
+
 /* =============================================
    INPUT COMPONENT
    ============================================= */
@@ -415,7 +420,7 @@
   padding: 0.25rem 0.75rem;
   font-size: 0.875rem;
   border-radius: var(--snow-table-radius);
-  border: 1px solid var(--snow-table-border);
+  border: 1px solid var(--snow-table-input-border);
   background-color: var(--snow-table-background);
   color: var(--snow-table-foreground);
   outline: none;
@@ -427,8 +432,8 @@
 }
 
 .snow-input:focus-visible {
-  border-color: var(--snow-table-ring);
-  box-shadow: 0 0 0 1px var(--snow-table-ring);
+  border-color: var(--snow-table-active-ring);
+  box-shadow: 0 0 0 1px var(--snow-table-active-ring);
 }
 
 .snow-input:disabled {
@@ -459,7 +464,7 @@
   font-size: 0.875rem;
   white-space: nowrap;
   border-radius: var(--snow-table-radius);
-  border: 1px solid var(--snow-table-border);
+  border: 1px solid var(--snow-table-input-border);
   background-color: var(--snow-table-background);
   color: var(--snow-table-foreground);
   outline: none;
@@ -472,7 +477,7 @@
 }
 
 .snow-select-trigger:focus {
-  box-shadow: 0 0 0 2px var(--snow-table-ring);
+  box-shadow: 0 0 0 1px var(--snow-table-active-ring);
 }
 
 .snow-select-trigger:disabled {
@@ -524,7 +529,7 @@
   overflow: hidden;
   padding: 0.25rem;
   border-radius: var(--snow-table-radius);
-  border: 1px solid var(--snow-table-border);
+  border: 1px solid var(--snow-table-input-border);
   background-color: var(--snow-table-background);
   color: var(--snow-table-foreground);
   box-shadow: var(--snow-table-shadow);
@@ -634,7 +639,7 @@
 .snow-dropdown-separator {
   margin: 0.25rem -0.25rem;
   height: 1px;
-  background-color: var(--snow-table-separator);
+  background-color: var(--snow-table-input-border);
 }
 
 /* =============================================
@@ -665,14 +670,14 @@
   border-radius: var(--snow-table-radius);
   border: 1px solid transparent;
   background: transparent;
-  color: var(--snow-table-text);
+  color: var(--snow-table-muted);
   cursor: pointer;
   transition: color 200ms, background-color 200ms, box-shadow 200ms;
 }
 
 .snow-tabs-trigger:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px var(--snow-table-ring);
+  box-shadow: 0 0 0 1px var(--snow-table-active-ring);
 }
 
 .snow-tabs-trigger:disabled {
@@ -738,7 +743,7 @@
   padding: 0.75rem 1rem;
   text-align: left;
   vertical-align: middle;
-  color: var(--snow-table-text);
+  color: var(--snow-table-foreground);
   width: var(--snow-col-width);
   min-width: var(--snow-col-min-width);
   max-width: var(--snow-col-max-width);
@@ -794,7 +799,7 @@
   justify-content: center;
   width: 100%;
   padding-left: 2.5rem;
-  color: var(--snow-table-text);
+  color: var(--snow-table-foreground);
 }
 
 .snow-table-top-bar {
@@ -830,7 +835,7 @@
 
 .snow-table-count {
   font-size: 0.875rem;
-  color: var(--snow-table-text);
+  color: var(--snow-table-muted);
   text-align: center;
 }
 
@@ -864,13 +869,13 @@
   align-items: center;
   justify-content: center;
   border-radius: var(--snow-table-radius);
-  border: 1px solid var(--snow-table-border);
+  border: 1px solid var(--snow-table-input-border);
   background-color: var(--snow-table-background);
 }
 
 .snow-pagination-total {
   font-size: 0.875rem;
-  color: var(--snow-table-text);
+  color: var(--snow-table-muted);
 }
 
 /* =============================================
@@ -938,7 +943,7 @@
 .snow-filter-empty {
   padding: 0.5rem 1rem;
   font-size: 0.875rem;
-  color: var(--snow-table-text);
+  color: var(--snow-table-foreground);
   text-align: center;
 }
 
@@ -961,8 +966,8 @@
   font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
-  border: 1px solid var(--snow-table-border);
-  background-color: var(--snow-table-background);
+  border: 1px solid var(--snow-table-input-border);
+  background-color: var(--snow-table-action-button, var(--snow-table-background));
   height: 2rem;
   border-radius: var(--snow-table-radius);
   text-decoration: none;
@@ -976,7 +981,7 @@
 
 .snow-action-link:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px var(--snow-table-ring);
+  box-shadow: 0 0 0 1px var(--snow-table-active-ring);
 }
 
 .snow-action-link:disabled {
@@ -1021,7 +1026,7 @@
    STATE CLASSES
    ============================================= */
 .snow-state-active {
-  box-shadow: 0 0 0 2px var(--snow-table-ring);
+  box-shadow: 0 0 0 1px var(--snow-table-active-ring);
 }
 
 .snow-state-active-text {
@@ -1062,6 +1067,10 @@
   background-color: var(--snow-table-background);
 }
 
+.snow-responsive-row.snow-table-row-alternate {
+  background-color: var(--snow-table-row-even);
+}
+
 .snow-responsive-cell {
   display: flex !important;
   flex-direction: column;
@@ -1081,7 +1090,7 @@
   display: block;
   font-size: 0.75rem;
   font-weight: 600;
-  color: var(--snow-table-text);
+  color: var(--snow-table-foreground);
   text-transform: uppercase;
   letter-spacing: 0.025em;
   margin-bottom: 0.25rem;
@@ -1152,7 +1161,6 @@
     border: none !important;
     border-radius: 0;
     padding: 0;
-    background-color: transparent;
     box-shadow: none;
   }
 

@@ -85,7 +85,7 @@ function ActionCellInner<T, K>({ item, actions, onAction }: ActionCellProps<T, K
         return (
           <Button
             key={`button-${action.label}-${index}`}
-            className={cn(action.showLabel ? '' : 'snow-btn-icon', action.className)}
+            className={cn('snow-action-btn', action.showLabel ? '' : 'snow-btn-icon', action.className)}
             onClick={() => handleAction(action)}
             disabled={action.disabled}
             onMouseEnter={e => tooltip.show(action.label, e.currentTarget)}

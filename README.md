@@ -110,20 +110,20 @@ Override CSS variables to match your design. Variables use `@property` so they w
   /* Base colors */
   --snow-table-background: #ffffff;
   --snow-table-foreground: #0a0a0a;
-  --snow-table-border: #e5e5e5;
-  --snow-table-ring: #a3a3a3;
+  --snow-table-border: #e5e5e5;        /* Table borders, row separators */
+  --snow-table-input-border: #e5e5e5;  /* Inputs, buttons, dropdowns */
+  --snow-table-active-ring: #a3a3a3;
 
   /* UI-specific colors */
   --snow-table-header: #f5f5f5;      /* Table headers, tab list */
   --snow-table-hover: #f5f5f5;       /* Hover states */
   --snow-table-skeleton: #f5f5f5;    /* Skeleton loader */
-  --snow-table-separator: #e5e5e5;   /* Dropdown separators */
-  --snow-table-placeholder: #a3a3a3; /* Input placeholders, icons */
-  --snow-table-text: #737373;        /* Secondary text (labels, counts) */
+  --snow-table-placeholder: #a3a3a3; /* Input placeholders */
+  --snow-table-muted: #737373;       /* Secondary text (counts, pagination, inactive tabs) */
 
   /* Optional (transparent/inherited by default) */
-  --snow-table-row-even: #fafafa;    /* Alternating rows - only set if you want zebra striping */
-  --snow-table-button: #f0f0f0;      /* Button background - falls back to --snow-table-background */
+  --snow-table-row-even: #fafafa;         /* Alternating rows - zebra striping */
+  --snow-table-action-button: #f0f0f0;    /* Action button background */
 
   /* Other */
   --snow-table-radius: 0.375rem;
@@ -135,15 +135,15 @@ Override CSS variables to match your design. Variables use `@property` so they w
   --snow-table-background: #1a1a2e;
   --snow-table-foreground: #eaeaea;
   --snow-table-border: #0f3460;
-  --snow-table-ring: #3b82f6;
+  --snow-table-input-border: #0f3460;
+  --snow-table-active-ring: #3b82f6;
   --snow-table-header: #16213e;
   --snow-table-hover: #16213e;
   --snow-table-skeleton: #16213e;
-  --snow-table-separator: #0f3460;
   --snow-table-row-even: #1f1f3a;
   --snow-table-placeholder: #6b7280;
-  --snow-table-text: #a0a0a0;
-  --snow-table-button: #16213e;
+  --snow-table-muted: #a0a0a0;
+  --snow-table-action-button: #16213e;
 }
 ```
 

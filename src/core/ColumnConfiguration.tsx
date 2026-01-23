@@ -141,7 +141,7 @@ export function ColumnConfiguration<T extends object>({ table }: ColumnConfigura
         </div>
 
         <DropdownMenu.Separator />
-        <DropdownMenu.Item onClick={handleResetColumns} className="snow-text-xs snow-cursor-pointer">
+        <DropdownMenu.Item onClick={handleResetColumns} className="snow-text-xs snow-cursor-pointer snow-text-center snow-text-muted-foreground">
           {t('dataTable.resetColumns')}
         </DropdownMenu.Item>
       </DropdownMenu.Content>
