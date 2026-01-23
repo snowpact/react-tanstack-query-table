@@ -297,12 +297,8 @@
   vertical-align: middle;
 }
 
-.snow-divide-y> :not([hidden])~ :not([hidden]) {
-  border-top: 1px solid;
-}
-
-.snow-divide-border> :not([hidden])~ :not([hidden]) {
-  border-color: var(--snow-table-border);
+.snow-divide-y.snow-divide-border> :not([hidden])~ :not([hidden]) {
+  border-top: 1px solid var(--snow-table-border);
 }
 
 .snow-opacity-50 {
@@ -407,7 +403,7 @@
   background-color: var(--snow-table-background);
   color: var(--snow-table-foreground);
   outline: none;
-  transition: color 150ms, box-shadow 150ms, border-color 150ms;
+  transition: color 150ms, box-shadow 150ms, border-color 150ms, background-color 150ms;
 }
 
 .snow-input::placeholder {
@@ -744,10 +740,6 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-}
-
-.snow-table-body>tr:not(:last-child) {
-  border-bottom: 1px solid var(--snow-table-border);
 }
 
 .snow-table-row {
