@@ -86,6 +86,7 @@
   initial-value: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
 
+
 /* =============================================
    BASE RESET
    ============================================= */
@@ -375,7 +376,7 @@
 
 .snow-btn:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 1px var(--snow-table-active-ring);
+  border-color: var(--snow-table-active-ring);
 }
 
 .snow-btn:disabled {
@@ -434,7 +435,6 @@
 
 .snow-input:focus-visible {
   border-color: var(--snow-table-active-ring);
-  box-shadow: 0 0 0 1px var(--snow-table-active-ring);
 }
 
 .snow-input:disabled {
@@ -478,7 +478,7 @@
 }
 
 .snow-select-trigger:focus {
-  box-shadow: 0 0 0 1px var(--snow-table-active-ring);
+  border-color: var(--snow-table-active-ring);
 }
 
 .snow-select-trigger:disabled {
@@ -678,7 +678,7 @@
 
 .snow-tabs-trigger:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 1px var(--snow-table-active-ring);
+  border-color: var(--snow-table-active-ring);
 }
 
 .snow-tabs-trigger:disabled {
@@ -799,13 +799,10 @@
 }
 
 .snow-table-empty {
-  height: 6rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  padding-left: 2.5rem;
-  color: var(--snow-table-foreground);
+  caption-side: bottom;
+  padding: 2rem 1rem;
+  font-size: 0.875rem;
+  color: var(--snow-table-muted);
 }
 
 .snow-table-top-bar {
@@ -987,7 +984,7 @@
 
 .snow-action-link:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 1px var(--snow-table-active-ring);
+  border-color: var(--snow-table-active-ring);
 }
 
 .snow-action-link:disabled {
@@ -1032,7 +1029,8 @@
    STATE CLASSES
    ============================================= */
 .snow-state-active {
-  box-shadow: 0 0 0 1px var(--snow-table-active-ring);
+  background-color: rgba(59, 130, 246, 0.08);
+  border-color: rgba(59, 130, 246, 0.4);
 }
 
 .snow-state-active-text {

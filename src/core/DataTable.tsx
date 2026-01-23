@@ -257,7 +257,7 @@ export function DataTable<Data extends object>({
       return data.length;
     }
     return table.getRowModel().rows.length;
-  }, [serverSideMode, data.length, table]);
+  }, [serverSideMode, data.length, table, globalFilter, tanstackColumnFilters]);
 
   // Total count: for server mode use externalTotalCount directly, for client-side use filtered data length
   const totalCount = useMemo(() => {
