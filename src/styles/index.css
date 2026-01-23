@@ -1070,15 +1070,7 @@
   border: 1px solid var(--snow-table-border);
   border-radius: calc(var(--snow-table-radius) * 1.5);
   padding: 1rem;
-  background-color: var(--snow-table-background);
-}
-
-.snow-responsive-row.snow-table-row-alternate {
-  background-color: var(--snow-table-row-even);
-}
-
-.snow-responsive-row.snow-table-row-alternate:hover {
-  background-color: var(--snow-table-hover);
+  /* Background handled by .snow-table-row and .snow-table-row-alternate */
 }
 
 .snow-responsive-cell {
@@ -1172,16 +1164,7 @@
     border-radius: 0;
     padding: 0;
     box-shadow: none;
-    background: none;
-  }
-
-  .snow-responsive-row.snow-table-row-alternate {
-    background-color: var(--snow-table-row-even);
-  }
-
-  .snow-responsive-row:hover,
-  .snow-responsive-row.snow-table-row-alternate:hover {
-    background-color: var(--snow-table-hover);
+    /* Background handled by .snow-table-row and .snow-table-row-alternate */
   }
 
   .snow-responsive-row~.snow-responsive-row {
