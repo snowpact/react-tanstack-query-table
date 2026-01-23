@@ -287,6 +287,7 @@
 
 .snow-text-center {
   text-align: center;
+  justify-content: center;
 }
 
 .snow-text-muted-foreground {
@@ -688,6 +689,7 @@
 .snow-tabs-trigger[data-state="active"] {
   background-color: var(--snow-table-background);
   color: var(--snow-table-foreground);
+  border-color: var(--snow-table-input-border);
   box-shadow: var(--snow-table-shadow);
 }
 
@@ -772,6 +774,10 @@
 
 .snow-table-row-alternate {
   background-color: var(--snow-table-row-even);
+}
+
+.snow-table-row-alternate:hover {
+  background-color: var(--snow-table-hover);
 }
 
 .snow-table-row-active {
@@ -1071,6 +1077,10 @@
   background-color: var(--snow-table-row-even);
 }
 
+.snow-responsive-row.snow-table-row-alternate:hover {
+  background-color: var(--snow-table-hover);
+}
+
 .snow-responsive-cell {
   display: flex !important;
   flex-direction: column;
@@ -1162,6 +1172,16 @@
     border-radius: 0;
     padding: 0;
     box-shadow: none;
+    background: none;
+  }
+
+  .snow-responsive-row.snow-table-row-alternate {
+    background-color: var(--snow-table-row-even);
+  }
+
+  .snow-responsive-row:hover,
+  .snow-responsive-row.snow-table-row-alternate:hover {
+    background-color: var(--snow-table-hover);
   }
 
   .snow-responsive-row~.snow-responsive-row {
