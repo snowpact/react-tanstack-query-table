@@ -9,42 +9,33 @@ npm install @snowpact/react-tanstack-query-table`;
 export function generateThemeCode(theme: ThemeColors): string {
   const isDefault = JSON.stringify(theme) === JSON.stringify(defaultTheme);
 
+  // Build optional variable section
+  const optionalSection = theme.rowEven
+    ? `\n\n  /* Optional */\n  --snow-table-row-even: ${theme.rowEven};`
+    : '';
+
   if (isDefault) {
     return `/* Default theme - no customization needed */
 /* Override CSS variables to customize: */
 :root {
   --snow-table-background: ${theme.background};
   --snow-table-foreground: ${theme.foreground};
-  --snow-table-border: ${theme.border};
-  --snow-table-input-border: ${theme.inputBorder};
-  --snow-table-active: ${theme.active};
-  --snow-table-active-background: ${theme.activeBackground};
-  --snow-table-header: ${theme.header};
-  --snow-table-hover: ${theme.hover};
-  --snow-table-skeleton: ${theme.skeleton};
-  --snow-table-row-even: ${theme.rowEven};
-  --snow-table-placeholder: ${theme.placeholder};
+  --snow-table-primary: ${theme.primary};
   --snow-table-muted: ${theme.muted};
+  --snow-table-surface: ${theme.surface};
+  --snow-table-border: ${theme.border};
   --snow-table-radius: ${theme.radius};
-  --snow-table-shadow: ${theme.shadow};
 }`;
   }
 
   return `:root {
   --snow-table-background: ${theme.background};
   --snow-table-foreground: ${theme.foreground};
-  --snow-table-border: ${theme.border};
-  --snow-table-input-border: ${theme.inputBorder};
-  --snow-table-active: ${theme.active};
-  --snow-table-active-background: ${theme.activeBackground};
-  --snow-table-header: ${theme.header};
-  --snow-table-hover: ${theme.hover};
-  --snow-table-skeleton: ${theme.skeleton};
-  --snow-table-row-even: ${theme.rowEven};
-  --snow-table-placeholder: ${theme.placeholder};
+  --snow-table-primary: ${theme.primary};
   --snow-table-muted: ${theme.muted};
-  --snow-table-radius: ${theme.radius};
-  --snow-table-shadow: ${theme.shadow};
+  --snow-table-surface: ${theme.surface};
+  --snow-table-border: ${theme.border};
+  --snow-table-radius: ${theme.radius};${optionalSection}
 }`;
 }
 

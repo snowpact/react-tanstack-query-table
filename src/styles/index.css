@@ -18,60 +18,10 @@
   initial-value: #0a0a0a;
 }
 
-@property --snow-table-border {
-  syntax: '<color>';
-  inherits: true;
-  initial-value: #e5e5e5;
-}
-
-@property --snow-table-active {
+@property --snow-table-primary {
   syntax: '<color>';
   inherits: true;
   initial-value: #525252;
-}
-
-@property --snow-table-active-background {
-  syntax: '<color>';
-  inherits: true;
-  initial-value: #f5f5f5;
-}
-
-@property --snow-table-header {
-  syntax: '<color>';
-  inherits: true;
-  initial-value: #f5f5f5;
-}
-
-@property --snow-table-hover {
-  syntax: '<color>';
-  inherits: true;
-  initial-value: #f5f5f5;
-}
-
-@property --snow-table-skeleton {
-  syntax: '<color>';
-  inherits: true;
-  initial-value: #f5f5f5;
-}
-
-@property --snow-table-input-border {
-  syntax: '<color>';
-  inherits: true;
-  initial-value: #e5e5e5;
-}
-
-@property --snow-table-row-even {
-  syntax: '<color>';
-  inherits: true;
-  initial-value: transparent;
-}
-
-/* --snow-table-action-button: Optional action button background (fallback to background) */
-
-@property --snow-table-placeholder {
-  syntax: '<color>';
-  inherits: true;
-  initial-value: #a3a3a3;
 }
 
 @property --snow-table-muted {
@@ -86,6 +36,25 @@
   initial-value: 0.375rem;
 }
 
+@property --snow-table-surface {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #f5f5f5;
+}
+
+@property --snow-table-border {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #e5e5e5;
+}
+
+/* Optional variables */
+@property --snow-table-row-even {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: transparent;
+}
+
 @property --snow-table-shadow {
   syntax: '*';
   inherits: true;
@@ -94,11 +63,18 @@
 
 
 /* =============================================
-   BASE RESET
+   BASE RESET & DERIVED VARIABLES
    ============================================= */
 .snow-table-container {
   box-sizing: border-box;
   font-family: inherit;
+
+  /* Internal derived variables using color-mix() */
+  /* Primary background - 10% primary on background (for active states) */
+  --_primary-bg: color-mix(in srgb, var(--snow-table-primary) 10%, var(--snow-table-background));
+
+  /* Placeholder - 60% muted (lighter) */
+  --_placeholder: color-mix(in srgb, var(--snow-table-muted) 60%, var(--snow-table-background));
 }
 
 .snow-table-container *,
@@ -369,7 +345,7 @@
   font-size: 0.875rem;
   font-weight: 500;
   border-radius: var(--snow-table-radius);
-  border: 1px solid var(--snow-table-input-border);
+  border: 1px solid var(--snow-table-border);
   background-color: var(--snow-table-background);
   color: var(--snow-table-foreground);
   cursor: pointer;
@@ -377,12 +353,12 @@
 }
 
 .snow-btn:hover {
-  background-color: var(--snow-table-hover);
+  background-color: var(--snow-table-surface);
 }
 
 .snow-btn:focus-visible {
   outline: none;
-  border-color: var(--snow-table-active);
+  border-color: var(--snow-table-primary);
 }
 
 .snow-btn:disabled {
@@ -412,9 +388,9 @@
   padding: 0;
 }
 
-/* Action button - uses optional --snow-table-action-button variable */
+/* Action button - uses surface color */
 .snow-action-btn {
-  background-color: var(--snow-table-action-button, var(--snow-table-background));
+  background-color: var(--snow-table-surface);
 }
 
 /* =============================================
@@ -428,7 +404,7 @@
   padding: 0.25rem 0.75rem;
   font-size: 0.875rem;
   border-radius: var(--snow-table-radius);
-  border: 1px solid var(--snow-table-input-border);
+  border: 1px solid var(--snow-table-border);
   background-color: var(--snow-table-background);
   color: var(--snow-table-foreground);
   outline: none;
@@ -436,11 +412,11 @@
 }
 
 .snow-input::placeholder {
-  color: var(--snow-table-placeholder);
+  color: var(--_placeholder);
 }
 
 .snow-input:focus-visible {
-  border-color: var(--snow-table-active);
+  border-color: var(--snow-table-primary);
 }
 
 .snow-input:disabled {
@@ -453,7 +429,7 @@
    ============================================= */
 .snow-skeleton {
   border-radius: var(--snow-table-radius);
-  background-color: var(--snow-table-skeleton);
+  background-color: var(--snow-table-surface);
   animation: snow-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
@@ -471,7 +447,7 @@
   font-size: 0.875rem;
   white-space: nowrap;
   border-radius: var(--snow-table-radius);
-  border: 1px solid var(--snow-table-input-border);
+  border: 1px solid var(--snow-table-border);
   background-color: var(--snow-table-background);
   color: var(--snow-table-foreground);
   outline: none;
@@ -480,11 +456,11 @@
 }
 
 .snow-select-trigger:hover {
-  background-color: var(--snow-table-hover);
+  background-color: var(--snow-table-surface);
 }
 
 .snow-select-trigger:focus {
-  border-color: var(--snow-table-active);
+  border-color: var(--snow-table-primary);
 }
 
 .snow-select-trigger:disabled {
@@ -493,7 +469,7 @@
 }
 
 .snow-select-trigger[data-placeholder] {
-  color: var(--snow-table-placeholder);
+  color: var(--_placeholder);
 }
 
 .snow-select-trigger>span {
@@ -536,7 +512,7 @@
   overflow: hidden;
   padding: 0.25rem;
   border-radius: var(--snow-table-radius);
-  border: 1px solid var(--snow-table-input-border);
+  border: 1px solid var(--snow-table-border);
   background-color: var(--snow-table-background);
   color: var(--snow-table-foreground);
   box-shadow: var(--snow-table-shadow);
@@ -600,7 +576,7 @@
 .snow-dropdown-item:focus,
 .snow-dropdown-checkbox-item:hover,
 .snow-dropdown-checkbox-item:focus {
-  background-color: var(--snow-table-hover);
+  background-color: var(--snow-table-surface);
 }
 
 .snow-select-item[data-disabled],
@@ -646,7 +622,7 @@
 .snow-dropdown-separator {
   margin: 0.25rem -0.25rem;
   height: 1px;
-  background-color: var(--snow-table-input-border);
+  background-color: var(--snow-table-border);
 }
 
 /* =============================================
@@ -660,7 +636,7 @@
   justify-content: center;
   padding: 3px;
   border-radius: calc(var(--snow-table-radius) * 1.5);
-  background-color: var(--snow-table-header);
+  background-color: var(--snow-table-surface);
 }
 
 .snow-tabs-trigger {
@@ -684,7 +660,7 @@
 
 .snow-tabs-trigger:focus-visible {
   outline: none;
-  border-color: var(--snow-table-active);
+  border-color: var(--snow-table-primary);
 }
 
 .snow-tabs-trigger:disabled {
@@ -695,13 +671,13 @@
 .snow-tabs-trigger[data-state="active"] {
   background-color: var(--snow-table-background);
   color: var(--snow-table-foreground);
-  border-color: var(--snow-table-input-border);
+  border-color: var(--snow-table-border);
   box-shadow: var(--snow-table-shadow);
 }
 
 .snow-state-active .snow-tabs-trigger[data-state="active"] {
-  background-color: var(--snow-table-active-background);
-  border-color: var(--snow-table-active);
+  background-color: var(--_primary-bg);
+  border-color: var(--snow-table-primary);
   box-shadow: none;
 }
 
@@ -750,7 +726,7 @@
 }
 
 .snow-table-header {
-  background-color: var(--snow-table-header);
+  background-color: var(--snow-table-surface);
 }
 
 .snow-table-header-cell {
@@ -781,7 +757,7 @@
 }
 
 .snow-table-row:hover {
-  background-color: var(--snow-table-hover);
+  background-color: var(--snow-table-surface);
 }
 
 .snow-table-row-alternate {
@@ -789,11 +765,11 @@
 }
 
 .snow-table-row-alternate:hover {
-  background-color: var(--snow-table-hover);
+  background-color: var(--snow-table-surface);
 }
 
 .snow-table-row-active {
-  background-color: var(--snow-table-row-even);
+  background-color: var(--snow-table-surface);
 }
 
 .snow-table-cell {
@@ -884,7 +860,7 @@
   align-items: center;
   justify-content: center;
   border-radius: var(--snow-table-radius);
-  border: 1px solid var(--snow-table-input-border);
+  border: 1px solid var(--snow-table-border);
   background-color: var(--snow-table-background);
 }
 
@@ -936,7 +912,7 @@
   transform: translateY(-50%);
   width: 1rem;
   height: 1rem;
-  color: var(--snow-table-placeholder);
+  color: var(--_placeholder);
   pointer-events: none;
 }
 
@@ -981,8 +957,8 @@
   font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
-  border: 1px solid var(--snow-table-input-border);
-  background-color: var(--snow-table-action-button, var(--snow-table-background));
+  border: 1px solid var(--snow-table-border);
+  background-color: var(--snow-table-surface);
   height: 2rem;
   border-radius: var(--snow-table-radius);
   text-decoration: none;
@@ -991,12 +967,12 @@
 }
 
 .snow-action-link:hover {
-  background-color: var(--snow-table-hover);
+  background-color: var(--snow-table-surface);
 }
 
 .snow-action-link:focus-visible {
   outline: none;
-  border-color: var(--snow-table-active);
+  border-color: var(--snow-table-primary);
 }
 
 .snow-action-link:disabled {
@@ -1041,8 +1017,8 @@
    STATE CLASSES
    ============================================= */
 .snow-state-active {
-  background-color: var(--snow-table-active-background);
-  border-color: var(--snow-table-active);
+  background-color: var(--_primary-bg);
+  border-color: var(--snow-table-primary);
 }
 
 .snow-state-active-text {

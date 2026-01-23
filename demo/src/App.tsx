@@ -199,24 +199,20 @@ export function App() {
   // Apply theme CSS variables to document
   useEffect(() => {
     const root = document.documentElement;
+    // Required variables (7)
     root.style.setProperty('--snow-table-background', currentTheme.background);
     root.style.setProperty('--snow-table-foreground', currentTheme.foreground);
-    root.style.setProperty('--snow-table-border', currentTheme.border);
-    root.style.setProperty('--snow-table-input-border', currentTheme.inputBorder);
-    root.style.setProperty('--snow-table-active', currentTheme.active);
-    root.style.setProperty('--snow-table-active-background', currentTheme.activeBackground);
-    root.style.setProperty('--snow-table-header', currentTheme.header);
-    root.style.setProperty('--snow-table-hover', currentTheme.hover);
-    root.style.setProperty('--snow-table-skeleton', currentTheme.skeleton);
-    root.style.setProperty('--snow-table-row-even', currentTheme.rowEven);
-    root.style.setProperty('--snow-table-placeholder', currentTheme.placeholder);
+    root.style.setProperty('--snow-table-primary', currentTheme.primary);
     root.style.setProperty('--snow-table-muted', currentTheme.muted);
+    root.style.setProperty('--snow-table-surface', currentTheme.surface);
+    root.style.setProperty('--snow-table-border', currentTheme.border);
     root.style.setProperty('--snow-table-radius', currentTheme.radius);
-    root.style.setProperty('--snow-table-shadow', currentTheme.shadow);
-    if (currentTheme.actionButton) {
-      root.style.setProperty('--snow-table-action-button', currentTheme.actionButton);
+
+    // Optional variable
+    if (currentTheme.rowEven) {
+      root.style.setProperty('--snow-table-row-even', currentTheme.rowEven);
     } else {
-      root.style.removeProperty('--snow-table-action-button');
+      root.style.removeProperty('--snow-table-row-even');
     }
   }, [currentTheme]);
 

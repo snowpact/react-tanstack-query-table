@@ -107,45 +107,28 @@ Override CSS variables to match your design. Variables use `@property` so they w
 
 ```css
 :root {
-  /* Base colors */
-  --snow-table-background: #ffffff;
-  --snow-table-foreground: #0a0a0a;
-  --snow-table-border: #e5e5e5;        /* Table borders, row separators */
-  --snow-table-input-border: #e5e5e5;  /* Inputs, buttons, dropdowns */
-  --snow-table-active: #525252;                /* Focus ring, active filter border */
-  --snow-table-active-background: #f5f5f5; /* Active filter background */
-
-  /* UI-specific colors */
-  --snow-table-header: #f5f5f5;      /* Table headers, tab list */
-  --snow-table-hover: #f5f5f5;       /* Hover states */
-  --snow-table-skeleton: #f5f5f5;    /* Skeleton loader */
-  --snow-table-placeholder: #a3a3a3; /* Input placeholders */
-  --snow-table-muted: #737373;       /* Secondary text (counts, pagination, inactive tabs) */
-
-  /* Optional (transparent/inherited by default) */
-  --snow-table-row-even: #fafafa;         /* Alternating rows - zebra striping */
-  --snow-table-action-button: #f0f0f0;    /* Action button background */
-
-  /* Other */
+  --snow-table-background: #ffffff;   /* Main background */
+  --snow-table-foreground: #0a0a0a;   /* Main text color */
+  --snow-table-primary: #525252;      /* Accent (focus rings, active states) */
+  --snow-table-muted: #737373;        /* Secondary text */
+  --snow-table-surface: #f5f5f5;      /* Headers, hover, skeleton */
+  --snow-table-border: #e5e5e5;       /* All borders */
   --snow-table-radius: 0.375rem;
+
+  /* Optional */
+  --snow-table-row-even: transparent;
   --snow-table-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
 
-/* Dark mode example */
+/* Dark mode */
 .dark {
   --snow-table-background: #1a1a2e;
   --snow-table-foreground: #eaeaea;
-  --snow-table-border: #0f3460;
-  --snow-table-input-border: #0f3460;
-  --snow-table-active: #3b82f6;
-  --snow-table-active-background: #1e3a5f;
-  --snow-table-header: #16213e;
-  --snow-table-hover: #16213e;
-  --snow-table-skeleton: #16213e;
-  --snow-table-row-even: #1f1f3a;
-  --snow-table-placeholder: #6b7280;
+  --snow-table-primary: #3b82f6;
   --snow-table-muted: #a0a0a0;
-  --snow-table-action-button: #16213e;
+  --snow-table-surface: #16213e;
+  --snow-table-border: #0f3460;
+  --snow-table-row-even: #1f1f3a;
 }
 ```
 
