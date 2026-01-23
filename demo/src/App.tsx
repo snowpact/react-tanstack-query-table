@@ -203,7 +203,8 @@ export function App() {
     root.style.setProperty('--snow-table-foreground', currentTheme.foreground);
     root.style.setProperty('--snow-table-border', currentTheme.border);
     root.style.setProperty('--snow-table-input-border', currentTheme.inputBorder);
-    root.style.setProperty('--snow-table-active-ring', currentTheme.activeRing);
+    root.style.setProperty('--snow-table-active', currentTheme.active);
+    root.style.setProperty('--snow-table-active-background', currentTheme.activeBackground);
     root.style.setProperty('--snow-table-header', currentTheme.header);
     root.style.setProperty('--snow-table-hover', currentTheme.hover);
     root.style.setProperty('--snow-table-skeleton', currentTheme.skeleton);

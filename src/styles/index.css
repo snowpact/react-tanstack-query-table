@@ -24,10 +24,16 @@
   initial-value: #e5e5e5;
 }
 
-@property --snow-table-active-ring {
+@property --snow-table-active {
   syntax: '<color>';
   inherits: true;
-  initial-value: #a3a3a3;
+  initial-value: #525252;
+}
+
+@property --snow-table-active-background {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #f5f5f5;
 }
 
 @property --snow-table-header {
@@ -376,7 +382,7 @@
 
 .snow-btn:focus-visible {
   outline: none;
-  border-color: var(--snow-table-active-ring);
+  border-color: var(--snow-table-active);
 }
 
 .snow-btn:disabled {
@@ -434,7 +440,7 @@
 }
 
 .snow-input:focus-visible {
-  border-color: var(--snow-table-active-ring);
+  border-color: var(--snow-table-active);
 }
 
 .snow-input:disabled {
@@ -478,7 +484,7 @@
 }
 
 .snow-select-trigger:focus {
-  border-color: var(--snow-table-active-ring);
+  border-color: var(--snow-table-active);
 }
 
 .snow-select-trigger:disabled {
@@ -678,7 +684,7 @@
 
 .snow-tabs-trigger:focus-visible {
   outline: none;
-  border-color: var(--snow-table-active-ring);
+  border-color: var(--snow-table-active);
 }
 
 .snow-tabs-trigger:disabled {
@@ -691,6 +697,12 @@
   color: var(--snow-table-foreground);
   border-color: var(--snow-table-input-border);
   box-shadow: var(--snow-table-shadow);
+}
+
+.snow-state-active .snow-tabs-trigger[data-state="active"] {
+  background-color: var(--snow-table-active-background);
+  border-color: var(--snow-table-active);
+  box-shadow: none;
 }
 
 .snow-tabs-trigger svg {
@@ -984,7 +996,7 @@
 
 .snow-action-link:focus-visible {
   outline: none;
-  border-color: var(--snow-table-active-ring);
+  border-color: var(--snow-table-active);
 }
 
 .snow-action-link:disabled {
@@ -1029,8 +1041,8 @@
    STATE CLASSES
    ============================================= */
 .snow-state-active {
-  background-color: rgba(59, 130, 246, 0.08);
-  border-color: rgba(59, 130, 246, 0.4);
+  background-color: var(--snow-table-active-background);
+  border-color: var(--snow-table-active);
 }
 
 .snow-state-active-text {

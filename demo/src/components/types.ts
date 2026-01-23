@@ -15,7 +15,8 @@ export interface ThemeColors {
   foreground: string;
   border: string;
   inputBorder: string;
-  activeRing: string;
+  active: string;
+  activeBackground: string;
   header: string;
   hover: string;
   skeleton: string;
@@ -32,7 +33,8 @@ export const defaultTheme: ThemeColors = {
   foreground: '#0a0a0a',
   border: '#e5e5e5',
   inputBorder: '#e5e5e5',
-  activeRing: '#a3a3a3',
+  active: '#525252',
+  activeBackground: '#f0f0f0',
   header: '#f5f5f5',
   hover: '#f5f5f5',
   skeleton: '#f5f5f5',
@@ -50,7 +52,8 @@ export const themes: Record<string, ThemeColors> = {
     foreground: '#eaeaea',
     border: '#0f3460',
     inputBorder: '#0f3460',
-    activeRing: '#3b82f6',
+    active: '#3b82f6',
+    activeBackground: '#1e3a5f',
     header: '#16213e',
     hover: '#16213e',
     skeleton: '#16213e',
@@ -65,7 +68,8 @@ export const themes: Record<string, ThemeColors> = {
     foreground: '#0c4a6e',
     border: '#bae6fd',
     inputBorder: '#7dd3fc',
-    activeRing: '#0284c7',
+    active: '#0284c7',
+    activeBackground: '#e0f2fe',
     header: '#e0f2fe',
     hover: '#e0f2fe',
     skeleton: '#e0f2fe',
@@ -81,7 +85,8 @@ export const themes: Record<string, ThemeColors> = {
     foreground: '#14532d',
     border: '#86efac',
     inputBorder: '#86efac',
-    activeRing: '#22c55e',
+    active: '#22c55e',
+    activeBackground: '#dcfce7',
     header: '#dcfce7',
     hover: '#dcfce7',
     skeleton: '#dcfce7',
@@ -96,7 +101,8 @@ export const themes: Record<string, ThemeColors> = {
     foreground: '#7c2d12',
     border: '#fdba74',
     inputBorder: '#fdba74',
-    activeRing: '#f97316',
+    active: '#f97316',
+    activeBackground: '#ffedd5',
     header: '#ffedd5',
     hover: '#ffedd5',
     skeleton: '#ffedd5',

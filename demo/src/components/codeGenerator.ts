@@ -17,7 +17,8 @@ export function generateThemeCode(theme: ThemeColors): string {
   --snow-table-foreground: ${theme.foreground};
   --snow-table-border: ${theme.border};
   --snow-table-input-border: ${theme.inputBorder};
-  --snow-table-active-ring: ${theme.activeRing};
+  --snow-table-active: ${theme.active};
+  --snow-table-active-background: ${theme.activeBackground};
   --snow-table-header: ${theme.header};
   --snow-table-hover: ${theme.hover};
   --snow-table-skeleton: ${theme.skeleton};
@@ -34,7 +35,8 @@ export function generateThemeCode(theme: ThemeColors): string {
   --snow-table-foreground: ${theme.foreground};
   --snow-table-border: ${theme.border};
   --snow-table-input-border: ${theme.inputBorder};
-  --snow-table-active-ring: ${theme.activeRing};
+  --snow-table-active: ${theme.active};
+  --snow-table-active-background: ${theme.activeBackground};
   --snow-table-header: ${theme.header};
   --snow-table-hover: ${theme.hover};
   --snow-table-skeleton: ${theme.skeleton};

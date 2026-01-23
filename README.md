@@ -112,7 +112,8 @@ Override CSS variables to match your design. Variables use `@property` so they w
   --snow-table-foreground: #0a0a0a;
   --snow-table-border: #e5e5e5;        /* Table borders, row separators */
   --snow-table-input-border: #e5e5e5;  /* Inputs, buttons, dropdowns */
-  --snow-table-active-ring: #a3a3a3;
+  --snow-table-active: #525252;                /* Focus ring, active filter border */
+  --snow-table-active-background: #f5f5f5; /* Active filter background */
 
   /* UI-specific colors */
   --snow-table-header: #f5f5f5;      /* Table headers, tab list */
@@ -136,7 +137,8 @@ Override CSS variables to match your design. Variables use `@property` so they w
   --snow-table-foreground: #eaeaea;
   --snow-table-border: #0f3460;
   --snow-table-input-border: #0f3460;
-  --snow-table-active-ring: #3b82f6;
+  --snow-table-active: #3b82f6;
+  --snow-table-active-background: #1e3a5f;
   --snow-table-header: #16213e;
   --snow-table-hover: #16213e;
   --snow-table-skeleton: #16213e;
