@@ -126,7 +126,7 @@ export function generateTableCode(config: DemoConfig): string {
       type: 'endpoint',
       icon: Trash,
       label: 'Delete',
-      className: 'my-danger-class',
+      className: 'text-red-500',
       endpoint: (user) => deleteUser(user.id),
       withConfirm: (user) => window.confirm(\`Delete \${user.name}?\`),
     },

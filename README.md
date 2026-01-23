@@ -214,7 +214,7 @@ For API calls with built-in mutation handling:
   type: 'endpoint',
   icon: TrashIcon,
   label: 'Delete',
-  className: 'my-danger-btn',  // Optional: add custom styling
+  className: 'destructive-button',  // Add custom styling
   endpoint: (item) => api.deleteUser(item.id),
   onSuccess: () => {
     toast.success('User deleted');

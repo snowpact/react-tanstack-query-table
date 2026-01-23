@@ -61,7 +61,7 @@ export type BaseAction = {
   hidden?: boolean;
   disabled?: boolean;
   showLabel?: boolean;
-  color?: 'default' | 'danger' | 'info' | 'warning';
+  className?: string;
 };
 
 export type ClickAction<T> = BaseAction & {

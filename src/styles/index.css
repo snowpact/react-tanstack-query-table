@@ -62,31 +62,6 @@
 }
 
 /* Action color variants */
-@property --snow-table-action-default {
-  syntax: '<color>';
-  inherits: true;
-  initial-value: #0a0a0a;
-}
-
-@property --snow-table-action-danger {
-  syntax: '<color>';
-  inherits: true;
-  initial-value: #ef4444;
-}
-
-@property --snow-table-action-info {
-  syntax: '<color>';
-  inherits: true;
-  initial-value: #3b82f6;
-}
-
-@property --snow-table-action-warning {
-  syntax: '<color>';
-  inherits: true;
-  initial-value: #f59e0b;
-}
-
-
 /* =============================================
    BASE RESET & DERIVED VARIABLES
    ============================================= */
@@ -413,23 +388,6 @@
 /* Action button - uses surface color */
 .snow-action-btn {
   background-color: var(--snow-table-surface);
-}
-
-/* Action color variants */
-.snow-action-default {
-  color: var(--snow-table-action-default);
-}
-
-.snow-action-danger {
-  color: var(--snow-table-action-danger);
-}
-
-.snow-action-info {
-  color: var(--snow-table-action-info);
-}
-
-.snow-action-warning {
-  color: var(--snow-table-action-warning);
 }
 
 /* =============================================

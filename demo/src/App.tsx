@@ -248,7 +248,7 @@ export function App() {
       type: 'endpoint' as const,
       icon: TrashIcon,
       label: 'Delete',
-      className: 'demo-btn-danger',
+      className: 'text-red-500',
       endpoint: (user: User) => deleteUser(user.id),
       withConfirm: (user: User) => window.confirm(`Delete user "${user.name}"?`),
       onSuccess: () => alert('User deleted!'),
