@@ -18,7 +18,10 @@ export interface ThemeColors {
   surface: string;
   border: string;
   radius: string;
+  // Optional
   rowEven?: string;
+  shadow?: string;
+  actionSurface?: string;
 }
 
 export const defaultTheme: ThemeColors = {
@@ -42,6 +45,7 @@ export const themes: Record<string, ThemeColors> = {
     border: '#0f3460',
     radius: '0.375rem',
     rowEven: '#1f1f3a',
+    actionSurface: '#1e3a5f',
   },
   ocean: {
     background: '#f0f9ff',
@@ -51,6 +55,7 @@ export const themes: Record<string, ThemeColors> = {
     surface: '#e0f2fe',
     border: '#bae6fd',
     radius: '0.5rem',
+    actionSurface: '#bae6fd',
   },
   forest: {
     background: '#f0fdf4',

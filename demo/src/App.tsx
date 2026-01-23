@@ -208,11 +208,21 @@ export function App() {
     root.style.setProperty('--snow-table-border', currentTheme.border);
     root.style.setProperty('--snow-table-radius', currentTheme.radius);
 
-    // Optional variable
+    // Optional variables
     if (currentTheme.rowEven) {
       root.style.setProperty('--snow-table-row-even', currentTheme.rowEven);
     } else {
       root.style.removeProperty('--snow-table-row-even');
+    }
+    if (currentTheme.shadow) {
+      root.style.setProperty('--snow-table-shadow', currentTheme.shadow);
+    } else {
+      root.style.removeProperty('--snow-table-shadow');
+    }
+    if (currentTheme.actionSurface) {
+      root.style.setProperty('--snow-table-action-surface', currentTheme.actionSurface);
+    } else {
+      root.style.removeProperty('--snow-table-action-surface');
     }
   }, [currentTheme]);
 

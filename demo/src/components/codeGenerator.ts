@@ -10,9 +10,17 @@ export function generateThemeCode(theme: ThemeColors): string {
   const isDefault = JSON.stringify(theme) === JSON.stringify(defaultTheme);
 
   // Build optional variable section
-  const optionalSection = theme.rowEven
-    ? `\n\n  /* Optional */\n  --snow-table-row-even: ${theme.rowEven};`
-    : '';
+  const optionalVars: string[] = [];
+  if (theme.shadow) {
+    optionalVars.push(`  --snow-table-shadow: ${theme.shadow};`);
+  }
+  if (theme.rowEven) {
+    optionalVars.push(`  --snow-table-row-even: ${theme.rowEven};`);
+  }
+  if (theme.actionSurface) {
+    optionalVars.push(`  --snow-table-action-surface: ${theme.actionSurface};`);
+  }
+  const optionalSection = optionalVars.length > 0 ? `\n\n  /* Optional */\n${optionalVars.join('\n')}` : '';
 
   if (isDefault) {
     return `/* Default theme - no customization needed */
@@ -25,6 +33,11 @@ export function generateThemeCode(theme: ThemeColors): string {
   --snow-table-surface: ${theme.surface};
   --snow-table-border: ${theme.border};
   --snow-table-radius: ${theme.radius};
+
+  /* Optional */
+  /* --snow-table-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); */
+  /* --snow-table-row-even: transparent; */
+  /* --snow-table-action-surface: <color>; (falls back to surface) */
 }`;
   }
 

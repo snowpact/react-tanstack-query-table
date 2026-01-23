@@ -116,8 +116,9 @@ Override CSS variables to match your design. Variables use `@property` so they w
   --snow-table-radius: 0.375rem;
 
   /* Optional */
-  --snow-table-row-even: transparent;
   --snow-table-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --snow-table-row-even: transparent;           /* Alternate row background */
+  --snow-table-action-surface: #f5f5f5;         /* Action buttons background (falls back to surface) */
 }
 
 /* Dark mode */
