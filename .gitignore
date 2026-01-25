@@ -5,4 +5,3 @@ demo-dist/
 .DS_Store
 .claude
 .context
-package-lock.json
