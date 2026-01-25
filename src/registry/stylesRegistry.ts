@@ -15,7 +15,7 @@ export const setStyles = (config: StylesConfig) => {
   styles = config;
 };
 
-export const getSearchBarClassName = () => styles.searchBar ?? '';
+export const getStyles = () => styles;
 
 export const resetStylesRegistry = () => {
   styles = {};

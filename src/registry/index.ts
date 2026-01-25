@@ -83,4 +83,4 @@ export const isSnowTableSetup = () => isSetup;
 // Re-export everything needed
 export { getT, getTranslationKeys } from './translationRegistry';
 export { getLink, type LinkProps } from './linkRegistry';
-export { getSearchBarClassName, type StylesConfig } from './stylesRegistry';
+export { getStyles, type StylesConfig } from './stylesRegistry';
