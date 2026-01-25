@@ -20,6 +20,9 @@ importers:
       '@tanstack/match-sorter-utils':
         specifier: ^8.19.4
         version: 8.19.4
+      '@testing-library/dom':
+        specifier: ^10.4.1
+        version: 10.4.1
     devDependencies:
       '@tanstack/react-query':
         specifier: ^5.90.7
