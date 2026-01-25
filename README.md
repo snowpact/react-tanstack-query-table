@@ -179,6 +179,26 @@ const fetchUsers = async (params: ServerFetchParams) => {
 
 ---
 
+## Custom Component Classes
+
+Add your own CSS classes (e.g., Tailwind) to specific components without overriding existing styles:
+
+```tsx
+setupSnowTable({
+  translate: (key) => t(key),
+  LinkComponent: Link,
+  styles: {
+    searchBar: 'focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]',
+  },
+});
+```
+
+| Key         | Component       |
+| ----------- | --------------- |
+| `searchBar` | SearchBar input |
+
+---
+
 ## Actions
 
 Actions appear as buttons in each row:
