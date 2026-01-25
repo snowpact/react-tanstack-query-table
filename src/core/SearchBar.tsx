@@ -6,6 +6,7 @@ import { Search } from '../icons';
 import { useEffect, useState } from 'react';
 
 import { Input } from '../primitives/Input';
+import { getSearchBarClassName } from '../registry';
 import { cn } from '../utils';
 
 const SEARCH_DEBOUNCE_MS = 500;
@@ -51,6 +52,7 @@ export function SearchBar({ value = '', onDebouncedChange, placeholder }: Search
           value={inputValue}
           placeholder={placeholder}
           isActive={hasContent}
+          className={getSearchBarClassName() || undefined}
         />
         <span className="snow-searchbar-icon">
           <Search className={cn(hasContent ? 'snow-state-active-text' : 'snow-text-muted-foreground')} />

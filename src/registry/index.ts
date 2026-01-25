@@ -7,6 +7,7 @@
 import type { ComponentType } from 'react';
 
 import { registerLinkComponent, resetLinkRegistry, type LinkProps } from './linkRegistry';
+import { setStyles, resetStylesRegistry, type StylesConfig } from './stylesRegistry';
 import { setTranslationFunction, setTranslations, resetTranslationRegistry } from './translationRegistry';
 
 export interface SetupSnowTableOptions {
@@ -39,6 +40,12 @@ export interface SetupSnowTableOptions {
    * Use your router's Link component (react-router, next/link, etc.)
    */
   LinkComponent: ComponentType<LinkProps>;
+
+  /**
+   * Custom CSS class names for SnowTable components (optional)
+   * Use this to add your own classes (e.g., Tailwind) without overriding existing styles
+   */
+  styles?: StylesConfig;
 }
 
 let isSetup = false;
@@ -54,6 +61,11 @@ export const setupSnowTable = (options: SetupSnowTableOptions) => {
     setTranslations(options.translations);
   }
 
+  // Set custom styles if provided
+  if (options.styles) {
+    setStyles(options.styles);
+  }
+
   registerLinkComponent(options.LinkComponent);
 
   isSetup = true;
@@ -63,6 +75,7 @@ export const resetSnowTable = () => {
   isSetup = false;
   resetTranslationRegistry();
   resetLinkRegistry();
+  resetStylesRegistry();
 };
 
 export const isSnowTableSetup = () => isSetup;
@@ -70,3 +83,4 @@ export const isSnowTableSetup = () => isSetup;
 // Re-export everything needed
 export { getT, getTranslationKeys } from './translationRegistry';
 export { getLink, type LinkProps } from './linkRegistry';
+export { getSearchBarClassName, type StylesConfig } from './stylesRegistry';
