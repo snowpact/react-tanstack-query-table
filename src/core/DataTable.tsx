@@ -23,7 +23,8 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Button } from '../primitives/Button';
 import { Skeleton } from '../primitives/Skeleton';
 import { getT } from '../registry';
-import { cn, fuzzyFilter } from '../utils';
+import type { SearchMode } from '../utils';
+import { cn, fuzzyFilter, containsFilter } from '../utils';
 
 import { ColumnConfiguration } from './ColumnConfiguration';
 import { PageSizeSelector } from './PageSizeSelector';
@@ -54,6 +55,7 @@ export type DataTableProps<T extends object> = {
   globalFilter?: string;
   onGlobalFilterChange?: (value: string) => void;
   enableGlobalSearch?: boolean;
+  searchMode?: SearchMode;
 
   // === COLUMN FILTERS (controlled or uncontrolled) ===
   filters?: FilterConfig<T>[];
@@ -108,6 +110,7 @@ export function DataTable<Data extends object>({
   globalFilter: externalGlobalFilter,
   onGlobalFilterChange: externalOnGlobalFilterChange,
   enableGlobalSearch = false,
+  searchMode = 'fuzzy',
   // Column filters (external props with internal fallback)
   filters,
   columnFilters: externalColumnFilters,
@@ -230,7 +233,7 @@ export function DataTable<Data extends object>({
           filterFns: {
             multiSelect: multiSelectFilter,
           },
-          globalFilterFn: enableGlobalSearch ? fuzzyFilter : undefined,
+          globalFilterFn: enableGlobalSearch ? (searchMode === 'contains' ? containsFilter : fuzzyFilter) : undefined,
         }
       : {}),
   });
