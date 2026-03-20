@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import { fuzzyFilter } from './fuzzyFilter';
+import { containsFilter, fuzzyFilter } from './fuzzyFilter';
 
 // Mock row object that mimics TanStack Table Row
 const createMockRow = (value: unknown) => ({
@@ -140,5 +140,61 @@ describe('fuzzyFilter', () => {
 
       expect(getValue).toHaveBeenCalledWith('myColumn');
     });
+  });
+});
+
+describe('containsFilter', () => {
+  it('should match exact substring', () => {
+    const row = createMockRow('hello world');
+    const addMeta = vi.fn();
+
+    const result = containsFilter(row as never, 'name', 'hello', addMeta);
+
+    expect(result).toBe(true);
+  });
+
+  it('should match case-insensitively', () => {
+    const row = createMockRow('Hello World');
+    const addMeta = vi.fn();
+
+    const result = containsFilter(row as never, 'name', 'hello', addMeta);
+
+    expect(result).toBe(true);
+  });
+
+  it('should NOT match fuzzy pattern', () => {
+    const row = createMockRow('John Doe');
+    const addMeta = vi.fn();
+
+    const result = containsFilter(row as never, 'name', 'jhn', addMeta);
+
+    expect(result).toBe(false);
+  });
+
+  it('should match substring in the middle', () => {
+    const row = createMockRow('hello world');
+    const addMeta = vi.fn();
+
+    const result = containsFilter(row as never, 'name', 'llo wor', addMeta);
+
+    expect(result).toBe(true);
+  });
+
+  it('should not match unrelated string', () => {
+    const row = createMockRow('hello');
+    const addMeta = vi.fn();
+
+    const result = containsFilter(row as never, 'name', 'xyz', addMeta);
+
+    expect(result).toBe(false);
+  });
+
+  it('should match empty filter (return all)', () => {
+    const row = createMockRow('hello');
+    const addMeta = vi.fn();
+
+    const result = containsFilter(row as never, 'name', '', addMeta);
+
+    expect(result).toBe(true);
   });
 });

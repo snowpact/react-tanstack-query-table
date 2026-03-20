@@ -62,6 +62,7 @@ export type {
   DataTableUIOptions,
   BaseSnowTableProps,
 } from './types';
+export type { SearchMode } from './utils';
 
 // Hooks
 export { useSnowColumns, useTableStatePersist } from './hooks';

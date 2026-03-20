@@ -12,6 +12,7 @@ export type IconComponent = ComponentType<SVGProps<SVGSVGElement>>;
 
 import type { PreFilter } from './core/PrefilterTabs';
 import type { FilterConfig } from './core/SingleFilterDropdown';
+import type { SearchMode } from './utils/fuzzyFilter';
 
 // ============================================
 // Shared Types
@@ -103,6 +104,7 @@ export interface DataTableUIOptions<T extends object> {
   displayTotalNumber?: boolean;
   enableElementLabel?: boolean;
   enableGlobalSearch?: boolean;
+  searchMode?: SearchMode;
   enableSorting?: boolean;
   enableColumnConfiguration?: boolean;
   enablePagination?: boolean;
