@@ -52,7 +52,7 @@ export const SnowClientDataTable = <T extends Record<string, unknown>, K = unkno
   // ============================================
   const { data: items = [], isLoading } = useQuery({
     queryKey,
-    queryFn: fetchAllItemsEndpoint,
+    queryFn: () => fetchAllItemsEndpoint(),
   });
 
   // ============================================
