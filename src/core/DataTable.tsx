@@ -193,10 +193,28 @@ export function DataTable<Data extends object>({
   // Pagination is possible in client mode, or in server mode only if totalCount is provided
   const isPaginationPossible = !serverSideMode || externalTotalCount !== undefined;
 
+  // Build a set of valid column IDs to sanitize state referencing non-existent columns
+  const validColumnIds = useMemo(() => {
+    const ids = new Set<string>();
+    for (const col of columns) {
+      const id = (col as Record<string, unknown>).accessorKey ?? col.id;
+      if (typeof id === 'string') ids.add(id);
+    }
+    return ids;
+  }, [columns]);
+
+  // Sanitize sorting state: discard entries referencing columns not in the current table
+  const safeSorting = useMemo(() => {
+    return sorting.filter(s => validColumnIds.has(s.id));
+  }, [sorting, validColumnIds]);
+
   // Convert Record<string, string[]> to ColumnFiltersState for TanStack Table
+  // Also sanitize: discard filters referencing columns not in the current table
   const tanstackColumnFilters = useMemo<ColumnFiltersState>(() => {
-    return Object.entries(columnFilters).map(([id, value]) => ({ id, value }));
-  }, [columnFilters]);
+    return Object.entries(columnFilters)
+      .filter(([id]) => validColumnIds.has(id))
+      .map(([id, value]) => ({ id, value }));
+  }, [columnFilters, validColumnIds]);
 
   // Custom filter function for multi-select filters
   const multiSelectFilter = useCallback((row: Row<Data>, columnId: string, filterValue: string[]) => {
@@ -210,7 +228,7 @@ export function DataTable<Data extends object>({
     pageCount: serverSideMode ? pageCount : undefined,
     state: {
       pagination,
-      sorting: enableSorting ? sorting : undefined,
+      sorting: enableSorting ? safeSorting : undefined,
       globalFilter: !serverSideMode && enableGlobalSearch ? globalFilter : undefined,
       columnFilters: !serverSideMode && filters?.length ? tanstackColumnFilters : undefined,
       columnVisibility: enableColumnConfiguration ? columnVisibility : undefined,
