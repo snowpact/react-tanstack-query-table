@@ -197,7 +197,7 @@ export function DataTable<Data extends object>({
   const validColumnIds = useMemo(() => {
     const ids = new Set<string>();
     for (const col of columns) {
-      const id = (col as Record<string, unknown>).accessorKey ?? col.id;
+      const id = (col as unknown as Record<string, unknown>).accessorKey ?? col.id;
       if (typeof id === 'string') ids.add(id);
     }
     return ids;
