@@ -114,6 +114,8 @@ export interface DataTableUIOptions<T extends object> {
     searchPlaceholder?: string;
     emptyTitle?: string;
   };
+  /** Custom CSS class applied on the root wrapper. Useful for scoped theming. */
+  className?: string;
 }
 
 // ============================================
