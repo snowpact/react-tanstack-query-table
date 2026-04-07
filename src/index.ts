@@ -74,7 +74,7 @@ export type { TooltipState } from './hooks/useTooltip';
 export { redirectToPageWithParam } from './utils';
 
 // Registry (for setup)
-export { setupSnowTable, isSnowTableSetup } from './registry';
+export { setupSnowTable, resetSnowTable, isSnowTableSetup } from './registry';
 export type { SetupSnowTableOptions } from './registry';
 
 // Internal (for customization)

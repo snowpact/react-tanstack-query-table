@@ -92,6 +92,10 @@ export type DataTableProps<T extends object> = {
 
   // === RESET ===
   onResetFilters?: () => void;
+
+  // === STYLING ===
+  /** Custom CSS class applied on the root wrapper. Useful for scoped theming. */
+  className?: string;
 };
 
 export function DataTable<Data extends object>({
@@ -138,6 +142,8 @@ export function DataTable<Data extends object>({
   texts,
   // Reset
   onResetFilters,
+  // Styling
+  className,
 }: DataTableProps<Data>) {
   const t = getT();
 
@@ -290,7 +296,7 @@ export function DataTable<Data extends object>({
   }, [serverSideMode, externalTotalCount, table, data.length, globalFilter, tanstackColumnFilters]);
 
   return (
-    <div className="snow-table-container snow-table-root" data-testid="datatable">
+    <div className={cn('snow-table-container snow-table-root', className)} data-testid="datatable">
       {/* Loading overlay during fetching (server-side) */}
       {isFetching && !isLoading && <div className="snow-table-loading-overlay" />}
 

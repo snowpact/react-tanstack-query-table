@@ -133,6 +133,33 @@ Override CSS variables to match your design. Variables use `@property` so they w
 }
 ```
 
+### Scoped Theming with `className`
+
+For full control over sizes, paddings, typography, etc., pass a `className` to scope your CSS:
+
+```tsx
+<SnowClientDataTable className="my-theme" ... />
+```
+
+```css
+.my-theme .snow-input { height: 36px; }
+.my-theme .snow-table-header-cell { text-transform: uppercase; }
+.my-theme .snow-table-cell { padding: 0.75rem 1rem; }
+```
+
+The double-class specificity (`.my-theme .snow-*`) wins over defaults — no `!important`, no load-order issues. Multiple tables can use different themes simultaneously.
+
+### HMR Support
+
+Use `resetSnowTable` if HMR doesn't pick up changes to your setup:
+
+```tsx
+import { setupSnowTable, resetSnowTable } from '@snowpact/react-tanstack-query-table';
+
+if (import.meta.hot) resetSnowTable();
+setupSnowTable({ /* ... */ });
+```
+
 ---
 
 ## Client vs Server Mode
@@ -476,6 +503,7 @@ const columns: SnowColumnConfig<User>[] = [
 | `defaultPageSize`           | `number`                | `10`     | Initial page size               |
 | `defaultSortBy`             | `string`                | -        | Initial sort column             |
 | `defaultSortOrder`          | `'asc' \| 'desc'`       | `'asc'`  | Initial sort direction          |
+| `className`                 | `string`                 | -        | CSS class on root wrapper (scoped theming) |
 
 ### SnowServerDataTable Props
 
