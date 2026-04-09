@@ -35,8 +35,26 @@ export const defaultTheme: ThemeColors = {
   radius: '0.375rem',
 };
 
+// Signaleo theme uses className-based scoping, not CSS variables
+export interface ThemeEntry {
+  colors: ThemeColors;
+  className?: string; // applied to the table via className prop
+}
+
 export const themes: Record<string, ThemeColors> = {
   default: defaultTheme,
+  signaleo: {
+    background: '#ffffff',
+    foreground: '#000000',
+    primary: '#334155',
+    muted: '#4b5563',
+    surface: '#fbfcfd',
+    border: '#f1f5fa',
+    radius: '0',
+    rowEven: '#fbfcfd',
+    shadow: '0 1px 2px 0 rgba(228, 236, 245, 1)',
+    actionSurface: '#ffffff',
+  },
   dark: {
     background: '#1a1a2e',
     foreground: '#eaeaea',

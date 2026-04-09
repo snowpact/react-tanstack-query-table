@@ -5,6 +5,7 @@ import { App } from './App';
 
 // Import the library styles (source for hot-reload)
 import '../../src/styles/index.css';
+import './signaleo-theme.css';
 
 const queryClient = new QueryClient();
 
