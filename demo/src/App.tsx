@@ -190,6 +190,7 @@ export function App() {
     enableFilters: true,
     enablePrefilters: true,
     persistState: false,
+    enableRowClick: false,
     mobilePreview: false,
   });
 
@@ -311,6 +312,9 @@ export function App() {
       config.mode === 'client' && {
         prefilterFn: (item: User, id: string) => id === 'all' || item.status === id,
       }),
+    ...(config.enableRowClick && {
+      onRowClick: (item: User) => alert(`Clicked on ${item.name} (${item.email})`),
+    }),
   };
 
   return (
