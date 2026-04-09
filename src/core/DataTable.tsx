@@ -365,7 +365,7 @@ export function DataTable<Data extends object>({
                   return (
                   <th
                     key={header.id}
-                    className={cn('snow-table-header-cell', enableSorting && 'snow-cursor-pointer')}
+                    className={cn('snow-table-header-cell', enableSorting && header.column.getCanSort() && 'snow-cursor-pointer')}
                     onClick={header.column.getToggleSortingHandler()}
                     style={{
                       '--snow-col-width': meta?.width,

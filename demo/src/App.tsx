@@ -113,10 +113,11 @@ const deleteUser = async (id: string): Promise<void> => {
 // Column configuration
 const columns: SnowColumnConfig<User>[] = [
   { key: 'name', label: 'Name' },
-  { key: 'email', label: 'Email' },
+  { key: 'email', label: 'Email', sortable: false },
   {
     key: 'role',
     label: 'Role',
+    sortable: false,
     render: item => (
       <span
         className={`px-2 py-1 rounded-full text-xs font-medium ${
@@ -194,6 +195,7 @@ export function App() {
     mobilePreview: false,
   });
 
+  const [fullscreen, setFullscreen] = useState(false);
   const [currentThemeName, setCurrentThemeName] = useState('default');
   const [currentTheme, setCurrentTheme] = useState<ThemeColors>(defaultTheme);
 
@@ -258,7 +260,7 @@ export function App() {
     {
       type: 'endpoint' as const,
       icon: TrashIcon,
-      label: 'Delete',
+      label: 'Delete the item permanently from the database',
       className: 'text-red-500',
       endpoint: (user: User) => deleteUser(user.id),
       withConfirm: (user: User) => window.confirm(`Delete user "${user.name}"?`),
@@ -294,10 +296,13 @@ export function App() {
     },
   ];
 
+  const themeClassName = currentThemeName === 'signaleo' ? 'snow-signaleo-table' : undefined;
+
   const tableProps = {
     queryKey: ['users', config.mode],
     columnConfig: columns,
     actions,
+    className: themeClassName,
     enableGlobalSearch: config.enableGlobalSearch,
     enablePagination: config.enablePagination,
     enableSorting: config.enableSorting,
@@ -316,6 +321,32 @@ export function App() {
       onRowClick: (item: User) => alert(`Clicked on ${item.name} (${item.email})`),
     }),
   };
+
+  if (fullscreen) {
+    return (
+      <div className="min-h-screen">
+        <button
+          onClick={() => setFullscreen(false)}
+          className="fixed top-4 right-4 z-50 bg-gray-800 text-white px-3 py-2 rounded-lg text-sm shadow-lg hover:bg-gray-700"
+        >
+          Exit Fullscreen
+        </button>
+        {config.mode === 'client' ? (
+          <SnowClientDataTable
+            key={`client-${config.persistState}-fs`}
+            {...tableProps}
+            fetchAllItemsEndpoint={fetchUsers}
+          />
+        ) : (
+          <SnowServerDataTable
+            key={`server-${config.persistState}-fs`}
+            {...tableProps}
+            fetchServerEndpoint={fetchUsersServer}
+          />
+        )}
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex">
@@ -350,9 +381,15 @@ export function App() {
               </span>
               {config.mobilePreview && (
                 <span className="px-2 py-1 rounded text-xs font-medium bg-purple-100 text-purple-700">
-                  📱 Mobile Preview (375px)
+                  Mobile Preview (375px)
                 </span>
               )}
+              <button
+                onClick={() => setFullscreen(true)}
+                className="ml-auto px-3 py-1 rounded text-xs font-medium bg-gray-800 text-white hover:bg-gray-700"
+              >
+                Fullscreen
+              </button>
             </div>
 
             {config.mode === 'client' ? (
