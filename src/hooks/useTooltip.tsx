@@ -18,11 +18,14 @@ const EDGE_MARGIN = 8;
 export function Tooltip({ label, x, y }: TooltipState) {
   const ref = useRef<HTMLDivElement>(null);
 
+  const arrowRef = useRef<HTMLDivElement>(null);
+
   // After the initial render, measure the real tooltip width and adjust
   // position if it would overflow the viewport. Runs before browser paint.
   useLayoutEffect(() => {
     const el = ref.current;
-    if (!el) return;
+    const arrow = arrowRef.current;
+    if (!el || !arrow) return;
 
     const tooltipWidth = el.offsetWidth;
     const maxRight = window.innerWidth - EDGE_MARGIN;
@@ -38,6 +41,9 @@ export function Tooltip({ label, x, y }: TooltipState) {
 
     if (clamped !== x) {
       el.style.left = `${clamped}px`;
+      // Offset the arrow so it still points at the original trigger position
+      const arrowOffset = ((x - clamped) / tooltipWidth) * 100;
+      arrow.style.left = `calc(50% + ${arrowOffset}%)`;
     }
   }, [x, label]);
 
@@ -53,7 +59,7 @@ export function Tooltip({ label, x, y }: TooltipState) {
   return createPortal(
     <div ref={ref} style={style} className="snow-action-tooltip">
       <div className="snow-tooltip-content">{label}</div>
-      <div className="snow-tooltip-arrow" />
+      <div ref={arrowRef} className="snow-tooltip-arrow" />
     </div>,
     document.body
   );
