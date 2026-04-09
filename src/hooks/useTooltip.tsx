@@ -3,7 +3,7 @@
  * Handles edge detection to prevent tooltip overflow
  */
 
-import { useState, useCallback, type CSSProperties } from 'react';
+import { useState, useCallback, useRef, useLayoutEffect, type CSSProperties } from 'react';
 import { createPortal } from 'react-dom';
 
 export interface TooltipState {
@@ -12,8 +12,35 @@ export interface TooltipState {
   y: number;
 }
 
-/** Tooltip component rendered via portal */
+const EDGE_MARGIN = 8;
+
+/** Tooltip component rendered via portal — measures its own width to clamp position */
 export function Tooltip({ label, x, y }: TooltipState) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  // After the initial render, measure the real tooltip width and adjust
+  // position if it would overflow the viewport. Runs before browser paint.
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const tooltipWidth = el.offsetWidth;
+    const maxRight = window.innerWidth - EDGE_MARGIN;
+    const minLeft = EDGE_MARGIN;
+    let clamped = x;
+
+    if (x + tooltipWidth / 2 > maxRight) {
+      clamped = maxRight - tooltipWidth / 2;
+    }
+    if (x - tooltipWidth / 2 < minLeft) {
+      clamped = minLeft + tooltipWidth / 2;
+    }
+
+    if (clamped !== x) {
+      el.style.left = `${clamped}px`;
+    }
+  }, [x, label]);
+
   const style: CSSProperties = {
     position: 'fixed',
     left: x,
@@ -24,7 +51,7 @@ export function Tooltip({ label, x, y }: TooltipState) {
   };
 
   return createPortal(
-    <div style={style} className="snow-action-tooltip">
+    <div ref={ref} style={style} className="snow-action-tooltip">
       <div className="snow-tooltip-content">{label}</div>
       <div className="snow-tooltip-arrow" />
     </div>,
@@ -37,21 +64,8 @@ export function useTooltip() {
 
   const show = useCallback((label: string, element: HTMLElement) => {
     const rect = element.getBoundingClientRect();
-    let x = rect.left + rect.width / 2;
+    const x = rect.left + rect.width / 2;
     const y = rect.top - 8;
-
-    // Prevent overflow on edges
-    const maxRight = window.innerWidth - 8;
-    const minLeft = 8;
-    const approxWidth = label.length * 7 + 16;
-
-    if (x + approxWidth / 2 > maxRight) {
-      x = maxRight - approxWidth / 2;
-    }
-    if (x - approxWidth / 2 < minLeft) {
-      x = minLeft + approxWidth / 2;
-    }
-
     setState({ label, x, y });
   }, []);
 

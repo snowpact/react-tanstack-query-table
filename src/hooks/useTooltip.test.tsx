@@ -13,7 +13,7 @@ describe('useTooltip', () => {
   });
 
   describe('show', () => {
-    it('should update state with label and position', () => {
+    it('should update state with label and centered position', () => {
       const { result } = renderHook(() => useTooltip());
 
       const mockElement = {
@@ -40,12 +40,8 @@ describe('useTooltip', () => {
       expect(result.current.state?.y).toBe(192); // top - 8
     });
 
-    it('should prevent overflow on right edge', () => {
+    it('should always center on element (clamping is handled by Tooltip component)', () => {
       const { result } = renderHook(() => useTooltip());
-
-      // Mock window.innerWidth
-      const originalInnerWidth = window.innerWidth;
-      Object.defineProperty(window, 'innerWidth', { value: 200, writable: true });
 
       const mockElement = {
         getBoundingClientRect: () => ({
@@ -65,36 +61,8 @@ describe('useTooltip', () => {
         result.current.show('Long Label Text', mockElement);
       });
 
-      // Should be adjusted to not overflow
-      expect(result.current.state?.x).toBeLessThan(200);
-
-      // Restore
-      Object.defineProperty(window, 'innerWidth', { value: originalInnerWidth, writable: true });
-    });
-
-    it('should prevent overflow on left edge', () => {
-      const { result } = renderHook(() => useTooltip());
-
-      const mockElement = {
-        getBoundingClientRect: () => ({
-          left: 0,
-          top: 100,
-          width: 10,
-          height: 30,
-          right: 10,
-          bottom: 130,
-          x: 0,
-          y: 100,
-          toJSON: () => {},
-        }),
-      } as HTMLElement;
-
-      act(() => {
-        result.current.show('Long Label Text', mockElement);
-      });
-
-      // Should be adjusted to not go below minLeft (8)
-      expect(result.current.state?.x).toBeGreaterThanOrEqual(8);
+      // Hook always returns the raw centered position
+      expect(result.current.state?.x).toBe(190); // left + width/2
     });
   });
 
