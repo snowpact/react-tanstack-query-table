@@ -53,7 +53,7 @@ function ActionCellInner<T, K>({ item, actions, onAction }: ActionCellProps<T, K
   );
 
   return (
-    <div className="snow-action-cell">
+    <div className="snow-action-cell" onClick={e => e.stopPropagation()}>
       {tooltip.state && <Tooltip {...tooltip.state} />}
 
       {buttonActions.map((a, index) => {

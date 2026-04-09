@@ -278,6 +278,73 @@ describe('DataTable', () => {
       // The active row should have specific styling (we check it exists)
       expect(row).toBeInTheDocument();
     });
+
+    it('should call action handler when action button is clicked', async () => {
+      const user = userEvent.setup();
+      const onAction = vi.fn();
+      const EditIcon = (props: React.SVGProps<SVGSVGElement>) => <svg data-testid="edit-icon" {...props} />;
+
+      const columnsWithActions: ColumnDef<TestItem>[] = [
+        ...columns,
+        {
+          accessorKey: 'actions',
+          header: '',
+          cell: ({ row }: { row: { original: TestItem } }) => (
+            <button data-testid={`action-btn-${row.original.id}`} onClick={() => onAction(row.original)}>
+              <EditIcon />
+            </button>
+          ),
+        },
+      ];
+
+      renderWithProviders(<DataTable data={mockData} columns={columnsWithActions} />);
+
+      await user.click(screen.getByTestId('action-btn-1'));
+
+      expect(onAction).toHaveBeenCalledWith(mockData[0]);
+    });
+
+    it('should not trigger onRowClick when clicking on ActionCell', async () => {
+      const user = userEvent.setup();
+      const onRowClick = vi.fn();
+      const onAction = vi.fn();
+
+      // Import ActionCell to test the real stopPropagation behavior
+      const { ActionCell } = await import('../components/ActionCell');
+      const EditIcon = (props: React.SVGProps<SVGSVGElement>) => <svg data-testid="edit-icon" {...props} />;
+
+      const actions = [
+        {
+          type: 'click' as const,
+          label: 'Edit',
+          icon: EditIcon,
+          onClick: onAction,
+          showLabel: true,
+        },
+      ];
+
+      const columnsWithActions: ColumnDef<TestItem>[] = [
+        ...columns,
+        {
+          accessorKey: 'actions',
+          header: '',
+          cell: ({ row }: { row: { original: TestItem } }) => (
+            <ActionCell item={row.original} actions={actions} onAction={() => onAction(row.original)} />
+          ),
+        },
+      ];
+
+      renderWithProviders(
+        <DataTable data={mockData} columns={columnsWithActions} onRowClick={onRowClick} />
+      );
+
+      // Click on the action button — should NOT trigger onRowClick
+      const actionButton = screen.getAllByText('Edit')[0];
+      await user.click(actionButton);
+
+      expect(onAction).toHaveBeenCalled();
+      expect(onRowClick).not.toHaveBeenCalled();
+    });
   });
 
   describe('reset filters', () => {

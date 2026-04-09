@@ -7,6 +7,7 @@ export interface DemoConfig {
   enableFilters: boolean;
   enablePrefilters: boolean;
   persistState: boolean;
+  enableRowClick: boolean;
   mobilePreview: boolean;
 }
 
