@@ -28,6 +28,8 @@ export function Tooltip({ label, x, y }: TooltipState) {
     if (!el || !arrow) return;
 
     const tooltipWidth = el.offsetWidth;
+    if (tooltipWidth === 0) return;
+
     const maxRight = window.innerWidth - EDGE_MARGIN;
     const minLeft = EDGE_MARGIN;
     let clamped = x;
