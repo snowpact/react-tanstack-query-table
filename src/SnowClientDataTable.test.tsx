@@ -238,6 +238,46 @@ describe('SnowClientDataTable', () => {
   });
 });
 
+describe('SnowClientDataTable queryKey change', () => {
+  it('should not freeze when queryKey changes at runtime', async () => {
+    const dataA: TestItem[] = [
+      { id: 'a1', name: 'Alice', email: 'alice@example.com' },
+    ];
+    const dataB: TestItem[] = [
+      { id: 'b1', name: 'Bob', email: 'bob@example.com' },
+    ];
+
+    const fetchEndpoint = vi.fn().mockResolvedValue(dataA);
+
+    const { rerender } = renderWithProviders(
+      <SnowClientDataTable
+        queryKey={['items', 'a']}
+        columnConfig={columnConfig}
+        fetchAllItemsEndpoint={fetchEndpoint}
+        enablePagination
+      />
+    );
+
+    // First render — data A loads
+    expect(await screen.findByText('Alice')).toBeInTheDocument();
+
+    // Change queryKey — simulates user picking a different category
+    fetchEndpoint.mockResolvedValue(dataB);
+    rerender(
+      <SnowClientDataTable
+        queryKey={['items', 'b']}
+        columnConfig={columnConfig}
+        fetchAllItemsEndpoint={fetchEndpoint}
+        enablePagination
+      />
+    );
+
+    // Should render data B without freezing
+    expect(await screen.findByText('Bob')).toBeInTheDocument();
+    expect(screen.queryByText('Alice')).not.toBeInTheDocument();
+  });
+});
+
 describe('SnowClientDataTable with persistState', () => {
   const storageKey = (key: string) => `dt_${key}`;
 
