@@ -2,13 +2,15 @@
  * SnowClientDataTable - Client-side data table with React Query integration
  */
 
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 
 import { DataTable, DEFAULT_PAGE_SIZES } from './core';
 import { useSnowColumns } from './hooks/useSnowColumns';
 import { useTableStatePersist } from './hooks/useTableStatePersist';
 import { SnowClientDataTableProps } from './types';
+
+const EMPTY_ITEMS: never[] = [];
 
 export const SnowClientDataTable = <T extends Record<string, unknown>, K = unknown>({
   queryKey,
@@ -50,10 +52,12 @@ export const SnowClientDataTable = <T extends Record<string, unknown>, K = unkno
   // ============================================
   // Data Query
   // ============================================
-  const { data: items = [], isLoading } = useQuery({
+  const { data, isLoading, isFetching } = useQuery({
     queryKey,
     queryFn: () => fetchAllItemsEndpoint(),
+    placeholderData: keepPreviousData,
   });
+  const items = data ?? EMPTY_ITEMS;
 
   // ============================================
   // Prefilter Data (client-side filtering)
@@ -82,6 +86,7 @@ export const SnowClientDataTable = <T extends Record<string, unknown>, K = unkno
       data={prefilteredData}
       columns={columns}
       isLoading={isLoading}
+      isFetching={isFetching && !isLoading}
       // Pagination
       pagination={pagination}
       onPaginationChange={setPagination}
