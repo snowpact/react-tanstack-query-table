@@ -1,8 +1,10 @@
-# @snowpact/react-tanstack-query-table
+# @snowpact/snowtable
+
+> Previously published as `@snowpact/react-tanstack-query-table` (now deprecated). Migration: replace the package name in imports and `package.json`, nothing else changed.
 
 Ultra-light, registry-based data table for React + TanStack Table + TanStack Query.
 
-**[Live Demo](https://snowpact.github.io/react-tanstack-query-table/)**
+**[Live Demo](https://snowpact.github.io/snowtable/)**
 
 ## Features
 
@@ -18,21 +20,21 @@ Ultra-light, registry-based data table for React + TanStack Table + TanStack Que
 
 ```bash
 npm install @tanstack/react-query @tanstack/react-table
-npm install @snowpact/react-tanstack-query-table
+npm install @snowpact/snowtable
 ```
 
 ### 2. Import styles
 
 ```tsx
 // In your app entry point (main.tsx or App.tsx)
-import '@snowpact/react-tanstack-query-table/styles.css';
+import '@snowpact/snowtable/styles.css';
 ```
 
 ### 3. Setup once
 
 ```tsx
 // In your app entry point (main.tsx or App.tsx)
-import { setupSnowTable } from '@snowpact/react-tanstack-query-table';
+import { setupSnowTable } from '@snowpact/snowtable';
 import { Link } from 'react-router-dom';
 import { t } from './i18n'; // Your translation function
 
@@ -70,7 +72,7 @@ setupSnowTable({
 ### 4. Use the table
 
 ```tsx
-import { SnowClientDataTable, SnowColumnConfig } from '@snowpact/react-tanstack-query-table';
+import { SnowClientDataTable, SnowColumnConfig } from '@snowpact/snowtable';
 
 type User = { id: string; name: string; email: string; status: string };
 
@@ -154,7 +156,7 @@ The double-class specificity (`.my-theme .snow-*`) wins over defaults — no `!i
 Use `resetSnowTable` if HMR doesn't pick up changes to your setup:
 
 ```tsx
-import { setupSnowTable, resetSnowTable } from '@snowpact/react-tanstack-query-table';
+import { setupSnowTable, resetSnowTable } from '@snowpact/snowtable';
 
 if (import.meta.hot) resetSnowTable();
 setupSnowTable({ /* ... */ });
@@ -186,7 +188,7 @@ Fetches all data once, handles everything in the browser:
 Server handles pagination, search, filtering, and sorting:
 
 ```tsx
-import { SnowServerDataTable, ServerFetchParams } from '@snowpact/react-tanstack-query-table';
+import { SnowServerDataTable, ServerFetchParams } from '@snowpact/snowtable';
 
 const fetchUsers = async (params: ServerFetchParams) => {
   // params: { limit, offset, search?, sortBy?, sortOrder?, filters?, prefilter? }
@@ -432,7 +434,7 @@ const columns: SnowColumnConfig<User>[] = [
 Use `meta` to customize column appearance and behavior:
 
 ```tsx
-import { SnowColumnConfig, SnowColumnMeta } from '@snowpact/react-tanstack-query-table';
+import { SnowColumnConfig, SnowColumnMeta } from '@snowpact/snowtable';
 
 const columns: SnowColumnConfig<User>[] = [
   {

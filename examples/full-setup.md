@@ -21,7 +21,7 @@ Create a setup file (e.g., `src/lib/snow-table-setup.ts`) that configures SnowTa
 import i18n from '@/i18n';
 import { Link } from 'react-router-dom';
 
-import { setupSnowTable } from '@snowpact/react-tanstack-query-table';
+import { setupSnowTable } from '@snowpact/snowtable';
 
 // =============================================================================
 // Setup Function
@@ -341,7 +341,7 @@ For Next.js apps, use the Next.js Link component:
 ```tsx
 // src/lib/snow-table-setup.ts
 import Link from 'next/link';
-import { setupSnowTable } from '@snowpact/react-tanstack-query-table';
+import { setupSnowTable } from '@snowpact/snowtable';
 
 setupSnowTable({
   t: (key) => key, // or use next-intl: getTranslations()

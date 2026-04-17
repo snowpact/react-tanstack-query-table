@@ -3,7 +3,7 @@ import { defaultTheme } from './types';
 
 export function generateInstallCode(): string {
   return `npm install @tanstack/react-query @tanstack/react-table
-npm install @snowpact/react-tanstack-query-table`;
+npm install @snowpact/snowtable`;
 }
 
 export function generateThemeCode(theme: ThemeColors): string {
@@ -54,9 +54,9 @@ export function generateThemeCode(theme: ThemeColors): string {
 
 export function generateSetupCode(): string {
   return `// Import styles in your app entry point
-import '@snowpact/react-tanstack-query-table/styles.css';
+import '@snowpact/snowtable/styles.css';
 
-import { setupSnowTable } from '@snowpact/react-tanstack-query-table';
+import { setupSnowTable } from '@snowpact/snowtable';
 import { Link } from 'react-router-dom';
 import { t } from './i18n';
 
@@ -147,7 +147,7 @@ export function generateTableCode(config: DemoConfig): string {
 
   const propsStr = props.map(p => `  ${p}`).join('\n');
 
-  return `import { ${Component}, SnowColumnConfig } from '@snowpact/react-tanstack-query-table';
+  return `import { ${Component}, SnowColumnConfig } from '@snowpact/snowtable';
 import { Edit, Trash } from 'lucide-react';
 
 type User = {

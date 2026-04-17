@@ -1,5 +1,5 @@
 /**
- * Signaleo v1 theme for @snowpact/react-tanstack-query-table
+ * Signaleo v1 theme for @snowpact/snowtable
  *
  * Reproduces the Signaleo v1 DataTable look on top of the v2 SnowTable
  * structure. The v2 layout is preserved as-is (pagination + page size
@@ -7,7 +7,7 @@
  *
  * All selectors are scoped under `.snow-signaleo-table` which is passed via
  * the `className` prop on SnowClientDataTable / SnowServerDataTable
- * (feature available since @snowpact/react-tanstack-query-table 1.9).
+ * (feature available since @snowpact/snowtable 1.9).
  * Descendant specificity guarantees our rules win against the lib's
  * default styles (0,0,2,0 > 0,0,1,0) without needing source order
  * tricks or `!important`.
