@@ -6,7 +6,7 @@ import {
   type SnowColumnConfig,
   type ServerFetchParams,
   type ServerPaginatedResponse,
-} from '@snowpact/react-tanstack-query-table';
+} from '@snowpact/snowtable';
 import { CodePanel, ConfigPanel, type DemoConfig, type User, type ThemeColors, defaultTheme } from './components';
 import { EditIcon, TrashIcon, EyeIcon, CopyIcon, MailIcon, ArchiveIcon } from './icons';
 
@@ -358,7 +358,7 @@ export function App() {
       {/* Main Content */}
       <div className="flex-1 bg-gray-50 p-8 overflow-y-auto">
         <div className="max-w-5xl mx-auto">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">@snowpact/react-tanstack-query-table</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">@snowpact/snowtable</h1>
           <p className="text-gray-600 mb-8">
             Ultra-light, registry-based data table for React + TanStack Table + TanStack Query
           </p>

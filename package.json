@@ -1,14 +1,15 @@
 {
-  "name": "@snowpact/react-tanstack-query-table",
-  "version": "1.10.6",
+  "name": "@snowpact/snowtable",
+  "version": "1.10.7",
   "description": "Ultra-light, registry-based data table for React, TanStack Table and TanStack Query",
   "author": "Snowpact",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/snowpact/react-tanstack-query-table"
+    "url": "https://github.com/snowpact/snowtable"
   },
   "keywords": [
+    "snowtable",
     "react",
     "table",
     "datatable",
